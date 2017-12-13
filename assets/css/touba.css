@@ -1,0 +1,11 @@
+.pagination{
+    float: right;
+    margin-right: 5%;
+}
+.error{
+    color: red;
+}
+
+.form-group label{
+    font-weight: normal;
+}

@@ -1,0 +1,5 @@
+#for htaccess authentication for documentation folder
+AuthType Basic
+AuthName "protected"
+AuthUserFile "G:\xampp\htdocs\pms\protected\.htpasswd"
+Require valid-user
