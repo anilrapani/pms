@@ -3,9 +3,9 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_user_company_model extends CI_Model {
+class K_master_vehicle_company_model extends CI_Model {
 
-    private $table_name = 'k_master_user_company';
+    private $table_name = 'k_master_vehicle_company';
     private $id = 'id';
     private $name = 'name';
     private $phone = 'phone';

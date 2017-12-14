@@ -51,46 +51,17 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" action="<?php echo base_url() ?>admin/employee/editcompany" method="post" id="editCompany" role="form">
+                    <form role="form" action="<?php echo base_url() ?>admin/employee/editShift" method="post" id="editShift" role="form">
                         <div class="box-body">
                               <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="name">Name</label>
-                                        <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $companyInfo->name; ?>">
+                                        <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $resultInfo->name; ?>">
                                     </div>
 
                                 </div>
-                                <div class="col-md-6">                                
-
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control required" id="email" name="email" maxlength="150" value="<?php echo $companyInfo->email; ?>" >
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">                                
-                                    <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="text" class="form-control required" id="phone" name="phone" maxlength="10" value="<?php echo $companyInfo->phone; ?>">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6">                                
-
-                                    <div class="form-group">
-                                        <label for="address">Address</label>
-                                        <textarea class="form-control" name="address" ><?php echo $companyInfo->address; ?></textarea>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            
-                            <div class="row">
-                               <div class="col-md-6">
+                                   <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <select class="form-control required" id="status" name="status">
@@ -101,7 +72,7 @@
                                                 foreach ($status_array as $key => $value)
                                                 {
                                                     ?>
-                                                    <option value="<?php echo $key; ?>" <?php if($key == $companyInfo->status) {echo "selected=selected";} ?> ><?php echo $value; ?></option>
+                                                    <option value="<?php echo $key; ?>" <?php if($key == $resultInfo->status) {echo "selected=selected";} ?> ><?php echo $value; ?></option>
                                                     <?php
                                                 }
                                             }
@@ -109,11 +80,39 @@
                                         </select>
                                     </div>
                                 </div>
-                              
                             </div>
                             
-
-                              <input type="hidden" value="<?php echo $companyInfo->id; ?>" name="id" id="id" />    
+                            
+                            <div class="row">
+                                <div class="col-md-6 bootstrap-timepicker">                                
+                                    <div class="form-group">
+                                        <label for="start time">Start Time</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control required timepicker" id="start_time" name="start_time" >
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-md-6 bootstrap-timepicker">                                
+                                    <div class="form-group">
+                                        <label for="end time">End Time</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control required timepicker" id="end_time" name="end_time" >
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                            
+                            <input type="hidden" value="<?php echo $resultInfo->id; ?>" name="id" id="id" />    
                             
                         </div><!-- /.box-body -->
     
@@ -128,5 +127,10 @@
         </div>    
     </section>
 </div>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.timepicker').timepicker({
+        });
+    });
+</script>
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

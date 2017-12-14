@@ -50,7 +50,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
 
-                    <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/employee/addCompany" method="post" role="form">
+                    <form role="form" id="addGovtProofType" action="<?php echo base_url() ?>admin/employee/addShift" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
@@ -60,33 +60,36 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-6">                                
-
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control required" id="email" name="email" maxlength="150">
-                                    </div>
-
-                                </div>
+                                
                             </div>
                             <div class="row">
-                                <div class="col-md-6">                                
+                                <div class="col-md-6 bootstrap-timepicker">                                
                                     <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="text" class="form-control required" id="phone" name="phone" maxlength="10">
+                                        <label for="start time">Start Time</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control required timepicker" id="start_time" name="start_time" >
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
                                     </div>
-
+                                    
                                 </div>
-                                <div class="col-md-6">                                
-
+                                <div class="col-md-6 bootstrap-timepicker">                                
                                     <div class="form-group">
-                                        <label for="address">Address</label>
-                                        <textarea class="form-control" name="address" ></textarea>
-
+                                        <label for="end time">End Time</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control required timepicker" id="end_time" name="end_time" >
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                 </div>
-
+                                
                             </div>
+                            
 
 
 
@@ -104,4 +107,11 @@
     </section>
 
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.timepicker').timepicker({
+        });
+    });
+</script>
+    
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

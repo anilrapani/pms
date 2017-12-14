@@ -14,7 +14,7 @@ class K_master_user_shift_model extends CI_Model {
     private $deleted = 'deleted';
 
     /**
-     * This function is used to insert employee shift's information
+     * This function is used to insert employee Shift's information
      * @param array $inputData : This is employee shift information
      * @return int $inserted_id : This is inserted Id
      */
@@ -27,7 +27,7 @@ class K_master_user_shift_model extends CI_Model {
     }
 
     /**
-     * This function is used to get the employee shift list and total company count
+     * This function is used to get the employee shift list and total Shift count
      * @param array $inputData : This is array with searchText, page, segment
      * @return array $result : This is result
      */
@@ -42,7 +42,7 @@ class K_master_user_shift_model extends CI_Model {
             $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
             $this->db->where($likeCriteria);
         }
-        $this->db->where(array($this->deleted => 2));
+        $this->db->where($this->deleted,2);
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
@@ -59,16 +59,19 @@ class K_master_user_shift_model extends CI_Model {
 
     /**
      * This function is used to get the employee shift's detail information
-     * @param array $id : This is user company's updated information
+     * @param array $id : This is user Shift's updated information
      * @param number $id : This is discipline id
      * @return object $result : This is result
      */
     function getDetails($id) {
         $this->db->select("$this->id,$this->name,$this->start_time,$this->end_time, $this->status");
         $this->db->from("$this->table_name");
-        $this->db->where($this->status, 1);
-        $this->db->where($this->deleted, 2);
-        $this->db->where($this->id, $id);
+         $this->db->where(
+                 array(
+                     $this->deleted => 2,
+                    $this->id => $id
+                 )
+        );
         $query = $this->db->get();
         return $query->row();
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 13, 2017 at 06:03 PM
+-- Generation Time: Dec 14, 2017 at 05:49 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -44,8 +44,14 @@ CREATE TABLE `k_master_government_proof_type` (
 --
 
 INSERT INTO `k_master_government_proof_type` (`id`, `name`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
-(1, 'Pan Card', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Driving License', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'Pan Card', 1, 2, 2, 2, '0000-00-00 00:00:00', '2017-12-14 13:37:14'),
+(2, 'Driving License2', 2, 1, 2, 2, '0000-00-00 00:00:00', '2017-12-14 13:35:46'),
+(3, 'Driving License', 1, 2, 2, 0, '2017-12-14 13:36:12', '0000-00-00 00:00:00'),
+(4, 'Aadhar Card', 1, 2, 2, 2, '2017-12-14 13:36:29', '2017-12-14 13:42:26'),
+(5, 'Ration Card', 1, 2, 2, 0, '2017-12-14 13:57:59', '0000-00-00 00:00:00'),
+(6, 'College Id', 1, 2, 2, 0, '2017-12-14 13:58:13', '0000-00-00 00:00:00'),
+(7, 'Voter Id', 1, 1, 2, 2, '2017-12-14 13:58:18', '2017-12-14 16:10:54'),
+(8, 'Voter Id', 1, 2, 2, 0, '2017-12-14 16:13:10', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -92,16 +98,17 @@ CREATE TABLE `k_master_user_company` (
 --
 
 INSERT INTO `k_master_user_company` (`id`, `name`, `phone`, `email`, `address`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
-(1, 'Kastech', '1111', 'fsdfsd1117@dasda.com', 'Gachibowli, Hyderabad', 1, 2, 2, 2, '0000-00-00 00:00:00', '2017-12-13 17:43:32'),
-(2, 'Google1', '9874561231', '', 'madhapur', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(1, 'Kastech', '1111', 'fsdfsd1117@dasda.com', 'Gachibowli, Hyderabad', 1, 2, 2, 2, '0000-00-00 00:00:00', '2017-12-14 13:42:21'),
+(2, 'Driving License1', '', '', '', 1, 2, 2, 2, '0000-00-00 00:00:00', '2017-12-14 13:35:03'),
 (3, 'Google2', '9876543221', '', 'madhapur', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (4, 'Google4', '', '', '', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (5, 'Google5', '', '', '', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (6, 'google6', '', '', '', 1, 2, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 'Employee2', '123456', 'dsadsad@dsadas.com', '123dsadasdsadas', 1, 2, 2, 2, '2017-12-13 15:16:04', '2017-12-13 17:44:10'),
-(9, 'Dasda@test.com', '', '', '', 1, 1, 2, 2, '2017-12-13 15:32:19', '2017-12-13 17:42:22'),
-(10, 'Company5', '123456', 'dada@dadas.com', 'dasdas', 1, 1, 2, 2, '2017-12-13 16:02:09', '2017-12-13 17:42:33'),
-(11, 'Company 5', '1234567891', 'anil.rapani@gmail.com', 'test', 1, 2, 2, 0, '2017-12-13 16:07:13', '0000-00-00 00:00:00');
+(8, 'Employee2', '123456', 'dsadsad@dsadas.com', '123dsadasdsadas', 2, 2, 2, 2, '2017-12-13 15:16:04', '2017-12-14 13:14:31'),
+(9, 'Dasda@test.com', '', '', '', 1, 2, 2, 2, '2017-12-13 15:32:19', '2017-12-13 17:42:22'),
+(10, 'Company5', '123456', 'dada@dadas.com', 'dasdas', 1, 2, 2, 2, '2017-12-13 16:02:09', '2017-12-13 17:42:33'),
+(11, 'Company 5', '1234567891', 'anil.rapani@gmail.com', 'test', 1, 2, 2, 0, '2017-12-13 16:07:13', '0000-00-00 00:00:00'),
+(12, 'Company9', '1234567891', 'company9@pms.com', 'test', 1, 2, 2, 0, '2017-12-14 12:10:56', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -127,9 +134,14 @@ CREATE TABLE `k_master_user_shift` (
 --
 
 INSERT INTO `k_master_user_shift` (`id`, `name`, `start_time`, `end_time`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
-(1, 'Super Admin', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 2, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Admin', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 2, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 'Employee', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 2, 2, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(1, 'Regular', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 2, 1, 2, '0000-00-00 00:00:00', '2017-12-14 16:13:31'),
+(2, 'Admin', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 1, 2, '0000-00-00 00:00:00', '2017-12-14 16:11:06'),
+(3, 'Employee', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 2, 2, '0000-00-00 00:00:00', '2017-12-14 16:08:01'),
+(4, 'Test', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 2, 2, '2017-12-14 15:45:33', '2017-12-14 16:07:21'),
+(5, 'Test', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 2, 2, '2017-12-14 15:45:45', '2017-12-14 16:06:19'),
+(6, 'Fdsfsd', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 1, 2, 2, '2017-12-14 15:49:39', '2017-12-14 16:07:57'),
+(7, 'Us Shift', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 2, 2, 0, '2017-12-14 16:13:38', '0000-00-00 00:00:00'),
+(8, 'Uk Shift', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, 2, 2, 2, '2017-12-14 16:13:44', '2017-12-14 16:13:51');
 
 -- --------------------------------------------------------
 
@@ -140,6 +152,7 @@ INSERT INTO `k_master_user_shift` (`id`, `name`, `start_time`, `end_time`, `stat
 CREATE TABLE `k_master_vehicle_company` (
   `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `phone` varchar(50) NOT NULL,
   `address` text NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1- active, 2-inactive',
@@ -149,6 +162,14 @@ CREATE TABLE `k_master_vehicle_company` (
   `created_time` datetime NOT NULL,
   `updated_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `k_master_vehicle_company`
+--
+
+INSERT INTO `k_master_vehicle_company` (`id`, `name`, `email`, `phone`, `address`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
+(1, 'Cargo1', 'test@mail.com', '123456789', 'test', 1, 1, 2, 2, '2017-12-14 16:44:30', '2017-12-14 17:47:40'),
+(2, 'Company 1', 'company@mail.com', '1234567891', '', 1, 2, 2, 0, '2017-12-14 17:48:50', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -167,6 +188,16 @@ CREATE TABLE `k_master_vehicle_type` (
   `created_time` datetime NOT NULL,
   `updated_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `k_master_vehicle_type`
+--
+
+INSERT INTO `k_master_vehicle_type` (`id`, `number_of_wheels`, `name`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
+(1, 2, '2 Wheeler', 0, 2, 2, 2, '2017-12-14 17:42:13', '2017-12-14 17:46:55'),
+(2, 2, '2 Wheeler', 1, 2, 2, 0, '2017-12-14 17:47:59', '0000-00-00 00:00:00'),
+(3, 3, '3 Wheeler', 1, 2, 2, 0, '2017-12-14 17:48:08', '0000-00-00 00:00:00'),
+(4, 4, '4 Wheeler', 0, 2, 2, 2, '2017-12-14 17:48:20', '2017-12-14 17:48:29');
 
 -- --------------------------------------------------------
 
@@ -374,7 +405,7 @@ ALTER TABLE `k_user_role`
 -- AUTO_INCREMENT for table `k_master_government_proof_type`
 --
 ALTER TABLE `k_master_government_proof_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `k_master_price`
@@ -386,25 +417,25 @@ ALTER TABLE `k_master_price`
 -- AUTO_INCREMENT for table `k_master_user_company`
 --
 ALTER TABLE `k_master_user_company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `k_master_user_shift`
 --
 ALTER TABLE `k_master_user_shift`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `k_master_vehicle_company`
 --
 ALTER TABLE `k_master_vehicle_company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `k_master_vehicle_type`
 --
 ALTER TABLE `k_master_vehicle_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `k_printer`

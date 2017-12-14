@@ -50,7 +50,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
 
-                    <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/employee/addCompany" method="post" role="form">
+                    <form role="form" id="addCompany" action="<?php echo base_url() ?>employee/vehicle/addType" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
@@ -63,30 +63,13 @@
                                 <div class="col-md-6">                                
 
                                     <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control required" id="email" name="email" maxlength="150">
+                                        <label for="number_of_wheels">Number of wheels</label>
+                                        <input type="text" class="form-control required" id="number_of_wheels" name="number_of_wheels" maxlength="150">
                                     </div>
 
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">                                
-                                    <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="text" class="form-control required" id="phone" name="phone" maxlength="10">
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6">                                
-
-                                    <div class="form-group">
-                                        <label for="address">Address</label>
-                                        <textarea class="form-control" name="address" ></textarea>
-
-                                    </div>
-                                </div>
-
-                            </div>
+                            
 
 
 

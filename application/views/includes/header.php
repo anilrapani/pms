@@ -16,20 +16,46 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins 
          folder instead of downloading all of them to reduce the load. -->
     <link href="<?php echo base_url(); ?>assets/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+    
+    
     <style>
     	.error{
     		color:red;
     		font-weight: normal;
     	}
     </style>
+    <?php
+            $jsExt = $this->config->item('js_gz_extension');
+            $cssExt = $this->config->item('css_gz_extension');  
+            
+            
+            if (isset($assets['cssTopArray']) && is_array($assets['cssTopArray'])) {
+                foreach ($assets['cssTopArray'] as $cssFile) {
+                    echo '<link rel="stylesheet" type="text/css" href="' . $cssFile . $cssExt . '">';
+                    echo "\n";
+                }
+            }
+            
+           
+    ?>
     <!-- jQuery 2.1.4 -->
     <script src="<?php echo base_url(); ?>assets/js/jQuery-2.1.4.min.js"></script>
     <script type="text/javascript">
         var baseURL = "<?php echo base_url(); ?>";
+        
     </script>
+    <?php 
+     if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
+                foreach ($assets['jsTopArray'] as $js) {
+                    echo '<script src="' . $js . $jsExt . '"></script>';
+                    echo "\n";
+                }
+     }
+    ?>
    
   </head>
   <body class="skin-blue sidebar-mini">
+      
     <div class="wrapper">
       
       <header class="main-header">
@@ -95,7 +121,7 @@
             {
                 
             ?>
-            <li class="treeview">
+            <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && $this->uri->segment(2) == 'employee')?'active':''; ?> ">
               <a href="#"><i class="fa fa-database"></i><span>Common Data</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
                             <li class="treeview">
@@ -105,13 +131,13 @@
                             </a>
                           </li>
                           <li class="treeview">
-                            <a href="<?php echo base_url(); ?>admin/employee/govtprooftypes" >
+                            <a href="<?php echo base_url(); ?>admin/employee/govtprooftype/list" >
                               <i class="fa fa-ticket"></i>
                               <span>Govt Proof Types</span>
                             </a>
                           </li>
                           <li class="treeview">
-                            <a href="<?php echo base_url(); ?>admin/employee/shifts" >
+                            <a href="<?php echo base_url(); ?>admin/employee/shift/list" >
                               <i class="fa fa-ticket"></i>
                               <span>Employee Shifts</span>
                             </a>
@@ -122,17 +148,17 @@
             
             
             
-            <li class="treeview">
+            <li class="treeview" <?php echo ($this->uri->segment(1) == 'employee' && $this->uri->segment(2) == 'vehicle')?'active':''; ?> >
               <a href="#"><i class="fa fa-database"></i><span>Vehicle Data</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
                            <li class="treeview">
-                            <a href="<?php echo base_url(); ?>employee/vehiclecompany" >
+                            <a href="<?php echo base_url(); ?>employee/vehicle/company/list" >
                               <i class="fa fa-ticket"></i>
                               <span>Vehicle Company</span>
                             </a>
                           </li>
                            <li class="treeview">
-                            <a href="<?php echo base_url(); ?>employee/vehicletype" >
+                            <a href="<?php echo base_url(); ?>employee/vehicle/type/list" >
                               <i class="fa fa-ticket"></i>
                               <span>Vehicle Type</span>
                             </a>

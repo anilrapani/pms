@@ -523,3 +523,7 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+$config['js_gz_extension'] = '.js';
+$config['css_gz_extension'] = '.css';
+$config['js_public_path'] = '';
+$config['js_public_path'] = '';

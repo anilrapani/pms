@@ -56,7 +56,28 @@ $route['loginMe'] = 'login/loginMe';
 $route['dashboard'] = 'user';
 $route['logout'] = 'user/logout';
 $route['pageNotFound'] = "user/pageNotFound";
-$route['admin/employee/add/company'] = "admin/employee/addCompanyView";
-$route['admin/employee/edit/company/(:any)'] = "admin/employee/editCompanyView/$1";
+
 $route['admin/employee/company/list'] = "admin/employee/companyList";
 $route['admin/employee/company/list/(:num)'] = "admin/employee/companyList/$1";
+$route['admin/employee/add/company'] = "admin/employee/addCompanyView";
+$route['admin/employee/edit/company/(:any)'] = "admin/employee/editCompanyView/$1";
+
+$route['admin/employee/govtprooftype/list'] = "admin/employee/govtProofTypeList";
+$route['admin/employee/govtprooftype/list/(:num)'] = "admin/employee/govtProofTypeList/$1";
+$route['admin/employee/add/govtprooftype'] = "admin/employee/addGovtProofTypeView";
+$route['admin/employee/edit/govtprooftype/(:any)'] = "admin/employee/editGovtProofTypeView/$1";
+
+$route['admin/employee/shift/list'] = "admin/employee/shiftList";
+$route['admin/employee/shift/list/(:num)'] = "admin/employee/shiftList/$1";
+$route['admin/employee/add/shift'] = "admin/employee/addShiftView";
+$route['admin/employee/edit/shift/(:any)'] = "admin/employee/editShiftView/$1";
+
+$route['employee/vehicle/company/list'] = "employee/vehicle/companyList";
+$route['employee/vehicle/company/list/(:num)'] = "employee/vehicle/companyList/$1";
+$route['employee/vehicle/add/company'] = "employee/vehicle/addCompanyView";
+$route['employee/vehicle/edit/company/(:any)'] = "employee/vehicle/editCompanyView/$1";
+
+$route['employee/vehicle/type/list'] = "employee/vehicle/typeList";
+$route['employee/vehicle/type/list/(:num)'] = "employee/vehicle/typeList/$1";
+$route['employee/vehicle/add/type'] = "employee/vehicle/addTypeView";
+$route['employee/vehicle/edit/type/(:any)'] = "employee/vehicle/editTypeView/$1";

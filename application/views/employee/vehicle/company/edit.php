@@ -51,7 +51,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" action="<?php echo base_url() ?>admin/employee/editcompany" method="post" id="editCompany" role="form">
+                    <form role="form" action="<?php echo base_url() ?>employee/vehicle/editcompany" method="post" id="editCompany" role="form">
                         <div class="box-body">
                               <div class="row">
                                 <div class="col-md-6">                                

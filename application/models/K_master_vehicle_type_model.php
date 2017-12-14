@@ -3,20 +3,18 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_user_company_model extends CI_Model {
+class K_master_vehicle_type_model extends CI_Model {
 
-    private $table_name = 'k_master_user_company';
+    private $table_name = 'k_master_vehicle_type';
     private $id = 'id';
     private $name = 'name';
-    private $phone = 'phone';
-    private $email = 'email';
-    private $address = 'address';
+    private $number_of_wheels = 'number_of_wheels';
     private $status = 'status';
     private $deleted = 'deleted';
 
     /**
-     * This function is used to insert company's information
-     * @param array $inputData : This is user's new company information
+     * This function is used to insert Vehicle's information
+     * @param array $inputData : This is user's new vehicle type information
      * @return int $inserted_id : This is inserted Id
      */
     function insert($inputData) {
@@ -28,7 +26,7 @@ class K_master_user_company_model extends CI_Model {
     }
 
     /**
-     * This function is used to get the employee company list and total company count
+     * This function is used to get the vehicle type list and count
      * @param array $inputData : This is array with searchText, page, segment
      * @return array $result : This is result
      */
@@ -36,22 +34,18 @@ class K_master_user_company_model extends CI_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true) {
             $this->db->select($this->id);
         } else {
-            $this->db->select("$this->id,$this->name,$this->status");
+            $this->db->select("$this->id,$this->name,$this->status,$this->number_of_wheels");
         }
         $this->db->from($this->table_name);
         if (!empty($inputData['searchText'])) {
             $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
             $this->db->where($likeCriteria);
         }
-        $this->db->where(
-                 array(
-                     $this->deleted => 2
-                 )
-        );
-        $this->db->where(array($this->deleted => 2));
+        $this->db->where($this->deleted,2);
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
+        
         $query = $this->db->get();
         $result = $query->result();
 
@@ -64,13 +58,13 @@ class K_master_user_company_model extends CI_Model {
     }
 
     /**
-     * This function is used to get the user company's information
-     * @param array $id : This is user company's updated information
-     * @param number $id : This is company id
+     * This function is used to get the user vehicle type's information
+     * @param array $id : This is user vehicle type's updated information
+     * @param number $id : This is vehicle type id
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->name,$this->email,$this->phone, $this->address, $this->status");
+        $this->db->select("$this->id,$this->name,$this->number_of_wheels,$this->status");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
@@ -83,9 +77,9 @@ class K_master_user_company_model extends CI_Model {
     }
 
     /**
-     * This function is used to update the user company's information
-     * @param array $data : This is user company's updated information
-     * @param number $id : This is discipline id
+     * This function is used to update the user vehicle type's information
+     * @param array $data : This is vehicle type's updated information
+     * @param number $id : This is vehicle type id
      * @return boolean $result : TRUE / FALSE
      */
     function update($data, $id) {
@@ -95,9 +89,9 @@ class K_master_user_company_model extends CI_Model {
     }
 
     /**
-     * This function is used to delete the company information
-     * @param number $id : This is company id
-     * @param array $data : This is company data
+     * This function is used to delete the Vehicle type information
+     * @param number $id : This is Vehicle type id
+     * @param array $data : This is vehicle type data
      * @return boolean $result : TRUE / FALSE
      */
     function delete($id, $data) {
