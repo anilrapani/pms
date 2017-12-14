@@ -3,20 +3,19 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_user_company_model extends CI_Model {
+class K_master_user_shift_model extends CI_Model {
 
-    private $table_name = 'k_master_user_company';
+    private $table_name = 'k_master_user_shift';
     private $id = 'id';
     private $name = 'name';
-    private $phone = 'phone';
-    private $email = 'email';
-    private $address = 'address';
+    private $start_time = 'start_time';
+    private $end_time = 'end_time';
     private $status = 'status';
     private $deleted = 'deleted';
 
     /**
-     * This function is used to insert company's information
-     * @param array $inputData : This is user's new company information
+     * This function is used to insert employee shift's information
+     * @param array $inputData : This is employee shift information
      * @return int $inserted_id : This is inserted Id
      */
     function insert($inputData) {
@@ -28,7 +27,7 @@ class K_master_user_company_model extends CI_Model {
     }
 
     /**
-     * This function is used to get the employee company list and total company count
+     * This function is used to get the employee shift list and total company count
      * @param array $inputData : This is array with searchText, page, segment
      * @return array $result : This is result
      */
@@ -59,28 +58,25 @@ class K_master_user_company_model extends CI_Model {
     }
 
     /**
-     * This function is used to get the user company's information
+     * This function is used to get the employee shift's detail information
      * @param array $id : This is user company's updated information
-     * @param number $id : This is company id
+     * @param number $id : This is discipline id
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->name,$this->email,$this->phone, $this->address, $this->status");
+        $this->db->select("$this->id,$this->name,$this->start_time,$this->end_time, $this->status");
         $this->db->from("$this->table_name");
-         $this->db->where(
-                 array(
-                     $this->deleted => 2,
-                    $this->id => $id
-                 )
-        );
+        $this->db->where($this->status, 1);
+        $this->db->where($this->deleted, 2);
+        $this->db->where($this->id, $id);
         $query = $this->db->get();
         return $query->row();
     }
 
     /**
-     * This function is used to update the user company's information
-     * @param array $data : This is user company's updated information
-     * @param number $id : This is discipline id
+     * This function is used to update the employee shift information
+     * @param array $data : This is employee shift's updated information
+     * @param number $id : This is shift id
      * @return boolean $result : TRUE / FALSE
      */
     function update($data, $id) {
@@ -90,9 +86,9 @@ class K_master_user_company_model extends CI_Model {
     }
 
     /**
-     * This function is used to delete the company information
-     * @param number $id : This is company id
-     * @param array $data : This is company data
+     * This function is used to delete the shift information
+     * @param number $id : This is shift id
+     * @param array $data : This is shift data
      * @return boolean $result : TRUE / FALSE
      */
     function delete($id, $data) {

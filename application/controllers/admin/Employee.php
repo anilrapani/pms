@@ -166,6 +166,7 @@ class Employee extends BaseController {
 
             $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
             $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
+            
 
 
             if ($this->form_validation->run() == FALSE) {
@@ -176,14 +177,14 @@ class Employee extends BaseController {
                 $email = strtolower($this->input->post('email'));
                 $phone = $this->input->post('phone');
                 $address = $this->input->post('address');
+                $status = $this->input->post('status');
 
                 $userCompanyInfo = array(
                     'name' => $name,
                     'email' => $email,
                     'phone' => $phone,
                     'address' => $address,
-                    'status' => 1,
-                    'deleted' => 2,
+                    'status' => $status,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s')
                 );

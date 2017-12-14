@@ -88,6 +88,18 @@
                                 </div>
 
                             </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">                                
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <input type="text" class="form-control required" id="status" name="stats" maxlength="10" value="<?php echo $companyInfo->status; ?>">
+                                    </div>
+
+                                </div>
+                              
+                            </div>
+                            
 
                               <input type="hidden" value="<?php echo $companyInfo->id; ?>" name="id" id="id" />    
                             
