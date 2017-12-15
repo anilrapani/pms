@@ -50,7 +50,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
 
-                    <form role="form" id="addCompany" action="<?php echo base_url() ?>employee/vehicle/addType" method="post" role="form">
+                    <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/vehicle/addType" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                

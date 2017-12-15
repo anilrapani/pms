@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2017 at 05:49 PM
+-- Generation Time: Dec 15, 2017 at 06:08 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -102,7 +102,7 @@ INSERT INTO `k_master_user_company` (`id`, `name`, `phone`, `email`, `address`, 
 (2, 'Driving License1', '', '', '', 1, 2, 2, 2, '0000-00-00 00:00:00', '2017-12-14 13:35:03'),
 (3, 'Google2', '9876543221', '', 'madhapur', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (4, 'Google4', '', '', '', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 'Google5', '', '', '', 1, 2, 2, 2, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 'Google5', '123456', 'dsadsa@ddsa.com', '', 1, 2, 2, 2, '0000-00-00 00:00:00', '2017-12-15 12:32:56'),
 (6, 'google6', '', '', '', 1, 2, 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (8, 'Employee2', '123456', 'dsadsad@dsadas.com', '123dsadasdsadas', 2, 2, 2, 2, '2017-12-13 15:16:04', '2017-12-14 13:14:31'),
 (9, 'Dasda@test.com', '', '', '', 1, 2, 2, 2, '2017-12-13 15:32:19', '2017-12-13 17:42:22'),
@@ -169,7 +169,7 @@ CREATE TABLE `k_master_vehicle_company` (
 
 INSERT INTO `k_master_vehicle_company` (`id`, `name`, `email`, `phone`, `address`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
 (1, 'Cargo1', 'test@mail.com', '123456789', 'test', 1, 1, 2, 2, '2017-12-14 16:44:30', '2017-12-14 17:47:40'),
-(2, 'Company 1', 'company@mail.com', '1234567891', '', 1, 2, 2, 0, '2017-12-14 17:48:50', '0000-00-00 00:00:00');
+(2, 'Company 1', 'company@mail.com', '1234567891', '', 1, 2, 2, 3, '2017-12-14 17:48:50', '2017-12-15 10:25:55');
 
 -- --------------------------------------------------------
 
@@ -194,10 +194,10 @@ CREATE TABLE `k_master_vehicle_type` (
 --
 
 INSERT INTO `k_master_vehicle_type` (`id`, `number_of_wheels`, `name`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
-(1, 2, '2 Wheeler', 0, 2, 2, 2, '2017-12-14 17:42:13', '2017-12-14 17:46:55'),
+(1, 2, '2 Wheeler', 2, 2, 2, 2, '2017-12-14 17:42:13', '2017-12-15 09:53:27'),
 (2, 2, '2 Wheeler', 1, 2, 2, 0, '2017-12-14 17:47:59', '0000-00-00 00:00:00'),
 (3, 3, '3 Wheeler', 1, 2, 2, 0, '2017-12-14 17:48:08', '0000-00-00 00:00:00'),
-(4, 4, '4 Wheeler', 0, 2, 2, 2, '2017-12-14 17:48:20', '2017-12-14 17:48:29');
+(4, 5, '4 Wheeler', 1, 2, 2, 3, '2017-12-14 17:48:20', '2017-12-15 09:38:49');
 
 -- --------------------------------------------------------
 
@@ -210,8 +210,9 @@ CREATE TABLE `k_parking` (
   `vehicle_type_id` int(11) NOT NULL,
   `vehicle_number` varchar(50) NOT NULL,
   `vehicle_company_id` int(11) NOT NULL,
+  `vehicle_company` varchar(150) NOT NULL,
   `driver_name` varchar(150) NOT NULL,
-  `driving_license_number` int(50) NOT NULL,
+  `driving_license_number` varchar(50) NOT NULL,
   `image_driving_license_number` varchar(200) NOT NULL,
   `image_vehicle_number_plate` varchar(200) NOT NULL,
   `entry_time` datetime NOT NULL,
@@ -228,6 +229,23 @@ CREATE TABLE `k_parking` (
   `created_time` datetime NOT NULL,
   `updated_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `k_parking`
+--
+
+INSERT INTO `k_parking` (`id`, `vehicle_type_id`, `vehicle_number`, `vehicle_company_id`, `vehicle_company`, `driver_name`, `driving_license_number`, `image_driving_license_number`, `image_vehicle_number_plate`, `entry_time`, `exit_time`, `master_prices_id`, `total_amount`, `total_minutes`, `barcode`, `master_price_details`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
+(1, 2, '', 1, '0', '', '0', '64B130050932', '35O327559594', '2017-12-15 17:57:02', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 17:57:02', '0000-00-00 00:00:00'),
+(2, 2, '', 1, '', '', '', '95E820115250', '61T495092307', '2017-12-15 17:59:27', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 17:59:27', '0000-00-00 00:00:00'),
+(3, 2, '', 1, '', '', '', '12N229256677', '79R1770323450', '2017-12-15 17:59:46', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 17:59:46', '0000-00-00 00:00:00'),
+(4, 2, '', 1, '', '', '', '52S1896886107', '62M1521501081', '2017-12-15 17:59:50', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 17:59:50', '0000-00-00 00:00:00'),
+(5, 2, '', 1, '', '', '', '30G803760141', '96S705706180', '2017-12-15 17:59:58', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 17:59:58', '0000-00-00 00:00:00'),
+(6, 2, '', 1, '', '', '', '42V167539045', '71U1830041893', '2017-12-15 18:00:15', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 18:00:15', '0000-00-00 00:00:00'),
+(7, 1, '', 1, '', '', '', '78@1457674715', '95L686581480', '2017-12-15 18:05:08', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 18:05:08', '0000-00-00 00:00:00'),
+(8, 2, '', 1, '', '', '', '59P748630762', '69A2074202467', '2017-12-15 18:05:28', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 18:05:28', '0000-00-00 00:00:00'),
+(9, 1, '', 1, '', '', '', '99C236369414', '62H1001822507', '2017-12-15 18:05:47', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 18:05:47', '0000-00-00 00:00:00'),
+(10, 1, '', 1, '', '', '', '42W1488227572', '90J1117221827', '2017-12-15 18:07:00', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 18:07:00', '0000-00-00 00:00:00'),
+(11, 1, '', 1, '', '', '', '47D1636844735', '43R1141165175', '2017-12-15 18:07:14', '0000-00-00 00:00:00', 0, '0.00', 0, '', '', 1, 2, 3, 0, '2017-12-15 18:07:14', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -279,7 +297,8 @@ CREATE TABLE `k_user` (
 
 INSERT INTO `k_user` (`id`, `name`, `user_name`, `email`, `mobile`, `password`, `role_id`, `government_proof_type_id`, `government_id_number`, `image_profile`, `user_company_id`, `shift_id`, `status`, `deleted`, `created_by`, `updated_by`, `created_time`, `updated_time`) VALUES
 (1, 'Super Admin', 'superadmin', 'superadmin@pms.com', '9014608228', '$2y$10$.vh0nF8hsjiKGms8sRC1fewLlj5JEyFBs.XqN94TvzQmyODcSWpgO', 1, 1, '2', '', 1, 3, 1, 2, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Admin', 'admin', 'admin@pms.com', '9014608228', '$2y$10$.vh0nF8hsjiKGms8sRC1fewLlj5JEyFBs.XqN94TvzQmyODcSWpgO', 2, 1, '2', '', 1, 2, 1, 2, 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+(2, 'Admin', 'admin', 'admin@pms.com', '9014608228', '$2y$10$F1dZNBVg21lyfpn55bDP/uU50uR1ZXZzNJos4uBCa0dVP2VDLOt7e', 2, 1, '2', '', 1, 2, 1, 2, 1, 2, '0000-00-00 00:00:00', '2017-12-15 12:35:59'),
+(3, 'Employee', '', 'employee@pms.com', '1234567891', '$2y$10$.vh0nF8hsjiKGms8sRC1fewLlj5JEyFBs.XqN94TvzQmyODcSWpgO', 3, 2, '123456789', '', 3, 2, 1, 2, 1, 2, '2017-12-15 00:00:00', '2017-12-15 12:27:16');
 
 -- --------------------------------------------------------
 
@@ -364,9 +383,8 @@ ALTER TABLE `k_master_vehicle_type`
 -- Indexes for table `k_parking`
 --
 ALTER TABLE `k_parking`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `FK_vehicle_type_id` (`vehicle_type_id`),
-  ADD KEY `FK_vehicle_company_id` (`vehicle_company_id`),
-  ADD KEY `FK_master_prices_id` (`master_prices_id`),
   ADD KEY `FK_created_by` (`created_by`);
 
 --
@@ -438,6 +456,12 @@ ALTER TABLE `k_master_vehicle_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `k_parking`
+--
+ALTER TABLE `k_parking`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `k_printer`
 --
 ALTER TABLE `k_printer`
@@ -447,7 +471,7 @@ ALTER TABLE `k_printer`
 -- AUTO_INCREMENT for table `k_user`
 --
 ALTER TABLE `k_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `k_user_role`
@@ -464,8 +488,6 @@ ALTER TABLE `k_user_role`
 --
 ALTER TABLE `k_parking`
   ADD CONSTRAINT `FK_created_by` FOREIGN KEY (`created_by`) REFERENCES `k_user` (`id`),
-  ADD CONSTRAINT `FK_master_prices_id` FOREIGN KEY (`master_prices_id`) REFERENCES `k_master_price` (`id`),
-  ADD CONSTRAINT `FK_vehicle_company_id` FOREIGN KEY (`vehicle_company_id`) REFERENCES `k_master_vehicle_company` (`id`),
   ADD CONSTRAINT `FK_vehicle_type_id` FOREIGN KEY (`vehicle_type_id`) REFERENCES `k_master_vehicle_type` (`id`);
 
 --

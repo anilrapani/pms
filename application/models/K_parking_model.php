@@ -3,13 +3,10 @@ require_once 'common_model.php';
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_user_shift_model extends Common_Model {
+class K_parking_model extends Common_Model {
 
-    var $table_name = 'k_master_user_shift';
+    var $table_name = 'k_parking';
     var $id = 'id';
-    var $name = 'name';
-    var $start_time = 'start_time';
-    var $end_time = 'end_time';
     var $status = 'status';
     var $deleted = 'deleted';
     
@@ -18,8 +15,8 @@ class K_master_user_shift_model extends Common_Model {
         $this->setTableName($this->table_name);
     }
     /**
-     * This function is used to insert employee Shift's information
-     * @param array $inputData : This is employee shift information
+     * This function is used to insert company's information
+     * @param array $inputData : This is user's new company information
      * @return int $inserted_id : This is inserted Id
      */
     function insert($inputData) {
@@ -31,7 +28,7 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to get the employee shift list and total Shift count
+     * This function is used to get the employee company list and total company count
      * @param array $inputData : This is array with searchText, page, segment
      * @return array $result : This is result
      */
@@ -39,14 +36,19 @@ class K_master_user_shift_model extends Common_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true) {
             $this->db->select($this->id);
         } else {
-            $this->db->select("$this->id,$this->name,$this->status");
+            $this->db->select("$this->id,$this->status");
         }
         $this->db->from($this->table_name);
         if (!empty($inputData['searchText'])) {
             $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
             $this->db->where($likeCriteria);
         }
-        $this->db->where($this->deleted,2);
+        $this->db->where(
+                 array(
+                     $this->deleted => 2
+                 )
+        );
+        $this->db->where(array($this->deleted => 2));
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
@@ -62,13 +64,13 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to get the employee shift's detail information
-     * @param array $id : This is user Shift's updated information
-     * @param number $id : This is discipline id
+     * This function is used to get the user company's information
+     * @param array $id : This is user company's updated information
+     * @param number $id : This is company id
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->name,$this->start_time,$this->end_time, $this->status");
+        $this->db->select("$this->id, $this->status");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
@@ -81,9 +83,9 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to update the employee shift information
-     * @param array $data : This is employee shift's updated information
-     * @param number $id : This is shift id
+     * This function is used to update the user company's information
+     * @param array $data : This is user company's updated information
+     * @param number $id : This is discipline id
      * @return boolean $result : TRUE / FALSE
      */
     function update($data, $id) {
@@ -93,9 +95,9 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to delete the shift information
-     * @param number $id : This is shift id
-     * @param array $data : This is shift data
+     * This function is used to delete the company information
+     * @param number $id : This is company id
+     * @param array $data : This is company data
      * @return boolean $result : TRUE / FALSE
      */
     function delete($id, $data) {

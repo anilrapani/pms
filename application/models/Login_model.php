@@ -1,6 +1,6 @@
 <?php
 if(!defined('BASEPATH')) exit('No direct script access allowed');
-
+require_once 'common_model.php';
 /* 
  * Copyright (C) 2017 Kastech
  * @project : touba316
@@ -9,7 +9,7 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
  * @since : Dec 2, 2017
  * @version : 
  */
-class Login_model extends CI_Model
+class Login_model extends Common_Model
 {
     
     /**

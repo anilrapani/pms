@@ -1,17 +1,21 @@
 <?php
-
+require_once 'common_model.php';
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_vehicle_type_model extends CI_Model {
+class K_master_vehicle_type_model extends Common_Model {
 
-    private $table_name = 'k_master_vehicle_type';
-    private $id = 'id';
-    private $name = 'name';
-    private $number_of_wheels = 'number_of_wheels';
-    private $status = 'status';
-    private $deleted = 'deleted';
-
+    var $table_name = 'k_master_vehicle_type';
+    var $id = 'id';
+    var $name = 'name';
+    var $number_of_wheels = 'number_of_wheels';
+    var $status = 'status';
+    var $deleted = 'deleted';
+    
+    function __construct() {
+        parent::__construct();
+        $this->setTableName($this->table_name);
+    }
     /**
      * This function is used to insert Vehicle's information
      * @param array $inputData : This is user's new vehicle type information

@@ -54,8 +54,22 @@ $route['404_override'] = 'Error404';
 $route['translate_uri_dashes'] = FALSE;
 $route['loginMe'] = 'login/loginMe';
 $route['dashboard'] = 'user';
+$route['loadChangePass'] = "user/loadChangePass";
+$route['changePassword'] = "user/changePassword";
 $route['logout'] = 'user/logout';
+$route['userListing'] = 'user/userListing';
+$route['userListing/(:num)'] = "user/userListing/$1";
+$route['addNew'] = "user/addNew";
 $route['pageNotFound'] = "user/pageNotFound";
+$route['checkEmailExists'] = "user/checkEmailExists";
+
+$route['addNewUser'] = "user/addNewUser";
+$route['editOld'] = "user/editOld";
+$route['editOld/(:num)'] = "user/editOld/$1";
+$route['editUser'] = "user/editUser";
+$route['deleteUser'] = "user/deleteUser";
+
+
 
 $route['admin/employee/company/list'] = "admin/employee/companyList";
 $route['admin/employee/company/list/(:num)'] = "admin/employee/companyList/$1";
@@ -77,7 +91,12 @@ $route['employee/vehicle/company/list/(:num)'] = "employee/vehicle/companyList/$
 $route['employee/vehicle/add/company'] = "employee/vehicle/addCompanyView";
 $route['employee/vehicle/edit/company/(:any)'] = "employee/vehicle/editCompanyView/$1";
 
-$route['employee/vehicle/type/list'] = "employee/vehicle/typeList";
-$route['employee/vehicle/type/list/(:num)'] = "employee/vehicle/typeList/$1";
-$route['employee/vehicle/add/type'] = "employee/vehicle/addTypeView";
-$route['employee/vehicle/edit/type/(:any)'] = "employee/vehicle/editTypeView/$1";
+$route['admin/vehicle/type/list'] = "admin/vehicle/typeList";
+$route['admin/vehicle/type/list/(:num)'] = "admin/vehicle/typeList/$1";
+$route['admin/vehicle/add/type'] = "admin/vehicle/addTypeView";
+$route['admin/vehicle/edit/type/(:any)'] = "admin/vehicle/editTypeView/$1";
+
+$route['employee/vehicle/entry/list'] = "employee/vehicle/entryList";
+$route['employee/vehicle/entry/list/(:num)'] = "employee/vehicle/entryList/$1";
+$route['employee/vehicle/add/entry'] = "employee/vehicle/addEntryView";
+$route['employee/vehicle/edit/entry/(:any)'] = "employee/vehicle/editEntryView/$1";

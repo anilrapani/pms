@@ -3,13 +3,10 @@ require_once 'common_model.php';
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_user_shift_model extends Common_Model {
+class K_master_price_model extends Common_Model {
 
-    var $table_name = 'k_master_user_shift';
+    var $table_name = 'k_master_price';
     var $id = 'id';
-    var $name = 'name';
-    var $start_time = 'start_time';
-    var $end_time = 'end_time';
     var $status = 'status';
     var $deleted = 'deleted';
     
@@ -18,8 +15,8 @@ class K_master_user_shift_model extends Common_Model {
         $this->setTableName($this->table_name);
     }
     /**
-     * This function is used to insert employee Shift's information
-     * @param array $inputData : This is employee shift information
+     * This function is used to insert Price information
+     * @param array $inputData : This is user's new price information
      * @return int $inserted_id : This is inserted Id
      */
     function insert($inputData) {
@@ -31,7 +28,7 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to get the employee shift list and total Shift count
+     * This function is used to get the employee price list and total price count
      * @param array $inputData : This is array with searchText, page, segment
      * @return array $result : This is result
      */
@@ -46,7 +43,12 @@ class K_master_user_shift_model extends Common_Model {
             $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
             $this->db->where($likeCriteria);
         }
-        $this->db->where($this->deleted,2);
+        $this->db->where(
+                 array(
+                     $this->deleted => 2
+                 )
+        );
+        $this->db->where(array($this->deleted => 2));
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
@@ -62,13 +64,13 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to get the employee shift's detail information
-     * @param array $id : This is user Shift's updated information
-     * @param number $id : This is discipline id
+     * This function is used to get the user Price information
+     * @param array $id : This is user Price updated information
+     * @param number $id : This is price id
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->name,$this->start_time,$this->end_time, $this->status");
+        $this->db->select("$this->id,$this->name,$this->email,$this->phone, $this->address, $this->status");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
@@ -81,9 +83,9 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to update the employee shift information
-     * @param array $data : This is employee shift's updated information
-     * @param number $id : This is shift id
+     * This function is used to update the user price's information
+     * @param array $data : This is user price's updated information
+     * @param number $id : This is discipline id
      * @return boolean $result : TRUE / FALSE
      */
     function update($data, $id) {
@@ -93,9 +95,9 @@ class K_master_user_shift_model extends Common_Model {
     }
 
     /**
-     * This function is used to delete the shift information
-     * @param number $id : This is shift id
-     * @param array $data : This is shift data
+     * This function is used to delete the price information
+     * @param number $id : This is price id
+     * @param array $data : This is price data
      * @return boolean $result : TRUE / FALSE
      */
     function delete($id, $data) {

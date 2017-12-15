@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-xs-12 text-right">
                 <div class="form-group">
-                    <a class="btn btn-primary" href="<?php echo base_url(); ?>employee/vehicle/add/type"><i class="fa fa-plus"></i> Add New</a>
+                    <a class="btn btn-primary" href="<?php echo base_url(); ?>admin/vehicle/add/type"><i class="fa fa-plus"></i> Add New</a>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 <div class="box-header">
                     <h3 class="box-title"><?php echo $sub_title; ?></h3>
                     <div class="box-tools">
-                        <form action="<?php echo base_url() ?>employee/vehicle/type/list" method="POST" id="searchList">
+                        <form action="<?php echo base_url() ?>admin/vehicle/type/list" method="POST" id="searchList">
                             <div class="input-group">
                               <input type="text" name="searchText" value="<?php echo $searchText; ?>" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search"/>
                               <div class="input-group-btn">
@@ -49,7 +49,7 @@
                       <td><?php echo $record->name ?></td>
                       <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
                       <td class="text-center">
-                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'employee/vehicle/edit/type/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/vehicle/edit/type/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
                           <a class="btn btn-sm btn-danger deleteType" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>
                       </td>
                     </tr>
@@ -69,6 +69,6 @@
     </section>
 </div>
 <script type="text/javascript">
-    deleteUrl = "employee/vehicle/deleteType";
+    deleteUrl = "admin/vehicle/deleteType";
 </script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/admin/common.js" charset="utf-8"></script>

@@ -145,7 +145,11 @@
                           
               </ul>
             </li>
-            
+             <?php
+                }
+                if($role == ROLE_ADMIN || $role == ROLE_EMPLOYEE)
+            {
+            ?>
             
             
             <li class="treeview" <?php echo ($this->uri->segment(1) == 'employee' && $this->uri->segment(2) == 'vehicle')?'active':''; ?> >
@@ -157,16 +161,26 @@
                               <span>Vehicle Company</span>
                             </a>
                           </li>
+                          <?php if($role == ROLE_ADMIN){ ?>
                            <li class="treeview">
-                            <a href="<?php echo base_url(); ?>employee/vehicle/type/list" >
+                            <a href="<?php echo base_url(); ?>admin/vehicle/type/list" >
                               <i class="fa fa-ticket"></i>
                               <span>Vehicle Type</span>
                             </a>
                           </li>
+                          <?php } ?>
+                          
+                      
                           
               </ul>
             </li>
-            
+                <li class="treeview">
+                            <a href="<?php echo base_url(); ?>employee/vehicle/entry/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Vehicle Entry</span>
+                            </a>
+                          </li>
+            <?php if($role == ROLE_ADMIN){ ?>
             <li class="treeview">
               <a href="<?php echo base_url(); ?>userListing">
                 <i class="fa fa-users"></i>
@@ -175,6 +189,7 @@
             </li>
          
             <?php
+            }
             }
             ?>
           

@@ -1,18 +1,23 @@
 <?php
-
+require_once 'common_model.php';
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_user_company_model extends CI_Model {
+class K_master_user_company_model extends Common_Model {
 
-    private $table_name = 'k_master_user_company';
-    private $id = 'id';
-    private $name = 'name';
-    private $phone = 'phone';
-    private $email = 'email';
-    private $address = 'address';
-    private $status = 'status';
-    private $deleted = 'deleted';
+    var $table_name = 'k_master_user_company';
+    var $id = 'id';
+    var $name = 'name';
+    var $phone = 'phone';
+    var $email = 'email';
+    var $address = 'address';
+    var $status = 'status';
+    var $deleted = 'deleted';
+    
+    function __construct() {
+        parent::__construct();
+        $this->setTableName($this->table_name);
+    }
 
     /**
      * This function is used to insert company's information

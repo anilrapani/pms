@@ -1,16 +1,21 @@
 <?php
-
+require_once 'common_model.php';
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class K_master_government_proof_type_model extends CI_Model {
+class K_master_government_proof_type_model extends Common_Model {
 
-    private $table_name = 'k_master_government_proof_type';
-    private $id = 'id';
-    private $name = 'name';
-    private $status = 'status';
-    private $deleted = 'deleted';
-
+    var $table_name = 'k_master_government_proof_type';
+    var $id = 'id';
+    var $name = 'name';
+    var $status = 'status';
+    var $deleted = 'deleted';
+    
+    
+    function __construct() {
+        parent::__construct();
+        $this->setTableName($this->table_name);
+    }
     /**
      * This function is used to insert Govt proof type's information
      * @param array $inputData : This is user's new Govt proof type information
@@ -55,7 +60,8 @@ class K_master_government_proof_type_model extends CI_Model {
             return $result;
         }
     }
-
+    
+   
     /**
      * This function is used to get the user Govt proof type's information
      * @param array $id : This is user Govt proof type's updated information

@@ -1,6 +1,6 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
-
-class User_model extends CI_Model
+require_once 'common_model.php';
+class User_model extends Common_Model
 {
     /**
      * This function is used to get the user listing count
@@ -106,7 +106,7 @@ class User_model extends CI_Model
      */
     function getUserInfo($userId)
     {
-        $this->db->select('id, name, email, mobile, role_id');
+        $this->db->select('id, name, email, mobile, role_id, government_proof_type_id, government_id_number, user_company_id, shift_id');
         $this->db->from('k_user');
         $this->db->where('deleted', 2);
 		$this->db->where('role_id !=', 1);

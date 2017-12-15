@@ -26,7 +26,7 @@ class User extends BaseController
      */
     public function index()
     {
-        $this->global['pageTitle'] = 'Touba : Dashboard';
+        $this->global['pageTitle'] = PROJECT_NAME.' : Dashboard';
         $count = $this->user_model->userListingCount();
         $data['userCount'] = $count;
         $this->loadViews("dashboard", $this->global, $data , NULL);
@@ -56,7 +56,7 @@ class User extends BaseController
             
             $data['userRecords'] = $this->user_model->userListing($searchText, $returns["page"], $returns["offset"]);
       
-            $this->global['pageTitle'] = 'Touba : Job providers and Job Seeker Listing';
+            $this->global['pageTitle'] = PROJECT_NAME. ' : Employee Listing';
             $this->loadViews("users", $this->global, $data, NULL);
         }
     }
@@ -73,9 +73,14 @@ class User extends BaseController
         else
         {
             $this->load->model('user_model');
+            $this->load->model(array('k_master_government_proof_type_model','k_master_user_company_model','k_master_user_shift_model'));
             $data['roles'] = $this->user_model->getUserRoles();
             
-            $this->global['pageTitle'] = 'Touba : Add New User';
+            $data['governmentProofTypes'] = $this->k_master_government_proof_type_model->get();
+            $data['employeeCompanies'] = $this->k_master_user_company_model->get();
+            $data['employeeShifts'] = $this->k_master_user_shift_model->get();
+            
+            $this->global['pageTitle'] = PROJECT_NAME. ' : Add New User';
 
             $this->loadViews("addNew", $this->global, $data, NULL);
         }
@@ -130,9 +135,24 @@ class User extends BaseController
                 $password = $this->input->post('password');
                 $roleId = $this->input->post('role');
                 $mobile = $this->input->post('mobile');
+                $government_proof_type_id = $this->input->post('government_proof_type_id');
+                $government_id_number = $this->input->post('government_id_number');
+                $user_company_id = $this->input->post('user_company_id');
+                $shift_id = $this->input->post('shift_id');
                 
-                $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'role_id'=>$roleId, 'name'=> $name,
-                                    'mobile'=>$mobile, 'created_by'=>$this->vendorId, 'create_time'=>date('Y-m-d H:i:s'));
+                
+                $userInfo = array('email'=>$email, 
+                                  'password'=>getHashedPassword($password), 
+                                  'role_id'=>$roleId,
+                                  'name'=> $name,
+                                  'mobile'=>$mobile,
+                                  'government_proof_type_id' => $government_proof_type_id,
+                                  'government_id_number'   => $government_id_number,
+                                  'user_company_id'    => $user_company_id,
+                                  'shift_id'   => $shift_id,
+                                  'created_by'=>$this->vendorId,
+                                  'create_time'=>date('Y-m-d H:i:s')
+                    );
                 
                 $this->load->model('user_model');
                 $result = $this->user_model->addNewUser($userInfo);
@@ -171,8 +191,12 @@ class User extends BaseController
             
             $data['roles'] = $this->user_model->getUserRoles();
             $data['userInfo'] = $this->user_model->getUserInfo($userId);
+            $this->load->model(array('k_master_government_proof_type_model','k_master_user_company_model','k_master_user_shift_model')); 
+            $data['governmentProofTypes'] = $this->k_master_government_proof_type_model->get();
+            $data['employeeCompanies'] = $this->k_master_user_company_model->get();
+            $data['employeeShifts'] = $this->k_master_user_shift_model->get();
             
-            $this->global['pageTitle'] = 'Touba : Edit User';
+            $this->global['pageTitle'] = PROJECT_NAME. ' : Edit User';
             
             $this->loadViews("editOld", $this->global, $data, NULL);
         }
@@ -213,12 +237,21 @@ class User extends BaseController
                 $roleId = $this->input->post('role');
                 $mobile = $this->input->post('mobile');
                 
+                 $government_proof_type_id = $this->input->post('government_proof_type_id');
+                $government_id_number = $this->input->post('government_id_number');
+                $user_company_id = $this->input->post('user_company_id');
+                $shift_id = $this->input->post('shift_id');
+                
                 $userInfo = array();
                 
                 if(empty($password))
                 {
                     $userInfo = array('email'=>$email, 'role_id'=>$roleId, 'name'=>$name,
-                                    'mobile'=>$mobile, 'updated_by'=>$this->vendorId, 'update_time'=>date('Y-m-d H:i:s'));
+                                        'government_proof_type_id' => $government_proof_type_id,
+                                        'government_id_number'   => $government_id_number,
+                                        'user_company_id'    => $user_company_id,
+                                        'shift_id'   => $shift_id,
+                                        'mobile'=>$mobile, 'updated_by'=>$this->vendorId, 'updated_time'=>date('Y-m-d H:i:s'));
                 }
                 else
                 {
@@ -273,7 +306,7 @@ class User extends BaseController
      */
     function loadChangePass()
     {
-        $this->global['pageTitle'] = 'Touba : Change Password';
+        $this->global['pageTitle'] = PROJECT_NAME. ' : Change Password';
         
         $this->loadViews("changePassword", $this->global, NULL, NULL);
     }
@@ -309,7 +342,7 @@ class User extends BaseController
             else
             {
                 $usersData = array('password'=>getHashedPassword($newPassword), 'updated_by'=>$this->vendorId,
-                                'update_time'=>date('Y-m-d H:i:s'));
+                                'updated_time'=>date('Y-m-d H:i:s'));
                 
                 $result = $this->user_model->changePassword($this->vendorId, $usersData);
                 
