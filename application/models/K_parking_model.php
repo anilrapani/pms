@@ -7,6 +7,21 @@ class K_parking_model extends Common_Model {
 
     var $table_name = 'k_parking';
     var $id = 'id';
+    var $vehicle_type_id = 'vehicle_type_id';
+    var $vehicle_number = '';
+    var $vehicle_company_id = 'vehicle_company_id';
+    var $vehicle_company = 'vehicle_company';
+    var $driver_name = 'driver_name';
+    var $driving_license_number = 'driving_license_number';
+    var $image_driving_license_number = 'image_driving_license_number';
+    var $image_vehicle_number_plate = 'image_vehicle_number_plate';
+    var $entry_time = 'entry_time';
+    var $exit_time = 'exit_time';
+    var $master_prices_id = 'master_prices_id';
+    var $total_amount = 'total_amount';
+    var $total_minutes = 'total_minutes';
+    var $barcode = 'barcode';
+    var $master_price_details = 'master_price_details';
     var $status = 'status';
     var $deleted = 'deleted';
     
@@ -70,7 +85,7 @@ class K_parking_model extends Common_Model {
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id, $this->status");
+        $this->db->select("*");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
@@ -104,6 +119,22 @@ class K_parking_model extends Common_Model {
         $this->db->where($this->id, $id);
         $this->db->update($this->table_name, $data);
         return $this->db->affected_rows();
+    }
+    
+    
+    function isNewTicketCreated(){
+        $this->db->select("id");
+        $this->db->from("$this->table_name");
+         $this->db->where(
+                 array(
+                     $this->entry_time => '0000-00-00 00:00:00',
+                     $this->status => 1,
+                     $this->deleted => 2
+                 )
+        );
+        $this->db->order_by("id", "desc");
+        $query = $this->db->get();
+        return $query->row();
     }
 
 }

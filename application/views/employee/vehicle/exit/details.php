@@ -23,11 +23,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="box-header col-md-6">
-            <h1 class="box-title"><i class="fa "></i> <?php echo ($isNewEntry == true)?'New ':''; echo $title.' : '.$entryId; ?></h1>
+            <h1 class="box-title"><i class="fa "><?php if (isset($entryId)){ echo $title.' : '.$entryId;} else { echo $title; } ?></i> </h1>
                     <div class="box-tools">
-                        <form action="<?php echo base_url() ?>employee/vehicle/searchEntry" method="POST">
+                        <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST">
                             <div class="input-group">
-                                <input type="text" name="entryId" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search Entry No" value="<?php echo $entryId;?>" >
+                                <input type="text" name="entryId" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search Entry No" value="" >
                               <div class="input-group-btn">
                                 <button class="btn btn-sm btn-default searchList"><i class="fa fa-search"></i></button>
                               </div>
@@ -39,6 +39,7 @@
         
     </section>
     <div class="clearfix"></div>
+    <?php if($onlysearchView == false) { ?>
     <section class="content">
         <div class="row">
             <div class="col-md-4">
@@ -74,20 +75,37 @@
                 <div class="col-md-6">
                 <!-- general form elements -->
 
-
-
+                <form role="form" id="addEntry" action="<?php echo base_url() ?>employee/vehicle/addEntry/<?php echo $entryId; ?>" method="post" role="form" enctype="multipart/form-data">
+                    <?php if($isNewEntry == false && $isNotExited == true) { ?>
+                           <div class="box box-primary ">
+                        <h3 class="box-title">Preview Details</h3>
+                        <div class="box-body " >
+                    <div class="col-md-6">                                
+                                    <div class="form-group">
+                                        <label for="image_vehicle_number_plate">Exit Vehicle Number Plate Image</label>
+                                        <input type="file" class="form-control required" id="image_vehicle_number_plate" name="image_vehicle_number_plate" value="">
+                                         
+                                    </div>
+                                </div>
+                            </div>
+                     <div class="box-footer">
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                            <input type="reset" class="btn btn-default" value="Reset" />
+                        </div>
+                </form>
+                    <?php } ?>
                 <div class="box box-primary ">
                     <div class="box-header">
                         <!-- <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php if($isNewEntry == false) {?><input type="submit" class="btn btn-primary float-right" style="float:right;"value="Print"><?php } ?>
                         <br>
                         <br> -->
-                        <h3 class="box-title">Print Preview</h3>
+                        <h3 class="box-title">Preview Details</h3>
                         <div class="box-body printTicket" >
                             <div style="text-align: center; ">
                             <h2>Employee Company</h2>
                             <h3>Cargo Terminal 1?</h3>
                             <h3>Bangalore International Airport?</h3>
-                            <h3>Entry Ticket</h3>
+                            <h3>Exit Ticket</h3>
                              <h3>||||| ||| ||| |||||| |||</h3>
                             <h3>5     3   3   6      6  </h3>
                             </div>
@@ -96,8 +114,8 @@
                             
                             
                             <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
-                            <h4>Entry Date : <span><?php echo date("d- m- Y", strtotime(convertTime($entryDetails->entry_time, $timeZoneName ='')));  ?></span></h4>
-                            <h4>Entry Time: <span><?php echo date("H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName =''))); ?></span></h4>
+                            <h4>Entry Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName ='')));  ?></span></h4>
+                            
                             <h4>Vehicle : <span><?php echo $entryDetails->number_of_wheels; ?>W</span></h4>
                             <h4>Company Name: <span><?php echo $entryDetails->vehicle_company; ?></span></h4>
                             <h4>Vehicle No: <span><?php echo $entryDetails->vehicle_number; ?></span></h4>
@@ -123,6 +141,23 @@
                     </div> 
                     
                 </div>
+                </div>
+            <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                                                    
+                            <div class="clearfix" >
+                                        <label id="display_label">Preview Entry Number Plate</label>
+                            </div>
+                                        
+            <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:400px">
+                                         <div id="display_ticket" style="width: 100%; height: 30%"></div>
+                                         
+                                    
+                        
+                        </div>
+                        <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
+                    </div>
                 </div>
             <?php }else { ?>
             
@@ -259,7 +294,7 @@
             <?php } ?>
         </div>    
     </section>
-
+    <?php } ?>
 </div>
 <script type="text/javascript">
     function readURL(input) {

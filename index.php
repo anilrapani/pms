@@ -35,7 +35,8 @@
  * @since	Version 1.0.0
  * @filesource
  */
-
+if ( function_exists( 'date_default_timezone_set' ) )
+date_default_timezone_set('UTC');
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

@@ -53,6 +53,17 @@ $(document).ready(function(){
 	});
         
         
+        var entryForm = $("#addEntry");
+        entryForm.validate({
+           rules:{
+               vehicle_type_id: {required : true}
+           },
+           messages:{
+               vehicle_type_id: {required: "This field is required"}
+           }
+        });
+        
+        
          jQuery(document).on("click", ".deleteCompany,.deleteShift,.deleteGovtProofType", function(){
 		var id = $(this).data("id"),
 			hitURL = baseURL + deleteUrl,

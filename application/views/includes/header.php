@@ -175,11 +175,20 @@
               </ul>
             </li>
                 <li class="treeview">
-                            <a href="<?php echo base_url(); ?>employee/vehicle/entry/list" >
+                            <a href="<?php echo base_url(); ?>employee/vehicle/add/entry" >
                               <i class="fa fa-ticket"></i>
                               <span>Vehicle Entry</span>
                             </a>
                           </li>
+                          
+                          
+                            <li class="treeview">
+                            <a href="<?php echo base_url(); ?>employee/vehicle/exit/details" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Vehicle Exit</span>
+                            </a>
+                          </li>
+                          
             <?php if($role == ROLE_ADMIN){ ?>
             <li class="treeview">
               <a href="<?php echo base_url(); ?>userListing">

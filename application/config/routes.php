@@ -98,5 +98,10 @@ $route['admin/vehicle/edit/type/(:any)'] = "admin/vehicle/editTypeView/$1";
 
 $route['employee/vehicle/entry/list'] = "employee/vehicle/entryList";
 $route['employee/vehicle/entry/list/(:num)'] = "employee/vehicle/entryList/$1";
-$route['employee/vehicle/add/entry'] = "employee/vehicle/addEntryView";
+$route['employee/vehicle/add/entry/(:num)'] = "employee/vehicle/addEntryView/$1";
+$route['employee/vehicle/add/entry'] = "employee/vehicle/addEntryId";
 $route['employee/vehicle/edit/entry/(:any)'] = "employee/vehicle/editEntryView/$1";
+// $route['employee/vehicle/searchEntry'] = "employee/vehicle/addEntryView";
+
+$route['employee/vehicle/exit/details'] = "employee/vehicle/exitDetailsView";
+

@@ -162,4 +162,26 @@ if ( ! function_exists('active_link'))
     }
 }
 
+if ( ! function_exists('convertTime'))
+{
+    /**
+ * 
+ * @param type $dateTime
+ * @param type $timeZoneName
+ * @param type $utc default false convert the passed  datetime to utc time
+ * $utc passed as true convert the utc datetime to passed timezone format
+ * @return type
+ */
+function convertTime($dateTime, $timeZoneName, $utc = FALSE) {
+    // based on location $timeZoneName add or substract hours for gst currently set to India only as it is used only in india
+    return date('Y-m-d H:i:s',strtotime('+330 minutes',strtotime($dateTime)));
+
+
+}
+}
+
+
+
+
+
 ?>

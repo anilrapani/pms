@@ -259,32 +259,81 @@ class Vehicle extends BaseController {
         }
     }
 
+    
+     /**
+     * This function is used to load the add new form
+     */
+    function addEntryId() {
+        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+             $isNewTicketCreated = $this->k_parking_model->isNewTicketCreated();
+             if($isNewTicketCreated != NULL && count($isNewTicketCreated)){
+                redirect('employee/vehicle/add/entry/'.$isNewTicketCreated->id);
+             }
+             
+             $vehicleEntryInfo = array(
+                    'status' => 1,
+                    'deleted' => 2,
+                    'created_by' => $this->vendorId,
+                    'created_time' => date('Y-m-d H:i:s')
+                 );
+            $entry_id = $this->k_parking_model->insert($vehicleEntryInfo);
+            redirect('employee/vehicle/add/entry/'.$entry_id);
+            // $this->loadViews("employee/vehicle/entry/add", $this->global, $data, NULL);
+        }
+    }
+    
+    
+    
+    
     /**
      * This function is used to load the add new form
      */
-    function addEntryView() {
+    function addEntryView($entryId) {
         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
             $this->loadThis();
         } else {
             $data = array();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Entry';
+            $data['title'] = "Entry No";
+
+            $data['sub_title'] = "Entry";
+            $data['entryId'] = $entryId;
+            $entryDetails = $this->k_parking_model->getDetails($entryId);
+            
+            
+            if(isset($entryDetails->vehicle_type_id)){
+                $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                if(isset($vehicleTypeDetails->number_of_wheels)){
+                $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                }
+            }
+            
+            $view = "employee/vehicle/entry/add";
+            if(count($entryDetails) != 1){
+                $this->session->set_flashdata('error', 'Invalid Entry');
+                $view = 'employee/vehicle/entry/invalid';
+            }
+            $isNewEntry = true;
+            if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
+                $isNewEntry = false;
+            }
+            $data['isNewEntry'] = $isNewEntry;
 
             $this->load->model('k_master_price_model');
             $data['vehicleTypeListArray'] = $this->k_master_vehicle_type_model->get();
             $data['masterPriceListArray'] = $this->k_master_price_model->get();
             $data['vehicleCompanyListArray'] = $this->k_master_vehicle_company_model->get();
-            
-            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Entry';
-            $data['title'] = "Entry";
-
-            $data['sub_title'] = "Entry";
-            $this->loadViews("employee/vehicle/entry/add", $this->global, $data, NULL);
+            $data['entryDetails'] = $entryDetails;
+            $this->loadViews($view, $this->global, $data, NULL);
         }
     }
 
     /**
      * This function is used to load the add new form
      */
-    function addEntry() {
+    function addEntry($entryId) {
         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
             $this->loadThis();
         } else {
@@ -294,14 +343,16 @@ class Vehicle extends BaseController {
             // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
                 
             if ($this->form_validation->run() == FALSE) {
-                $this->addEntryView();
+                $this->addEntryView($entryId);
             } else {
                 $data =array();
                 
                 $vehicle_type_id = $this->input->post('vehicle_type_id');
-                $vehicle_company = $this->input->post('vehicle_company');
-                $vehicle_number = $this->input->post('vehicle_number');
-                $driving_license_number = $this->input->post('driving_license_number');
+                $vehicle_company = ucwords($this->input->post('vehicle_company'));
+                $vehicle_number = strtoupper($this->input->post('vehicle_number'));
+                $driving_license_number = strtoupper($this->input->post('driving_license_number'));
+                $driver_name = ucwords($this->input->post('driver_name'));
+                $rc = strtoupper($this->input->post('rc'));
                 $image_vehicle_number_plate = $image_driving_license_number = '';
                 
                 
@@ -311,70 +362,329 @@ class Vehicle extends BaseController {
                 $config['max_height']           = 768; 
                 $config['max_height']           = 768; 
                 
-                $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\numberplate';
-                $image_vehicle_number_plate = $config['file_name']            = mt_rand(10,100).chr(64+rand(0,26)).mt_rand();
-                $this->load->library('upload', $config);
-                
-                
-                if ( ! $this->upload->do_upload('image_vehicle_number_plate'))
+                $config['upload_path']          = 'F:\work_softwares\xampp_php7\htdocs\pms\assets\images\upload\numberplate';
+                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand();
+                $this->load->library('upload', $config, 'number_plate_upload'); // Create custom object for cover upload
+                $this->number_plate_upload->initialize($config);
+                $image_error = false;
+                if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate'))
                 {
-                       $this->session->set_flashdata('error',$this->upload->display_errors());
-                       $this->loadViews("employee/vehicle/entry/add", $this->global, $data, NULL);
+                       $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
+                       $image_error = true;
                        
                 }  else
                 {
-                        $upload_data_image_vehicle_number_plate = array('upload_data' => $this->upload->data());
+                        $upload_data_image_vehicle_number_plate = array('upload_data' => $this->number_plate_upload->data());
+                        $image_vehicle_number_plate = $upload_data_image_vehicle_number_plate['upload_data']['file_name'];
+                        
                     
                 }
                 
-                $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\drivinglicense';
-                $image_driving_license_number = $config['file_name']            = mt_rand(10,100).chr(64+rand(0,26)).mt_rand();
-                $this->load->library('upload', $config);
                 
-                if ( ! $this->upload->do_upload('image_driving_license_number') )
+                $config['upload_path']          = 'F:\work_softwares\xampp_php7\htdocs\pms\assets\images\upload\drivinglicense';
+                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,26)).mt_rand();
+                $this->load->library('upload', $config, 'dl_upload'); // Create custom object for cover upload
+                $this->dl_upload->initialize($config);
+                
+    
+                if ( ! $this->dl_upload->do_upload('image_driving_license_number') )
                 {
-                       $this->session->set_flashdata('error',$this->upload->display_errors());
-                       $this->loadViews("employee/vehicle/entry/add", $this->global, $data, NULL);
+                       $this->session->set_flashdata('error','Driving License Image: '. $this->dl_upload->display_errors());
+                       $image_error = true;
                        
                 } else
                 {
-                        $upload_data_image_driving_license_number = array('upload_data' => $this->upload->data());
-                    
+                        $upload_data_image_driving_license_number = array('upload_data' => $this->dl_upload->data());
+                        $image_driving_license_number = $upload_data_image_driving_license_number['upload_data']['file_name'];
                 }
                 
-                $vehicleEntryInfo = array(
+                if($image_error == false){
+                   $vehicleEntryInfo = array(
                     'vehicle_type_id' => $vehicle_type_id,
                     'vehicle_company' => $vehicle_company,
                     'vehicle_number'  => $vehicle_number,
                     'driving_license_number' => $driving_license_number,
                     'image_vehicle_number_plate' => $image_vehicle_number_plate,
                     'image_driving_license_number' => $image_driving_license_number,
-                    'vehicle_company_id' => 1,
+                    'driver_name' => $driver_name,
+                    'rc' => $rc,
                     'entry_time' => date('Y-m-d H:i:s'),
                     'status' => 1,
                     'deleted' => 2,
-                    'created_by' => $this->vendorId,
-                    'created_time' => date('Y-m-d H:i:s')
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s')
                     
                 );
-
-                $result = $this->k_parking_model->insert($vehicleEntryInfo);
-
-                if ($result > 0) {
-                    $this->session->set_flashdata('success', 'New Company created successfully');
-                } else {
-                    $this->session->set_flashdata('error', 'Company creation failed');
-                }
-
+                   
+                // $result = $this->k_parking_model->insert($vehicleEntryInfo);
+                $result = $this->k_parking_model->update($vehicleEntryInfo, $entryId);
                 $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Entry';
                 $data['title'] = "Vehicle Company";
-
                 $data['sub_title'] = "Entry";
-                $this->loadViews("employee/vehicle/entry/add", $this->global, $data, NULL);
+                
+                if ($result > 0) {
+                        
+                        $this->session->set_flashdata('success', 'Entry Successful');
+                
+                    } else {
+                        $this->session->set_flashdata('error', 'Entry failed');
+                
+                        
+                    }
+                }
+            
+                redirect('/employee/vehicle/add/entry/'.$entryId);
+                // $this->addEntryView();
+                 $this->loadViews($view, $this->global, $data, NULL);
             }
         }
     }
 
+    
+    function searchEntry(){
+             if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+            $entryId = $this->input->post('entryId');
+            redirect('/employee/vehicle/add/entry/'.$entryId);
+            
+        }
+                  
+                
+    }
+    
+    function exitDetailsView(){
+        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+            $data = array();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit';
+            $data['title'] = "Exit details";
+           
+           $view = 'employee/vehicle/exit/details';
+           $data['onlysearchView'] = true;
+           $this->loadViews($view, $this->global, $data, NULL);
+                    
+            
+            
+        }    
+    }
+    
+    function exitDetails(){
+        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+            $data = array();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit Details';
+            $data['title'] = "Entry No";
+            $entryId = $this->input->post('entryId');
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('entryId', 'Vehicle Entry Id', 'trim|required|max_length[128]');
+            // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
+                
+            if ($this->form_validation->run() == FALSE) {
+                $this->exitDetailsView();
+            } else {
+                     $data['onlysearchView'] = false;
+                    $data['sub_title'] = "Exit Details";
+                    $data['entryId'] = $entryId;
+                    $entryDetails = $this->k_parking_model->getDetails($entryId);
+
+
+                    if(isset($entryDetails->vehicle_type_id)){
+                        $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                        if(isset($vehicleTypeDetails->number_of_wheels)){
+                        $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                        }
+                    }
+
+                     $isNewEntry = true;
+            if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
+                $isNewEntry = false;
+            }
+            $data['isNewEntry'] = $isNewEntry;
+
+                    $view = "employee/vehicle/exit/details";
+                    if(count($entryDetails) != 1){
+                             $this->session->set_flashdata('error', 'Invalid Entry');
+                             $view = 'employee/vehicle/entry/invalid';
+                    }
+                    $data['entryDetails'] = $entryDetails;
+                    $this->loadViews($view, $this->global, $data, NULL);
+                    
+            
+            }
+           
+            
+            
+        }    
+    }
+    
+    
+    function vehicleExitUpdate(){
+        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+            $data = array();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit';
+            $data['title'] = "Entry No";
+            $entryId = $this->input->post('entryId');
+             $this->load->library('form_validation');
+
+           $this->form_validation->set_rules('entryId', 'Vehicle Entry Id', 'trim|required|max_length[128]');
+            // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
+                
+            if ($this->form_validation->run() == FALSE) {
+                $this->addEntryView($entryId);
+            } else {
+                
+            }
+            
+            
+            $data['sub_title'] = "Entry";
+            $data['entryId'] = $entryId;
+            $entryDetails = $this->k_parking_model->getDetails($entryId);
+            
+            
+            if(isset($entryDetails->vehicle_type_id)){
+                $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                if(isset($vehicleTypeDetails->number_of_wheels)){
+                $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                }
+            }
+            
+            $view = "employee/vehicle/entry/add";
+            if(count($entryDetails) != 1){
+                $this->session->set_flashdata('error', 'Invalid Entry');
+                $view = 'employee/vehicle/entry/invalid';
+            }
+            $isNewEntry = true;
+            if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
+                $isNewEntry = false;
+            }
+            $data['isNewEntry'] = $isNewEntry;
+
+            $this->load->model('k_master_price_model');
+            $data['vehicleTypeListArray'] = $this->k_master_vehicle_type_model->get();
+            $data['masterPriceListArray'] = $this->k_master_price_model->get();
+            $data['vehicleCompanyListArray'] = $this->k_master_vehicle_company_model->get();
+            $data['entryDetails'] = $entryDetails;
+            $this->loadViews($view, $this->global, $data, NULL);
+        }
+    }
+    
+    
+    function manualExit(){
+         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+            $this->load->library('form_validation');
+
+           $this->form_validation->set_rules('id', 'Vehicle Type', 'trim|required|max_length[128]');
+            // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
+                
+            if ($this->form_validation->run() == FALSE) {
+                // $this->exitView($entryId);
+            } else {
+                $data =array();
+                $entry_id = $this->input->post('entry_id');
+                
+                
+                
+                
+                $vehicle_company = ucwords($this->input->post('vehicle_company'));
+                $vehicle_number = strtoupper($this->input->post('vehicle_number'));
+                $driving_license_number = strtoupper($this->input->post('driving_license_number'));
+                $driver_name = ucwords($this->input->post('driver_name'));
+                $rc = strtoupper($this->input->post('rc'));
+                $image_vehicle_number_plate = $image_driving_license_number = '';
+                
+                
+                $config['allowed_types']        = 'gif|jpg|png';
+                $config['max_size']             = 100;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768; 
+                $config['max_height']           = 768; 
+                
+                $config['upload_path']          = 'F:\work_softwares\xampp_php7\htdocs\pms\assets\images\upload\numberplate';
+                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand();
+                $this->load->library('upload', $config, 'number_plate_upload'); // Create custom object for cover upload
+                $this->number_plate_upload->initialize($config);
+                $image_error = false;
+                if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate'))
+                {
+                       $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
+                       $image_error = true;
+                       
+                }  else
+                {
+                        $upload_data_image_vehicle_number_plate = array('upload_data' => $this->number_plate_upload->data());
+                        $image_vehicle_number_plate = $upload_data_image_vehicle_number_plate['upload_data']['file_name'];
+                        
+                    
+                }
+                
+                
+                $config['upload_path']          = 'F:\work_softwares\xampp_php7\htdocs\pms\assets\images\upload\drivinglicense';
+                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,26)).mt_rand();
+                $this->load->library('upload', $config, 'dl_upload'); // Create custom object for cover upload
+                $this->dl_upload->initialize($config);
+                
+    
+                if ( ! $this->dl_upload->do_upload('image_driving_license_number') )
+                {
+                       $this->session->set_flashdata('error','Driving License Image: '. $this->dl_upload->display_errors());
+                       $image_error = true;
+                       
+                } else
+                {
+                        $upload_data_image_driving_license_number = array('upload_data' => $this->dl_upload->data());
+                        $image_driving_license_number = $upload_data_image_driving_license_number['upload_data']['file_name'];
+                }
+                
+                if($image_error == false){
+                   $vehicleEntryInfo = array(
+                    'vehicle_type_id' => $vehicle_type_id,
+                    'vehicle_company' => $vehicle_company,
+                    'vehicle_number'  => $vehicle_number,
+                    'driving_license_number' => $driving_license_number,
+                    'image_vehicle_number_plate' => $image_vehicle_number_plate,
+                    'image_driving_license_number' => $image_driving_license_number,
+                    'driver_name' => $driver_name,
+                    'rc' => $rc,
+                    'entry_time' => date('Y-m-d H:i:s'),
+                    'status' => 1,
+                    'deleted' => 2,
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s')
+                    
+                );
+                   
+                // $result = $this->k_parking_model->insert($vehicleEntryInfo);
+                $result = $this->k_parking_model->update($vehicleEntryInfo, $entryId);
+                $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Entry';
+                $data['title'] = "Vehicle Company";
+                $data['sub_title'] = "Entry";
+                
+                if ($result > 0) {
+                        
+                        $this->session->set_flashdata('success', 'Entry Successful');
+                
+                    } else {
+                        $this->session->set_flashdata('error', 'Entry failed');
+                
+                        
+                    }
+                }
+            
+                redirect('/employee/vehicle/add/entry/'.$entryId);
+                // $this->addEntryView();
+                 $this->loadViews($view, $this->global, $data, NULL);
+            }
+        }
+    }
+    
     /**
      * This function is used to load company edit information
      * @param number $companyId : Optional : This is company id
