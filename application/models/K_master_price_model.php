@@ -7,6 +7,10 @@ class K_master_price_model extends Common_Model {
 
     var $table_name = 'k_master_price';
     var $id = 'id';
+    var $from_minutes = 'from_minutes';
+    var $to_minutes = 'to_minutes';
+    var $amount = 'amount';
+    var $vehicle_type_id = 'vehicle_type_id';
     var $status = 'status';
     var $deleted = 'deleted';
     
@@ -70,7 +74,7 @@ class K_master_price_model extends Common_Model {
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->name,$this->email,$this->phone, $this->address, $this->status");
+        $this->db->select("$this->id,$this->from_minutes,$this->to_minutes,$this->vehicle_type_id, $this->amount");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
@@ -105,5 +109,32 @@ class K_master_price_model extends Common_Model {
         $this->db->update($this->table_name, $data);
         return $this->db->affected_rows();
     }
+    
+    function getPriceListByVehicleType($vehicleTypeId){
+        $this->db->select("$this->id,$this->from_minutes,$this->to_minutes,$this->amount");
+        $this->db->from("$this->table_name");
+         $this->db->where(
+                 array(
+                     $this->deleted => 2,
+                    $this->vehicle_type_id=> $vehicleTypeId
+                 )
+        );
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function insertMultiplePricesByVehicleTypeId($data){
+        
+        $this->db->insert_batch($this->table_name, $data);
+        return $this->db->last_query();
+        
+        
+    }
+    
+    function deletingPricesExistingByVehicleTypeID($data,$id){
+        $this->db->where($this->vehicle_type_id, $id);
+        $this->db->update($this->table_name, $data);
+       
+    }
+    
 
 }

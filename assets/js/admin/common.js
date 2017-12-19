@@ -53,7 +53,7 @@ $(document).ready(function(){
 	});
         
         
-         jQuery(document).on("click", ".deleteCompany,.deleteShift,.deleteGovtProofType", function(){
+         jQuery(document).on("click", ".deleteCompany,.deleteShift,.deleteGovtProofType,.deleteType", function(){
 		var id = $(this).data("id"),
 			hitURL = baseURL + deleteUrl,
 			currentRow = $(this);

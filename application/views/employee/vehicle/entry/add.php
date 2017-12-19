@@ -78,10 +78,10 @@
 
                 <div class="box box-primary ">
                     <div class="box-header">
-                        <!-- <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php if($isNewEntry == false) {?><input type="submit" class="btn btn-primary float-right" style="float:right;"value="Print"><?php } ?>
+                        <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php if($isNewEntry == false) {?><input type="submit" class="btn btn-primary float-right" style="float:right;"value="Print"><?php } ?>
                         <br>
-                        <br> -->
-                        <h3 class="box-title">Print Preview</h3>
+                        <br> 
+<!--                        <h3 class="box-title">Print Preview</h3>-->
                         <div class="box-body printTicket" >
                             <div style="text-align: center; ">
                             <h2>Employee Company</h2>
@@ -108,11 +108,14 @@
                             <h4>RC : <span><?php echo $entryDetails->rc?></span></h4>
                             
                              <h3>Parking Charges </h3>
-                            <?php 
-//                                foreach ($array as $key => $value) {
-//                                                    
-//                                  }
-                            ?>
+    <?php
+                                    
+                                foreach ($vehicleTypePrices as $key => $value) {
+                                        ?>
+                                        <h4><?php echo $value->from_minutes; ?>-<?php echo $value->to_minutes; ?>mins : Rs. <?php echo $value->amount; ?></h4>
+                                    <?php
+                                  }
+                                    ?>
                              
                             <h3>No Horn </h3>
                             <h3>Speed Limit : <span>10Km/Hr</span></h3>

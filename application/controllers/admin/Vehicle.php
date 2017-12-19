@@ -103,8 +103,10 @@ class Vehicle extends BaseController {
             } else {
                 $name = ucwords(strtolower($this->input->post('name')));
                 $number_of_wheels = $this->input->post('number_of_wheels');
-               
-
+               $fromMinutesArray = $this->input->post('from_minutes');
+               $toMinutesArray = $this->input->post('to_minutes');
+               $amountArray =  $this->input->post('amount');
+                
                 $insertData = array(
                     'name' => $name,
                     'number_of_wheels' => $number_of_wheels,
@@ -114,9 +116,28 @@ class Vehicle extends BaseController {
                     'created_time' => date('Y-m-d H:i:s')
                 );
 
-                $result = $this->k_master_vehicle_type_model->insert($insertData);
+                $vehicle_type_id = $this->k_master_vehicle_type_model->insert($insertData);
+                
+                
+                for($i=0; $i<count($fromMinutesArray);$i++) {
+                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
+                                          'to_minutes' => $toMinutesArray[$i],
+                                          'amount' => $amountArray[$i],
+                                          'vehicle_type_id' => $vehicle_type_id,
+                                          'status' => 1,
+                                            'deleted' => 2,
+                                            'created_by' => $this->vendorId,
+                                            'created_time' => date('Y-m-d H:i:s')
+                        
+                            );
+                }
+       
 
-                if ($result > 0) {
+                $this->load->model('k_master_price_model');
+                $this->k_master_price_model->insertMultiplePricesByVehicleTypeId($finalArray);
+
+
+                if ($vehicle_type_id > 0) {
                     $this->session->set_flashdata('success', 'New vehicle type created successfully');
                 } else {
                     $this->session->set_flashdata('error', 'Vehicle type creation failed');
@@ -142,9 +163,10 @@ class Vehicle extends BaseController {
             if ($id == null) {
                 redirect('admin/vehicle/typelist');
             }
-
+            $this->load->model('k_master_price_model');
             $data['resultInfo'] = $this->k_master_vehicle_type_model->getDetails($id);
-
+            $data['priceListArray'] = $this->k_master_price_model->getPriceListByVehicleType($id);
+            
             $this->global['pageTitle'] = PROJECT_NAME . ' : Edit vehicle type';
             $data['title'] = "Vehicle type";
 
@@ -167,7 +189,7 @@ class Vehicle extends BaseController {
 
             $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
             $this->form_validation->set_rules('number_of_wheels', 'Number of wheels', 'trim|required|max_length[128]');
-
+            
 
             if ($this->form_validation->run() == FALSE) {
 
@@ -176,6 +198,9 @@ class Vehicle extends BaseController {
                 $name = ucwords(strtolower($this->input->post('name')));
                 $number_of_wheels = $this->input->post('number_of_wheels');
                 $status = $this->input->post('status');
+                $fromMinutesArray = $this->input->post('from_minutes');
+                $toMinutesArray = $this->input->post('to_minutes');
+                $amountArray =  $this->input->post('amount');
 
                 $updateInfo = array(
                     'name' => $name,
@@ -184,7 +209,29 @@ class Vehicle extends BaseController {
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s')
                 );
+                
+                
+                for($i=0; $i<count($fromMinutesArray);$i++) {
+                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
+                                          'to_minutes' => $toMinutesArray[$i],
+                                          'amount' => $amountArray[$i],
+                                          'vehicle_type_id' => $id,
+                                          'status' => 1,
+                                            'deleted' => 2,
+                                            'created_by' => $this->vendorId,
+                                            'created_time' => date('Y-m-d H:i:s')
+                        
+                            );
+                }
+                
+                
+                $this->load->model('k_master_price_model');
+                $deleteArray = array('deleted' => 1); 
+                $this->k_master_price_model->deletingPricesExistingByVehicleTypeID($deleteArray,$id);
+                $this->k_master_price_model->insertMultiplePricesByVehicleTypeId($finalArray);
 
+                
+                
                 $result = $this->k_master_vehicle_type_model->update($updateInfo, $id);
 
                 if ($result == true) {
