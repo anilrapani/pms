@@ -265,6 +265,62 @@ class Vehicle extends BaseController {
         }
     }
     
+    /**
+     * This function is used to load the company list
+     */
+    function parkingList() {
+        
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+
+            $searchText = $this->input->post('searchText');
+            $data['searchText'] = $searchText;
+
+            $data['totalCount'] = true;
+            $data['searchText'] = $searchText;
+            $this->load->model('k_parking_model');
+            $result = $this->k_parking_model->getlist($data);
+            $count = $result['count'];
+            $data['totalCount'] = false;
+            $segment = 5;
+            $returns = $this->paginationCompress("admin/vehicle/parking/list/", $count, PER_PAGE_RECORDS, $segment);
+
+            $data['page'] = $returns['page'];
+            $data['offset'] = $returns['offset'];
+
+            $data['records'] = $this->k_parking_model->getList($data);
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Entry List';
+            $data['title'] = 'Parking List';
+            $data['sub_title'] = 'List';
+
+            $this->loadViews("admin/vehicle/parking/list", $this->global, $data, NULL);
+        }
+    }
+    
+    
+    /**
+     * This function is used to load the company list
+     */
+    function report() {
+        
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Report';
+            $data['title'] = 'Vehicle Report';
+            $data['sub_title'] = 'Report';
+   $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/timepicker/bootstrap-timepicker'),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(),
+                              'jsBottomArray'   => array(base_url() . 'assets/plugins/timepicker/bootstrap-timepicker')
+                              
+                    );
+            $this->loadViews("admin/vehicle/report", $this->global, $data, NULL);
+        }
+    }
     
     function pageNotFound() {
         $this->global['pageTitle'] = 'Pms : 404 - Page Not Found';

@@ -91,5 +91,5 @@ define('ROLE_EMPLOYEE',                         	'3');
 define('SEGMENT',2);
 define('PROJECT_NAME',                                'PMS');
 define('PER_PAGE_RECORDS',                              '5');
-// define('STATUS_ARRAY',                                  array(1=>'Active',2=>'In Active'));
+define('STATUS_ARRAY',                                  array(1=>'Active',2=>'In Active'));
 define('EXT',                              '');

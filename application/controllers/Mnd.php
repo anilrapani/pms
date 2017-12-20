@@ -5,7 +5,7 @@ class Mnd extends CI_Controller {
 	public function index()
 	{
 		//I'm just using rand() function for data example
-		$temp = "ANIL";
+		$temp = "32132131";
 		$this->set_barcode($temp);
 	}
 	
@@ -17,11 +17,12 @@ class Mnd extends CI_Controller {
 		$this->zend->load('Zend/Barcode');
 		//generate barcode
                 
-		$file = Zend_Barcode::render('code39', 'image', array('text'=>$code), array());
-                //var_dump(imagepng($imageResource, 'public_html/img/barcode.png'));
-                 $code = time().'1222';
+		$file = Zend_Barcode::draw('code128', 'image', array('text'=>$code), array());
+                
+                $code = time().'1222';
         imagepng($file,"barcode/{$code}.png");
         $data['barcode'] = $code.'.png';
+        // $data['bar'] = $bar;
         $this->load->view('anil',$data);
                 // $this->load->view('anil');
         

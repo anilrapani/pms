@@ -51,7 +51,7 @@ class K_parking_model extends Common_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true) {
             $this->db->select($this->id);
         } else {
-            $this->db->select('*');
+            $this->db->select("$this->id,$this->status");
         }
         $this->db->from($this->table_name);
         if (!empty($inputData['searchText'])) {
@@ -119,42 +119,6 @@ class K_parking_model extends Common_Model {
         $this->db->where($this->id, $id);
         $this->db->update($this->table_name, $data);
         return $this->db->affected_rows();
-    }
-    
-    
-        /**
-     * This function is used to get the user company's information
-     * @param array $id : This is user company's updated information
-     * @param number $id : This is company id
-     * @return object $result : This is result
-     */
-    function getDetailsByBarcode($id) {
-        $this->db->select("*");
-        $this->db->from("$this->table_name");
-         $this->db->where(
-                 array(
-                     $this->deleted => 2,
-                    $this->barcode => $id
-                 )
-        );
-        $query = $this->db->get();
-        return $query->row();
-    }
-    
-    
-        /**
-     * This function is used to get the user company's information
-     * @param array $id : This is user company's updated information
-     * @param number $id : This is company id
-     * @return object $result : This is result
-     */
-    function getDetailsByBarcodeOrId($id) {
-        $this->db->select("*");
-        $this->db->from("$this->table_name");
-        $this->db->where('barcode', $id);
-        $this->db->or_where('id', $id);
-        $query = $this->db->get();
-        return $query->row();
     }
     
     

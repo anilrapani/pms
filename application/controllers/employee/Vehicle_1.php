@@ -228,64 +228,114 @@ class Vehicle extends BaseController {
     }
     
 
-    
+    /**
+     * This function is used to load the company list
+     */
+    function entryList() {
+        
+        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3 ) {
+            $this->loadThis();
+        } else {
 
+            $searchText = $this->input->post('searchText');
+            $data['searchText'] = $searchText;
+
+            $data['totalCount'] = true;
+            $data['searchText'] = $searchText;
+
+            $result = $this->k_parking_model->getlist($data);
+            $count = $result['count'];
+            $data['totalCount'] = false;
+            $segment = 5;
+            $returns = $this->paginationCompress("employee/vehicle/entry/list/", $count, PER_PAGE_RECORDS, $segment);
+
+            $data['page'] = $returns['page'];
+            $data['offset'] = $returns['offset'];
+
+            $data['records'] = $this->k_parking_model->getList($data);
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Entry List';
+            $data['title'] = 'Vehicle Entry';
+            $data['sub_title'] = 'List';
+
+            $this->loadViews("employee/vehicle/entry/list", $this->global, $data, NULL);
+        }
+    }
+
+    
+     /**
+     * This function is used to load the add new form
+     */
+    function addEntryId() {
+        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+             $isNewTicketCreated = $this->k_parking_model->isNewTicketCreated();
+             if($isNewTicketCreated != NULL && count($isNewTicketCreated)){
+                redirect('employee/vehicle/add/entry/'.$isNewTicketCreated->id);
+             }
+             
+             $vehicleEntryInfo = array(
+                    'status' => 1,
+                    'deleted' => 2,
+                    'created_by' => $this->vendorId,
+                    'created_time' => date('Y-m-d H:i:s')
+                 );
+            $entry_id = $this->k_parking_model->insert($vehicleEntryInfo);
+            redirect('employee/vehicle/add/entry/'.$entry_id);
+            // $this->loadViews("employee/vehicle/entry/add", $this->global, $data, NULL);
+        }
+    }
+    
+    
+    
     
     /**
      * This function is used to load the add new form
      */
-    function addEntryView($entryId = 0) {
+    function addEntryView($entryId) {
         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
             $this->loadThis();
         } else {
             $data = array();
             $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Entry';
-            $data['title'] = "Entry";
+            $data['title'] = "Entry No";
 
             $data['sub_title'] = "Entry";
+            $data['entryId'] = $entryId;
+            $entryDetails = $this->k_parking_model->getDetails($entryId);
+            
+            
+            if(isset($entryDetails->vehicle_type_id)){
+                $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                if(isset($vehicleTypeDetails->number_of_wheels)){
+                $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                }
+                
+                 $vehicleTypePrices = $this->k_master_price_model->getPriceListByVehicleType($entryDetails->vehicle_type_id);
+            
+                        
+                        $data['vehicleTypePrices'] = $vehicleTypePrices;
+                        
+                        
+            }
+            
             $view = "employee/vehicle/entry/add";
-                $isNewEntry = true;
-                $data['entryId'] ='';
-                $isNotExited = true;
-            if($entryId != 0){
-                $data['entryId'] = $entryId;
-                $entryDetails = $this->k_parking_model->getDetails($entryId);
-                if(isset($entryDetails->vehicle_type_id)){
-                    $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
-                    if(isset($vehicleTypeDetails->number_of_wheels)){
-                    $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
-                    }
-
-                     $vehicleTypePrices = $this->k_master_price_model->getPriceListByVehicleType($entryDetails->vehicle_type_id);
-
-
-                            $data['vehicleTypePrices'] = $vehicleTypePrices;
-                }
-                
-                
-                if(count($entryDetails) != 1){
-                    $this->session->set_flashdata('error', 'Invalid Entry');
-                }
-            
-                if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
-                    $isNewEntry = false;
-                }
-                
-                if(isset($entryDetails->exit_time) && strtotime($entryDetails->exit_time) > 0){
-                    $isNotExited = false;
-                }
-                
-                $data['masterPriceListArray'] = $this->k_master_price_model->get();
-                $data['entryDetails'] = $entryDetails;
-            
+            if(count($entryDetails) != 1){
+                $this->session->set_flashdata('error', 'Invalid Entry');
+                $view = 'employee/vehicle/entry/invalid';
+            }
+            $isNewEntry = true;
+            if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
+                $isNewEntry = false;
             }
             $data['isNewEntry'] = $isNewEntry;
-            $data['isNotExited'] = $isNotExited;
-            
+
             $this->load->model('k_master_price_model');
             $data['vehicleTypeListArray'] = $this->k_master_vehicle_type_model->get();
-            
-            // $data['vehicleCompanyListArray'] = $this->k_master_vehicle_company_model->get();
+            $data['masterPriceListArray'] = $this->k_master_price_model->get();
+            $data['vehicleCompanyListArray'] = $this->k_master_vehicle_company_model->get();
+            $data['entryDetails'] = $entryDetails;
             
             $this->loadViews($view, $this->global, $data, NULL);
         }
@@ -294,18 +344,17 @@ class Vehicle extends BaseController {
     /**
      * This function is used to load the add new form
      */
-    function addEntry() {
+    function addEntry($entryId) {
         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
 
            $this->form_validation->set_rules('vehicle_type_id', 'Vehicle Type', 'trim|required|max_length[128]');
-           
             // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
                 
             if ($this->form_validation->run() == FALSE) {
-                $this->addEntryView();
+                $this->addEntryView($entryId);
             } else {
                 $data =array();
                 
@@ -319,12 +368,12 @@ class Vehicle extends BaseController {
                 
                 
                 $config['allowed_types']        = 'gif|jpg|png';
-//                $config['max_size']             = 2000;
-//                $config['max_width']            = 1024;
-//                $config['max_height']           = 768; 
-//                $config['max_height']           = 768; 
-                $config['upload_path'] = './assets/images/upload/numberplate/';
-                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\numberplate';
+                $config['max_size']             = 2000;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768; 
+                $config['max_height']           = 768; 
+                
+                $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\numberplate';
                 $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand();
                 $this->load->library('upload', $config, 'number_plate_upload'); // Create custom object for cover upload
                 $this->number_plate_upload->initialize($config);
@@ -342,8 +391,8 @@ class Vehicle extends BaseController {
                     
                 }
                 
-                $config['upload_path'] = './assets/images/upload/drivinglicense/';
-                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\drivinglicense';
+                
+                $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\drivinglicense';
                 $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,26)).mt_rand();
                 $this->load->library('upload', $config, 'dl_upload'); // Create custom object for cover upload
                 $this->dl_upload->initialize($config);
@@ -399,13 +448,13 @@ class Vehicle extends BaseController {
                     
                 );
                    
-                $inserted_id = $this->k_parking_model->insert($vehicleEntryInfo);
-                // $result = $this->k_parking_model->update($vehicleEntryInfo, $entryId);
+                // $result = $this->k_parking_model->insert($vehicleEntryInfo);
+                $result = $this->k_parking_model->update($vehicleEntryInfo, $entryId);
                 $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Entry';
                 $data['title'] = "Vehicle Company";
                 $data['sub_title'] = "Entry";
                 
-                if ($inserted_id > 0) {
+                if ($result > 0) {
                         
                         $this->session->set_flashdata('success', 'Entry Successful');
                 
@@ -416,7 +465,7 @@ class Vehicle extends BaseController {
                     }
                 }
             
-                redirect('/employee/vehicle/add/entry/'.$inserted_id);
+                redirect('/employee/vehicle/add/entry/'.$entryId);
                 // $this->addEntryView();
                  $this->loadViews($view, $this->global, $data, NULL);
             }
@@ -424,7 +473,17 @@ class Vehicle extends BaseController {
     }
 
     
-    
+    function searchEntry(){
+             if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+            $this->loadThis();
+        } else {
+            $entryId = $this->input->post('entryId');
+            redirect('/employee/vehicle/add/entry/'.$entryId);
+            
+        }
+                  
+                
+    }
     
     function exitDetailsView(){
         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
@@ -457,26 +516,20 @@ class Vehicle extends BaseController {
           
             $this->load->library('form_validation');
 
-           $this->form_validation->set_rules('barcode', 'Barcode', 'trim|max_length[128]');
-           // $this->form_validation->set_rules('entryId', 'Email', 'trim|valid_email|max_length[128]');
-                 
+            $this->form_validation->set_rules('entryId', 'Vehicle Entry Id', 'trim|required|max_length[128]');
+            // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
+                
             if ($this->form_validation->run() == FALSE) {
                 $this->exitDetailsView();
             } else {
-                 $entryId = $this->input->post('entryId');
-                  $id = (isset($barcode))?$barcode:$entryId;
-                  
-                  $barcode = $this->input->post('barcode');
                   $entryId = $this->input->post('entryId');
-                  $id = (isset($barcode))?$barcode:$entryId;
-                  
                      $data['onlysearchView'] = false;
                     $data['sub_title'] = "Exit Details";
-                    
-                    $entryDetails = $this->k_parking_model->getDetailsByBarcodeOrId($id);
-                    
+                    $data['entryId'] = $entryId;
+                    $entryDetails = $this->k_parking_model->getDetails($entryId);
+
+
                     if(isset($entryDetails->vehicle_type_id)){
-                        $data['barcode'] = $entryDetails->barcode;
                         $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
                         if(isset($vehicleTypeDetails->number_of_wheels)){
                         $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
@@ -513,7 +566,7 @@ class Vehicle extends BaseController {
                              $view = 'employee/vehicle/entry/invalid';
                              $this->loadViews($view, $this->global, $data, NULL);
                     }else{
-                        redirect('employee/vehicle/exitdetails/'.$entryDetails->barcode);
+                        redirect('employee/vehicle/exitdetails/'.$entryId);
                     }
                     
                     
@@ -526,9 +579,9 @@ class Vehicle extends BaseController {
             
         }    
     }
-
     
-    function exitDetailsByBarcode($barcode){
+    
+    function exitDetailsById($entryId){
         
         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
             $this->loadThis();
@@ -541,8 +594,8 @@ class Vehicle extends BaseController {
        
                      $data['onlysearchView'] = false;
                     $data['sub_title'] = "Exit Details";
-                    $data['barcode'] = $barcode;
-                    $entryDetails = $this->k_parking_model->getDetailsByBarcode($barcode);
+                    $data['entryId'] = $entryId;
+                    $entryDetails = $this->k_parking_model->getDetails($entryId);
                     if(isset($entryDetails->vehicle_type_id)){
                         $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
                         if(isset($vehicleTypeDetails->number_of_wheels)){
@@ -558,7 +611,7 @@ class Vehicle extends BaseController {
                         
                         $data['vehicleTypePrices'] = $vehicleTypePrices;
                         
-                        //$data['entryId'] = $entryDetails->id;
+                        
                         
                     }
 
@@ -635,12 +688,12 @@ class Vehicle extends BaseController {
             
             
                 $config['allowed_types']        = 'gif|jpg|png';
-//                $config['max_size']             = 2000;
-//                $config['max_width']            = 1024;
-//                $config['max_height']           = 768; 
-//                $config['max_height']           = 768; 
-                                $config['upload_path'] = './assets/images/upload/numberplate/exit/';
-                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\numberplate\exit';
+                $config['max_size']             = 2000;
+                $config['max_width']            = 1024;
+                $config['max_height']           = 768; 
+                $config['max_height']           = 768; 
+                
+                $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\numberplate\exit';
                 $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand();
                 $this->load->library('upload', $config, 'number_plate_upload'); // Create custom object for cover upload
                 $this->number_plate_upload->initialize($config);
@@ -668,11 +721,9 @@ class Vehicle extends BaseController {
                     'image_vehicle_number_plate_exit' => $image_vehicle_number_plate_exit
                     
                 );
-                   
                    $result = $this->k_parking_model->update($vehicleExitInfo, $entryId);
                    if($result){
-                       if(isset($entryDetails->barcode))
-                   redirect('employee/vehicle/exitdetails/'.$entryDetails->barcode);
+                   redirect('employee/vehicle/exitdetails/'.$entryId);
                    }
                    
                }
@@ -702,20 +753,6 @@ class Vehicle extends BaseController {
                 }
 }
     
-
-
-        function searchEntry(){
-             if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
-            $this->loadThis();
-        } else {
-            $entryId = $this->input->post('entryId');
-            redirect('/employee/vehicle/add/entry/'.$entryId);
-            
-        }
-                  
-                
-    }
-    // removable code below
     
     function vehicleExitUpdate(){
         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {

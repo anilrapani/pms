@@ -24,8 +24,8 @@
     <section class="content-header">
         <div class="row">
         <div class="box-header col-md-6">
-                  <h1 class="box-title"><i class="fa "><?php if (isset($barcode)) {
-    echo  $title.' : ' . $barcode;
+                  <h1 class="box-title"><i class="fa "><?php if (isset($entryId)) {
+    echo  $title.' : ' . $entryId;
 } else {
     echo $title.' : ';
 } ?></i> </h1>
@@ -33,7 +33,7 @@
             <div class="box-tools">
                 <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
-                        <input type="text" name="barcode" id="barcodeEntryId" autofocus class="form-control input-sm pull-right" style="width: 150px;" placeholder="Scan Barcode" value="" >
+                        <input type="text" name="entryId" id="barcodeEntryId" autofocus class="form-control input-sm pull-right" style="width: 150px;" placeholder="Focus here" value="" >
                         <div class="input-group-btn">
                             <button class="btn btn-sm btn-default searchList"><i class="fa fa-search"></i></button>
                         </div>
@@ -43,28 +43,6 @@
         </div>
             </div>
 
-        
-        <div class="row">
-        <div class="box-header col-md-6">
-                  <h1 class="box-title"><i class="fa "><?php if (isset($entryDetails->id)) {
-    echo  'Ticket Id : ' . $entryDetails->id;
-} else {
-    echo 'Ticket Id : ';
-} ?></i> </h1>
-           
-            <div class="box-tools">
-                <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
-                    <div class="input-group">
-                        <input type="text" name="entryId" id="entryId" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Ticket Id" value="" >
-                        <div class="input-group-btn">
-                            <button class="btn btn-sm btn-default searchList"><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-            </div>
-        
 
 
     </section>
@@ -109,7 +87,7 @@
 
         <?php if ($isNewEntry == false && $isNotExited == true) { ?>
                             <form role="form" id="addEntry" action="<?php echo base_url() ?>employee/vehicle/generateexitreciept" method="post" role="form" enctype="multipart/form-data">
-                                <input type="hidden" id="entryId" name="entryId" value="<?php echo $entryDetails->id; ?>" />
+                                <input type="hidden" id="entryId" name="entryId" value="<?php echo $entryId; ?>" />
                                 <div class="box box-primary ">
                                     <div class="box-header">
                                         <h3 class="box-title">Preview Details</h3>
@@ -152,7 +130,7 @@
 
 
 
-                                    <h4>Ticket Number: <span><?php echo $entryDetails->id; ?></span></h4>
+                                    <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
                                     <h4>Entry Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = ''))); ?></span></h4>
                                     <h4>Exit Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = ''))); ?></span></h4>
                                         <?php if($isNotExited == false) {

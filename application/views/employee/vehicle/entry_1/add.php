@@ -23,7 +23,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="box-header col-md-6">
-            <h1 class="box-title"><i class="fa "></i> <?php echo ($isNewEntry == true)?'New Entry':'';  ?></h1>
+            <h1 class="box-title"><i class="fa "></i> <?php echo ($isNewEntry == true)?'New ':''; echo $title.' : '.$entryId; ?></h1>
                     <div class="box-tools">
                         <form action="<?php echo base_url() ?>employee/vehicle/searchEntry" method="POST">
                             <div class="input-group">
@@ -93,16 +93,11 @@
                             </div>
                             <div style="text-align: left;">
                            
+                            
+                            
                             <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
-                              <h4>Entry Date and Time: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = ''))); ?></span></h4>
-                             <?php if($isNotExited == false) { ?>
-                                    
-                          
-                            <h4>Exit Date and Time: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = ''))); ?></span></h4>
-                           
-                                    <h4>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></h4>
-                                    
-                                    <?php } ?>
+                            <h4>Entry Date : <span><?php echo date("d- m- Y", strtotime(convertTime($entryDetails->entry_time, $timeZoneName ='')));  ?></span></h4>
+                            <h4>Entry Time: <span><?php echo date("H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName =''))); ?></span></h4>
                             <h4>Vehicle : <span><?php echo $entryDetails->number_of_wheels; ?>W</span></h4>
                             <h4>Company Name: <span><?php echo $entryDetails->vehicle_company; ?></span></h4>
                             <h4>Vehicle No: <span><?php echo $entryDetails->vehicle_number; ?></span></h4>
@@ -132,47 +127,6 @@
                     
                 </div>
                 </div>
-            <?php if($isNotExited == false) {
-                ?>
-            <div class="col-md-6">
-                        <div class="box box-primary">
-                            <div class="box-body">
-
-                                <div class="clearfix" >
-                                    <label id="display_label">Preview Entry Number Plate</label>
-                                </div>
-
-                                <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/exit/<?php echo $entryDetails->image_vehicle_number_plate_exit; ?>" alt="" style="width:400px">
-                                <div id="display_ticket" style="width: 100%; height: 30%"></div>
-
-
-
-                            </div>
-                            <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
-                        </div>
-                    </div>
-            <?php 
-            }
-?>
-                <div class="col-md-6">
-                        <div class="box box-primary">
-                            <div class="box-body">
-
-                                <div class="clearfix" >
-                                    <label id="display_label">Preview Entry Number Plate</label>
-                                </div>
-
-                                <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:400px">
-                                <div id="display_ticket" style="width: 100%; height: 30%"></div>
-
-
-
-                            </div>
-                            <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
-                        </div>
-                    </div>
-                    
-            
             <?php }else { ?>
             
             <!-- left column -->

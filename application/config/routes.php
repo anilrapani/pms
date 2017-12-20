@@ -96,12 +96,21 @@ $route['admin/vehicle/type/list/(:num)'] = "admin/vehicle/typeList/$1";
 $route['admin/vehicle/add/type'] = "admin/vehicle/addTypeView";
 $route['admin/vehicle/edit/type/(:any)'] = "admin/vehicle/editTypeView/$1";
 
-$route['employee/vehicle/entry/list'] = "employee/vehicle/entryList";
-$route['employee/vehicle/entry/list/(:num)'] = "employee/vehicle/entryList/$1";
+//$route['employee/vehicle/entry/list'] = "employee/vehicle/entryList";
+//$route['employee/vehicle/entry/list/(:num)'] = "employee/vehicle/entryList/$1";
+//$route['employee/vehicle/add/entry/(:num)'] = "employee/vehicle/addEntryView/$1";
+//$route['employee/vehicle/add/entry'] = "employee/vehicle/addEntryId";
+//$route['employee/vehicle/edit/entry/(:any)'] = "employee/vehicle/editEntryView/$1";
+
+// $route['employee/vehicle/exit/details'] = "employee/vehicle/exitDetailsView";
+// $route['employee/vehicle/exitdetails/(:any)'] = "employee/vehicle/exitdetailsbyid/$1";
+
+
+$route['employee/vehicle/add/entry'] = "employee/vehicle/addEntryView";
 $route['employee/vehicle/add/entry/(:num)'] = "employee/vehicle/addEntryView/$1";
-$route['employee/vehicle/add/entry'] = "employee/vehicle/addEntryId";
-$route['employee/vehicle/edit/entry/(:any)'] = "employee/vehicle/editEntryView/$1";
-// $route['employee/vehicle/searchEntry'] = "employee/vehicle/addEntryView";
 
 $route['employee/vehicle/exit/details'] = "employee/vehicle/exitDetailsView";
+$route['employee/vehicle/exitdetails/(:any)'] = "employee/vehicle/exitdetailsbybarcode/$1";
 
+$route['admin/vehicle/parking/list'] = "admin/vehicle/parkingList";
+$route['admin/vehicle/parking/list/(:num)'] = "admin/vehicle/parkingList/$1";
