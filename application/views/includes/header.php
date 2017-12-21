@@ -158,11 +158,31 @@
                             </a>
                           </li>
                         <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/report/reportchart" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Report Chart</span>
+                            </a>
+                          </li>
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/report/amountcollection" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Amount Collection</span>
+                            </a>
+                          </li>
+                          
+                           <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/report/summary" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Report Summary</span>
+                            </a>
+                          </li>
+                          
+<!--                                    <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/report" >
                               <i class="fa fa-ticket"></i>
                               <span>Report</span>
                             </a>
-                          </li>
+                          </li>-->
              <?php
                 }
                 if($role == ROLE_ADMIN || $role == ROLE_EMPLOYEE)

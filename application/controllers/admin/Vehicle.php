@@ -312,10 +312,24 @@ class Vehicle extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Report';
             $data['title'] = 'Vehicle Report';
             $data['sub_title'] = 'Report';
-   $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/timepicker/bootstrap-timepicker'),
+            // G:\xampp\htdocs\pms\assets\plugins\daterangepicker\daterangepicker.js
+            $this->global['assets'] = array('cssTopArray'     => array(
+                                                base_url() . 'assets/plugins/datepicker/datepicker3',
+                                                base_url() . 'assets/plugins/timepicker/bootstrap-timepicker',
+                                                base_url() . 'assets/plugins/daterangepicker/daterangepicker-bs3',
+                                 
+                
+                ),
+                
                               'cssBottomArray'  => array(),
                               'jsTopArray'      => array(),
-                              'jsBottomArray'   => array(base_url() . 'assets/plugins/timepicker/bootstrap-timepicker')
+                              'jsBottomArray'   => array(
+                                                        base_url() . 'assets/plugins/datepicker/bootstrap-datepicker',
+                                                        base_url() . 'assets/plugins/daterangepicker/moment',
+                                                        base_url() . 'assets/plugins/daterangepicker/daterangepicker',
+                                                        base_url() . 'assets/plugins/timepicker/bootstrap-timepicker'
+                                                        
+                                                    )
                               
                     );
             $this->loadViews("admin/vehicle/report", $this->global, $data, NULL);
