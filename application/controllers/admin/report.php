@@ -21,7 +21,44 @@ class Report extends BaseController {
         $this->isLoggedIn();
     }
     function reportchart(){
-        $this->loadViews("admin/report/reportchart", $this->global, NULL, NULL);
+        $data = array();
+        $this->load->model('k_parking_model');
+       
+        $inputData = array('start_date_time' => date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime(date('Y-m-00 00:00:00')))));
+        $data['amount']['totalAmount'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
+        // echo $this->db->last_query();
+        // exit;
+        
+        // $totalAmountArray = array('start_date_time' => date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime(date('Y-m-00 00:00:00')))));
+        $inputData = array('paid_to_admin' => 1,'start_date_time' => date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime(date('Y-m-00 00:00:00')))));
+        $data['amount']['totalAmountCollected'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
+        $inputData = array('paid_to_admin' => 2,'start_date_time' => date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime(date('Y-m-00 00:00:00')))));
+        $data['amount']['totalAmountPending'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
+        $data['amount']['currentMonth'] = date('F');
+//        echo date('F');
+//        exit;
+        // echo date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime(date('Y-m-00 00:00:00'))));
+        
+//         echo "<pre>";
+//         var_dump($data);
+//         exit;
+        // $data['totalAmount'] = 
+//        // var_dump($totalPendingAmountArray);
+//        // exit;
+//        var_dump($totalAmountArray);
+//        exit;
+        // $totalAmountArray = $this->k_parking_model->getPendingAmountFromDate($inputData);
+        
+        
+        
+        $this->global['assets'] = array(
+                                        'cssTopArray'     => array(),
+                                        'cssBottomArray'  => array(),
+                                        'jsTopArray'      => array(base_url() . 'assets/plugins/chartjs/chart'),
+                                        'jsBottomArray'   => array()
+                                        );
+        
+        $this->loadViews("admin/report/reportchart", $this->global, $data, NULL);
     }
     function amountcollection(){
         $this->loadViews("admin/report/amountcollection", $this->global, NULL, NULL);

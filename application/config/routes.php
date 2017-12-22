@@ -96,6 +96,13 @@ $route['admin/vehicle/type/list/(:num)'] = "admin/vehicle/typeList/$1";
 $route['admin/vehicle/add/type'] = "admin/vehicle/addTypeView";
 $route['admin/vehicle/edit/type/(:any)'] = "admin/vehicle/editTypeView/$1";
 
+$route['admin/vehicle/gate/list'] = "admin/vehicle/gateList";
+$route['admin/vehicle/gate/list/(:num)'] = "admin/vehicle/gateList/$1";
+$route['admin/vehicle/add/gate'] = "admin/vehicle/addGateView";
+$route['admin/vehicle/edit/gate/(:any)'] = "admin/vehicle/editGateView/$1";
+
+
+
 //$route['employee/vehicle/entry/list'] = "employee/vehicle/entryList";
 //$route['employee/vehicle/entry/list/(:num)'] = "employee/vehicle/entryList/$1";
 //$route['employee/vehicle/add/entry/(:num)'] = "employee/vehicle/addEntryView/$1";

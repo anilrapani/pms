@@ -24,6 +24,10 @@ class K_parking_model extends Common_Model {
     var $master_price_details = 'master_price_details';
     var $status = 'status';
     var $deleted = 'deleted';
+    var $paid_to_admin = 'paid_to_admin';
+    var $terminal_id = 'terminal_id';
+    var $exited_by = 'exited_by';
+    
     
     function __construct() {
         parent::__construct();
@@ -54,9 +58,15 @@ class K_parking_model extends Common_Model {
             $this->db->select('*');
         }
         $this->db->from($this->table_name);
+        
         if (!empty($inputData['searchText'])) {
-            $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
-            $this->db->where($likeCriteria);
+            $this->db->or_group_start();
+            $this->db->like('barcode', $inputData['searchText']);
+            $this->db->or_like('id', $inputData['searchText']);
+
+            $this->db->group_end();
+            //    $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
+        //    $this->db->where($likeCriteria);
         }
         $this->db->where(
                  array(
@@ -69,7 +79,6 @@ class K_parking_model extends Common_Model {
         }
         $query = $this->db->get();
         $result = $query->result();
-
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true) {
             $result['count'] = count($result);
             return $result;
@@ -169,6 +178,30 @@ class K_parking_model extends Common_Model {
                  )
         );
         $this->db->order_by("id", "desc");
+        $query = $this->db->get();
+        return $query->row();
+    }
+    
+    
+    function getTotalAmountFromDate($inputData){
+        // $this->db->select("sum(total)");
+        $this->db->select_sum('total_amount');
+        $this->db->from("$this->table_name");
+        // DATE_FORMAT($inputDate,'%Y-%m-%d %H:%i:%s')
+        
+         $this->db->where(
+                 array(
+                     $this->total_amount.">"=> 0,
+                     $this->exit_time.">" => $inputData['start_date_time'],
+                     $this->exit_time."!="=> '0000-00-00 00:00:00',
+                     $this->status => 1,
+                     $this->deleted => 2
+                 )
+        );
+        if(isset($inputData['paid_to_admin'])){
+            $this->db->where( array($this->paid_to_admin => $inputData['paid_to_admin'] ));
+        }
+        // $this->db->order_by("id", "desc");
         $query = $this->db->get();
         return $query->row();
     }

@@ -92,4 +92,5 @@ define('SEGMENT',2);
 define('PROJECT_NAME',                                'PMS');
 define('PER_PAGE_RECORDS',                              '5');
 define('STATUS_ARRAY',                                  array(1=>'Active',2=>'In Active'));
+define('GATE_TYPE_ARRAY',                                  array(1=>'Entry',2=>'Exit'));
 define('EXT',                              '');

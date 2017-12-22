@@ -174,7 +174,13 @@ if ( ! function_exists('convertTime'))
  */
 function convertTime($dateTime, $timeZoneName, $utc = FALSE) {
     // based on location $timeZoneName add or substract hours for gst currently set to India only as it is used only in india
-    return date('Y-m-d H:i:s',strtotime('+330 minutes',strtotime($dateTime)));
+    if($timeZoneName == 'IST'){
+        return date('Y-m-d H:i:s',strtotime('+330 minutes',strtotime($dateTime)));
+    }
+//    if($timeZoneName == 'UTC'){
+//        return date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime($dateTime)));
+//    }
+    
 
 
 }

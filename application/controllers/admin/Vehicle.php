@@ -17,7 +17,7 @@ class Vehicle extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model('k_master_vehicle_type_model');
+        $this->load->model(array('k_master_vehicle_type_model','k_master_vehicle_gate_model'));
         $this->isLoggedIn();
     }
 
@@ -265,6 +265,214 @@ class Vehicle extends BaseController {
         }
     }
     
+    
+    
+    
+    
+    
+    
+    
+     /**
+     * This function is used to load the company list
+     */
+    function gateList() {
+        
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+
+            $searchText = $this->input->post('searchText');
+            $data['searchText'] = $searchText;
+
+            $data['totalCount'] = true;
+            $data['searchText'] = $searchText;
+
+            $result = $this->k_master_vehicle_gate_model->getlist($data);
+            $count = $result['count'];
+            $data['totalCount'] = false;
+            $segment = 5;
+            $returns = $this->paginationCompress("admin/vehicle/gate/list/", $count, PER_PAGE_RECORDS, $segment);
+
+            $data['page'] = $returns['page'];
+            $data['offset'] = $returns['offset'];
+
+            $data['records'] = $this->k_master_vehicle_gate_model->getList($data);
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Gate List';
+            $data['title'] = 'Vehicle Gate';
+            $data['sub_title'] = 'List';
+
+            $this->loadViews("admin/vehicle/gate/list", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addGateView() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $data = array();
+
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Gate';
+            $data['title'] = "Vehicle Gate";
+
+            $data['sub_title'] = "Add";
+            $this->loadViews("admin/vehicle/gate/add", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addgate() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('type', 'Type', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('ipaddress', 'IP Address', 'trim|required|max_length[128]');
+
+            if ($this->form_validation->run() == FALSE) {
+                $this->addGateView();
+            } else {
+                $name = ucwords($this->input->post('name'));
+                $ipaddress = $this->input->post('ipaddress');
+                $type = $this->input->post('type');
+                
+                
+                $insertData = array(
+                    'name' => $name,
+                    'type' => $type,
+                    'ipaddress' => $ipaddress,
+                    'status' => 1,
+                    'deleted' => 2,
+                    'created_by' => $this->vendorId,
+                    'created_time' => date('Y-m-d H:i:s')
+                );
+
+                $vehicle_gate_id = $this->k_master_vehicle_gate_model->insert($insertData);
+
+                if ($vehicle_gate_id > 0) {
+                    $this->session->set_flashdata('success', 'New vehicle gate created successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Vehicle gate creation failed');
+                }
+
+                $this->global['pageTitle'] = PROJECT_NAME . ' : Add new vehicle gate';
+                $data['title'] = "Vehicle gate";
+
+                $data['sub_title'] = "Add";
+                // $this->gateList();
+                redirect('admin/vehicle/gate/list');
+                //$this->loadViews("admin/vehicle/gate/list", $this->global, $data, NULL);
+            }
+        }
+    }
+
+    /**
+     * This function is used to load gate edit information
+     * @param number $id : Optional : This is gate id
+     */
+    function editGateView($id = NULL) {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            if ($id == null) {
+                redirect('admin/vehicle/gatelist');
+            }
+            $this->load->model('k_master_price_model');
+            $data['resultInfo'] = $this->k_master_vehicle_gate_model->getDetails($id);
+            
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Edit vehicle gate';
+            $data['title'] = "Vehicle gate";
+
+            $data['sub_title'] = "Edit";
+
+            $this->loadViews("admin/vehicle/gate/edit", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to edit the gate information
+     */
+    function editGate() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $this->load->library('form_validation');
+
+            $id = $this->input->post('id');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('type', 'Type', 'trim|required|max_length[128]');
+            
+
+            if ($this->form_validation->run() == FALSE) {
+
+                redirect("admin/vehicle/edit/gate/$id");
+            } else {
+                $name = ucwords($this->input->post('name'));
+                $type = $this->input->post('type');
+                $ipaddress = $this->input->post('ipaddress');
+                $status = $this->input->post('status');
+                
+                $updateInfo = array(
+                    'name' => $name,
+                    'type' => $type,
+                    'ipaddress' => $ipaddress,
+                    'status' => $status,
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s')
+                );
+                
+                $result = $this->k_master_vehicle_gate_model->update($updateInfo, $id);
+
+                if ($result == true) {
+                    $this->session->set_flashdata('success', 'Gate updated successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Gate updation failed');
+                }
+
+                redirect("admin/vehicle/edit/gate/$id");
+            }
+        }
+    }
+
+    /**
+     * This function is used to delete the the record using id
+     * @return boolean $result : TRUE / FALSE
+     */
+    function deleteGate() {
+
+        if ($this->isAdmin() == TRUE) {
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $data = array('deleted' => 1, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_vehicle_gate_model->delete($id, $data);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * This function is used to load the company list
      */
@@ -273,9 +481,22 @@ class Vehicle extends BaseController {
         if ($this->isAdmin() == TRUE) {
             $this->loadThis();
         } else {
-
-            $searchText = $this->input->post('searchText');
-            $data['searchText'] = $searchText;
+            
+            $searchText = ''; // default when no term in session or POST
+            $postSearchText = $this->input->post("searchText");
+            if(isset($postSearchText) && empty($postSearchText)){
+                $searchText = '';
+                $this->session->set_userdata('searchText', $searchText);
+            } else if ($postSearchText)
+            {
+                // use the term from POST and set it to session
+                $searchText = $postSearchText;
+                $this->session->set_userdata('searchText', $searchText);
+            }else if ($this->session->userdata('searchText'))
+            {
+                // if term is not in POST use existing term from session
+                $searchText = $this->session->userdata('searchText');
+            }
 
             $data['totalCount'] = true;
             $data['searchText'] = $searchText;

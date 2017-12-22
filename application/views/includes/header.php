@@ -145,7 +145,13 @@
                           <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/type/list" >
                               <i class="fa fa-ticket"></i>
-                              <span>Vehicle Type</span>
+                              <span>Vehicle Types</span>
+                            </a>
+                          </li>
+                            <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/vehicle/gate/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Gates</span>
                             </a>
                           </li>
                           

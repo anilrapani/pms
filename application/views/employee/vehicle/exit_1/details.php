@@ -131,8 +131,8 @@
 
 
                                     <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
-                                    <h4>Entry Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = ''))); ?></span></h4>
-                                    <h4>Exit Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = ''))); ?></span></h4>
+                                    <h4>Entry Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
+                                    <h4>Exit Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
                                         <?php if($isNotExited == false) {
                                         
                                     ?>

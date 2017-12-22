@@ -7,14 +7,20 @@
       </h1>
     </section>
     <section class="content">
-        
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                <div class="form-group">
+                    <a class="btn btn-primary" href="<?php echo base_url(); ?>admin/vehicle/add/gate"><i class="fa fa-plus"></i> Add New</a>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xs-12">
               <div class="box">
                 <div class="box-header">
                     <h3 class="box-title"><?php echo $sub_title; ?></h3>
                     <div class="box-tools">
-                        <form action="<?php echo base_url() ?>admin/vehicle/parking/list" method="POST" id="searchList">
+                        <form action="<?php echo base_url() ?>admin/vehicle/gate/list" method="POST" id="searchList">
                             <div class="input-group">
                               <input type="text" name="searchText" value="<?php echo $searchText; ?>" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search"/>
                               <div class="input-group-btn">
@@ -28,10 +34,8 @@
                   <table class="table table-hover">
                     <tr>
                       <th>Id</th>
-                      <th>Barcode</th>
-                      <th>Entry Time</th>
-                      <th>Exit Time</th>
-                      <th>Amount</th>
+                      <th>Name</th>
+                      <th>Status</th>
                       <th class="text-center">Actions</th>
                     </tr>
                     <?php
@@ -41,14 +45,12 @@
                         {
                     ?>
                     <tr>
-                      <td><?php echo $record->id; ?></td>
-                      <td><?php echo $record->barcode; ?></td>
-                      <td><?php echo $record->entry_time; ?></td>
-                      <td><?php echo $record->exit_time; ?></td>
-                      <td><?php echo $record->total_amount; ?></td>
+                      <td><?php echo $record->id ?></td>
+                      <td><?php echo $record->name ?></td>
+                      <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
                       <td class="text-center">
-                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'employee/vehicle/exitdetails/'.$record->barcode; ?>"><i class="fa fa-location-arrow"></i></a>
-                         <!-- <a class="btn btn-sm btn-danger deleteType" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a> -->
+                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/vehicle/edit/gate/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
+                          <a class="btn btn-sm btn-danger deleteType" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>
                       </td>
                     </tr>
                     <?php

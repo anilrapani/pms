@@ -96,8 +96,8 @@
                             
                             
                             <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
-                            <h4>Entry Date : <span><?php echo date("d- m- Y", strtotime(convertTime($entryDetails->entry_time, $timeZoneName ='')));  ?></span></h4>
-                            <h4>Entry Time: <span><?php echo date("H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName =''))); ?></span></h4>
+                            <h4>Entry Date : <span><?php echo date("d- m- Y", strtotime(convertTime($entryDetails->entry_time, $timeZoneName ='IST')));  ?></span></h4>
+                            <h4>Entry Time: <span><?php echo date("H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName ='IST'))); ?></span></h4>
                             <h4>Vehicle : <span><?php echo $entryDetails->number_of_wheels; ?>W</span></h4>
                             <h4>Company Name: <span><?php echo $entryDetails->vehicle_company; ?></span></h4>
                             <h4>Vehicle No: <span><?php echo $entryDetails->vehicle_number; ?></span></h4>
