@@ -258,6 +258,88 @@ class K_report_model extends Common_Model {
         } 
         
         
+        function getReportSummaryData($inputData){
+              // $this->db->select("sum(total)");
+        $this->db->select('baseTbl.gate_id, gate.name as gate_name, sum(BaseTbl.total_amount) as total_amount, sum(BaseTbl.cash_amount) as cash_amount,sum(BaseTbl.card_amount) as card_amount');
+        $this->db->from("$this->table_name as BaseTbl");
+        // $this->db->join('k_report as report', "report.user_id = BaseTbl.$this->gate_id",'left');
+        $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id",'left');
+        // DATE_FORMAT($inputDate,'%Y-%m-%d %H:%i:%s')
+        
+         $this->db->where(
+                 array(
+                     "BaseTbl.$this->status" => 1,
+                     "BaseTbl.$this->deleted" => 2
+                 )
+        );
+         
+        if(isset($inputData['paid_to_admin'])){
+            $this->db->where_in( "BaseTbl.$this->paid_to_admin" , $inputData['paid_to_admin'] );
+        }
+        
+        if(isset($inputData['fromDateTime'])){
+            $this->db->where( array("BaseTbl.$this->first_parking_id_time_after_login >" => $inputData['fromDateTime'] ));
+        }
+        if(isset($inputData['group_by'])){
+            foreach ($inputData['group_by'] as $key => $value) {
+                $group_by[] = "BaseTbl.".$value;
+            }
+            
+            $this->db->group_by($group_by);
+        }
+            
+        // $this->db->order_by("id", "desc");
+        $query = $this->db->get();
+        return $query->result();
+        }
+        
+        function getReportData($inputData){
+            
+           // $this->db->select("sum(total)");
+        $this->db->select('BaseTbl.*,gate.name as gate_name,user.name as user_name');
+        
+        $this->db->from("$this->table_name as BaseTbl");
+        // $this->db->join('k_report as report', "report.user_id = BaseTbl.$this->gate_id",'left');
+        $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id",'left');
+        
+        $this->db->join('k_user as user', "user.id = BaseTbl.$this->user_id",'left');
+            
+        
+
+        // DATE_FORMAT($inputDate,'%Y-%m-%d %H:%i:%s')
+        
+         $this->db->where(
+                 array(
+                     "BaseTbl.$this->status" => 1,
+                     "BaseTbl.$this->deleted" => 2
+                 )
+        );
+         
+        if(isset($inputData['paid_to_admin']) && count($inputData['paid_to_admin']) > 0){
     
+            $this->db->where_in( "BaseTbl.$this->paid_to_admin" , $inputData['paid_to_admin'] );
+        }
+       
+//        if(isset($inputData['fromDateTime'])){
+//            $this->db->where( array("BaseTbl.$this->first_parking_id_time_after_login >" => $inputData['fromDateTime'] ));
+//        }
+  
+        if(isset($inputData['gate_id']) && !in_array(0,$inputData['gate_id']) && count($inputData['gate_id']) > 0){
+            $this->db->where_in( "BaseTbl.$this->gate_id" , $inputData['gate_id'] );
+        }
+     
+        if(isset($inputData['user_id']) && !in_array(0,$inputData['user_id']) && count($inputData['user_id']) > 0){
+            $this->db->where_in("BaseTbl.$this->user_id ", $inputData['user_id']);
+        }
+        $this->db->order_by("BaseTbl.$this->last_parking_id_time_after_login","desc");
+         $query = $this->db->get();
+            
+         
+       
+        return $query->result();
+       
+        }
+        
+       
 
 }

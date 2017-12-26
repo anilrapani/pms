@@ -132,5 +132,7 @@ $route['employee/report/current/list'] = "employee/report/currentlist";
 $route['employee/report/current/list/(:num)'] = "employee/report/currentlist/$1";
 $route['employee/report/submitted/list'] = "employee/report/submittedlist";
 $route['employee/report/submitted/list/(:num)'] = "employee/report/submittedlist/$1";
+$route['admin/report/collected/list'] = "admin/report/collectedlist";
+$route['admin/report/collected/list/(:num)'] = "admin/report/collectedlist/$1";
 
 // $route['employee/report/list'] = "employee/report/myReportList";

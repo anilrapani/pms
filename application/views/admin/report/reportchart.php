@@ -32,9 +32,13 @@
                 <!-- /.col -->
                 <div class="col-md-4">
                   <ul class="chart-legend clearfix">
-                    <li><i class="fa fa-circle-o text-red"></i> Pending</li>
-                    <li><i class="fa fa-circle-o text-green"></i> Submitted</li>
+                    <li><i class="fa fa-circle-o text-red"></i> Pending : <?php echo $amount['currentMonthPendingAmount']; ?></li>
+                    <li><i class="fa fa-circle-o text-green"></i> Collected : <?php echo $amount['currentMonthAdminCollected']; ?></li>
                   </ul>
+                </div>
+                <div class="col-md-4">
+                    <p>Total Amount : <?php echo $amount['currentMonthTotalAmount']; ?></p>
+                  
                 </div>
                 <!-- /.col -->
               </div>
@@ -71,50 +75,25 @@
                   <table class="table table-hover">
                     <tbody><tr>
                       <th>Terminal</th>
-                      <th>Pending Amount</th>
+                      <th>Employee Generated Amount</th>
                       <th class="text-center">Actions</th>
                     </tr>
-                    <tr>
-                      <td>Exit Terminal 1</td>
-                      <td>50000</td>
+                    <?php if(count($allTerminalAmount) > 0 ){
+                        foreach($allTerminalAmount as $terminal){
+                            ?>
+                     <tr>
+                      <td><?php echo $terminal->gate_name; ?></td>
+                      <td><?php echo $terminal->total_amount; ?></td>
                       <td class="text-center">
-                          <a class="btn btn-sm btn-info" title="Collect Amount" href="http://localhost/pms/editOld/2"><i class="fa fa-location-arrow"></i></a>
+                          <a class="btn btn-sm btn-info" title="Collect Amount" href="<?php echo base_url(); ?>admin/report/summary?gate_id=<?php echo $terminal->gate_id?>"><i class="fa fa-location-arrow"></i></a>
                           
                       </td>
                     </tr>
-                    
-                    <tr>
-                      <td>Exit Terminal 2</td>
-                      <td>100000</td>
-                      <td class="text-center">
-                          <a class="btn btn-sm btn-info" title="Collect Amount" href="http://localhost/pms/editOld/2"><i class="fa fa-location-arrow"></i></a>
-                          
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Exit Terminal 3</td>
-                      <td>80000</td>
-                      <td class="text-center">
-                          <a class="btn btn-sm btn-info" title="Collect Amount" href="http://localhost/pms/editOld/2"><i class="fa fa-location-arrow"></i></a>
-                          
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Exit Terminal 4</td>
-                      <td>70000</td>
-                      <td class="text-center">
-                          <a class="btn btn-sm btn-info" title="Collect Amount" href="http://localhost/pms/editOld/2"><i class="fa fa-location-arrow"></i></a>
-                          
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Exit Terminal 5</td>
-                      <td>200000</td>
-                      <td class="text-center">
-                          <a class="btn btn-sm btn-info" title="Collect Amount" href="http://localhost/pms/editOld/2"><i class="fa fa-location-arrow"></i></a>
-                          
-                      </td>
-                    </tr>
+                    <?php
+                        }
+                            
+                    }?>
+                   
                     
                 
                                       </tbody></table>
@@ -142,13 +121,13 @@
   var pieChart       = new Chart(pieChartCanvas);
   var PieData        = [
     {
-      value    : <?php echo $amount['totalAmountPending']; ?>,
+      value    : <?php echo $amount['currentMonthPendingAmount']; ?>,
       color    : '#f56954',
       highlight: '#f56954',
       label    : 'Pending'
     },
     {
-      value    : <?php echo $amount['totalAmountCollected']; ?>,
+      value    : <?php echo $amount['currentMonthAdminCollected']; ?>,
       color    : '#00a65a',
       highlight: '#00a65a',
       label    : 'Submitted'

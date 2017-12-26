@@ -177,12 +177,19 @@
                               <span>Report Chart</span>
                             </a>
                           </li>
+                           <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/report/collected/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Collected list</span>
+                            </a>
+                          </li>
                           <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/report/amountcollection" >
                               <i class="fa fa-ticket"></i>
                               <span>Amount Collection</span>
                             </a>
                           </li>
+                              
                           
                            <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/report/summary" >
@@ -190,6 +197,7 @@
                               <span>Report Summary</span>
                             </a>
                           </li>
+                          
                           
 <!--                                    <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/report" >

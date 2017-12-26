@@ -14,6 +14,7 @@ class BaseController extends CI_Controller {
 	protected $vendorId = '';
 	protected $name = '';
 	protected $roleText = '';
+        protected $gate_id = '';
 	protected $global = array ();
 	
         
