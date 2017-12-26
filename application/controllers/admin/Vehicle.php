@@ -17,7 +17,13 @@ class Vehicle extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('k_master_vehicle_type_model','k_master_vehicle_gate_model'));
+        $this->load->model(array(   'k_master_vehicle_type_model',
+                                    'k_master_vehicle_gate_model',
+                                    'user_model',
+                                    'k_master_device_registry_model',
+                                    'k_master_vehicle_gate_employee_model'
+                                )
+                            );
         $this->isLoggedIn();
     }
 
@@ -314,11 +320,26 @@ class Vehicle extends BaseController {
             $this->loadThis();
         } else {
             $data = array();
-
-
             $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Gate';
+            $data['userListArray'] = $this->user_model->getUserList();
+            $data['deviceRegistryListArray'] = $this->k_master_device_registry_model->getDeviceRegistryList();
+            
+               $this->global['assets'] = array('cssTopArray'     => array(
+                                                                base_url() . 'assets/plugins/timepicker/bootstrap-timepicker',
+                                                ),
+                
+                                                'cssBottomArray'  => array(),
+                                                'jsTopArray'      => array(
+                                                                    base_url() . 'assets/plugins/timepicker/bootstrap-timepicker'
+                                                ),
+                                                'jsBottomArray'   => array(
+                                                    
+                                                    )
+                              
+                    );
+            
             $data['title'] = "Vehicle Gate";
-
+            $data['userListArray'] = $this->user_model->getUserList();
             $data['sub_title'] = "Add";
             $this->loadViews("admin/vehicle/gate/add", $this->global, $data, NULL);
         }
@@ -335,20 +356,20 @@ class Vehicle extends BaseController {
 
             $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
             $this->form_validation->set_rules('type', 'Type', 'trim|required|max_length[128]');
-            $this->form_validation->set_rules('ipaddress', 'IP Address', 'trim|required|max_length[128]');
-
+           
             if ($this->form_validation->run() == FALSE) {
                 $this->addGateView();
             } else {
                 $name = ucwords($this->input->post('name'));
-                $ipaddress = $this->input->post('ipaddress');
                 $type = $this->input->post('type');
-                
+                $user_id_Array = $this->input->post('user_id');
+                $from_time_Array = $this->input->post('from_time');
+                $to_time_Array = $this->input->post('to_time');
+                $device_registry_id_Array = $this->input->post('device_registry_id');
                 
                 $insertData = array(
                     'name' => $name,
                     'type' => $type,
-                    'ipaddress' => $ipaddress,
                     'status' => 1,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
@@ -356,7 +377,29 @@ class Vehicle extends BaseController {
                 );
 
                 $vehicle_gate_id = $this->k_master_vehicle_gate_model->insert($insertData);
+                
+                
+                // gate employees logic start
+                
+                
+                       for($i=0; $i<count($user_id_Array);$i++) {
+                    $finalArray[] = array('user_id' => $user_id_Array[$i], 
+                                          'from_time' => $from_time_Array[$i], 
+                                          'to_time' => $to_time_Array[$i],
+                                          'device_registry_id' => $device_registry_id_Array[$i],
+                                          'vehicle_gate_id' => $vehicle_gate_id,
+                                          'status' => 1,
+                                            'deleted' => 2,
+                                            'created_by' => $this->vendorId,
+                                            'created_time' => date('Y-m-d H:i:s')
+                        
+                            );
+                }
+       
 
+                $this->load->model('k_master_price_model');
+                $this->k_master_vehicle_gate_employee_model->insertEmployeesAtGate($finalArray);
+                
                 if ($vehicle_gate_id > 0) {
                     $this->session->set_flashdata('success', 'New vehicle gate created successfully');
                 } else {
@@ -387,7 +430,26 @@ class Vehicle extends BaseController {
             }
             $this->load->model('k_master_price_model');
             $data['resultInfo'] = $this->k_master_vehicle_gate_model->getDetails($id);
+            $data['userListAtGateArray'] = $this->k_master_vehicle_gate_employee_model->getUserListbyGateID($id);
             
+            $data['userListArray'] = $this->user_model->getUserList();
+            $data['deviceRegistryListArray'] = $this->k_master_device_registry_model->getDeviceRegistryList();
+            
+               $this->global['assets'] = array('cssTopArray'     => array(
+                                                                base_url() . 'assets/plugins/timepicker/bootstrap-timepicker',
+                                                ),
+                
+                                                'cssBottomArray'  => array(),
+                                                'jsTopArray'      => array(
+                                                                    base_url() . 'assets/plugins/timepicker/bootstrap-timepicker'
+                                                ),
+                                                'jsBottomArray'   => array(
+                                                    
+                                                    )
+                              
+                    );
+               
+               
             $this->global['pageTitle'] = PROJECT_NAME . ' : Edit vehicle gate';
             $data['title'] = "Vehicle gate";
 
@@ -404,6 +466,8 @@ class Vehicle extends BaseController {
         if ($this->isAdmin() == TRUE) {
             $this->loadThis();
         } else {
+           
+            
             $this->load->library('form_validation');
 
             $id = $this->input->post('id');
@@ -418,20 +482,46 @@ class Vehicle extends BaseController {
             } else {
                 $name = ucwords($this->input->post('name'));
                 $type = $this->input->post('type');
-                $ipaddress = $this->input->post('ipaddress');
                 $status = $this->input->post('status');
+                 $user_id_Array = $this->input->post('user_id');
+                $from_time_Array = $this->input->post('from_time');
+                $to_time_Array = $this->input->post('to_time');
+                $device_registry_id_Array = $this->input->post('device_registry_id');
+                
                 
                 $updateInfo = array(
                     'name' => $name,
                     'type' => $type,
-                    'ipaddress' => $ipaddress,
                     'status' => $status,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s')
                 );
                 
-                $result = $this->k_master_vehicle_gate_model->update($updateInfo, $id);
+             
+                       for($i=0; $i<count($user_id_Array);$i++) {
+                    $finalArray[] = array('user_id' => $user_id_Array[$i], 
+                                          'from_time' => $from_time_Array[$i], 
+                                          'to_time' => $to_time_Array[$i],
+                                          'device_registry_id' => $device_registry_id_Array[$i],
+                                          'vehicle_gate_id' => $id,
+                                          'status' => 1,
+                                            'deleted' => 2,
+                                            'created_by' => $this->vendorId,
+                                            'created_time' => date('Y-m-d H:i:s')
+                        
+                            );
+                }
+                
+                
+                $deleteArray = array('deleted' => 1); 
+                $this->k_master_vehicle_gate_employee_model->deleteEmployeesAtGate($deleteArray,$id);
+                $this->k_master_vehicle_gate_employee_model->insertEmployeesAtGate($finalArray);
 
+                
+                
+                
+                $result = $this->k_master_vehicle_gate_model->update($updateInfo, $id);
+                
                 if ($result == true) {
                     $this->session->set_flashdata('success', 'Gate updated successfully');
                 } else {

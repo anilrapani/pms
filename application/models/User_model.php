@@ -2,6 +2,11 @@
 require_once 'common_model.php';
 class User_model extends Common_Model
 {
+     var $id ='id';
+    var $name ='name';
+    var $status ='status';
+    var $deleted ='deleted';
+    var $table_name ='k_user';
     /**
      * This function is used to get the user listing count
      * @param string $searchText : This is optional search text
@@ -182,6 +187,21 @@ class User_model extends Common_Model
         
         return $this->db->affected_rows();
     }
+    
+    
+      function getUserList(){
+        $this->db->select("$this->id,$this->name");
+        $this->db->from("$this->table_name");
+         $this->db->where(
+                 array(
+                     $this->status => 1,
+                     $this->deleted => 2,
+                    )
+        );
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }
 
   

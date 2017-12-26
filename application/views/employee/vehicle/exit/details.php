@@ -115,6 +115,26 @@
                                         <h3 class="box-title">Preview Details</h3>
                                     </div>
                                     <div class="box-body " >
+                                          <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Cash or Card</label>
+                                        <select class="form-control required" id="customer_paid_by_cash_or_card" name="customer_paid_by_cash_or_card">
+                                            <option value="" >Select Cash or Card</option>
+                                            <?php
+                                            $customer_paid_by_cash_or_card = CUSTOMER_PAID_BY_CASH_OR_CARD_ARRAY;
+                                            if(!empty($customer_paid_by_cash_or_card))
+                                            {
+                                                foreach ($customer_paid_by_cash_or_card as $key => $value)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $key; ?>"  ><?php echo $value; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                                         <div class="col-md-6">                                
                                             <div class="form-group">
                                                 <label for="image_vehicle_number_plate_exit">Exit Vehicle Number Plate Image</label>
@@ -122,6 +142,7 @@
 
                                             </div>
                                         </div>
+                                      
                                     </div>
                                     <div class="box-footer">
                                         <input type="submit" class="btn btn-primary" value="Submit" />
@@ -153,8 +174,8 @@
 
 
                                     <h4>Ticket Number: <span><?php echo $entryDetails->id; ?></span></h4>
-                                    <h4>Entry Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
-                                    <h4>Exit Date and TIme: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
+                                    <h4>Entry Date and TIme: <span><?php echo $entryDetails->entry_time; // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
+                                    <h4>Exit Date and TIme: <span><?php echo $entryDetails->exit_time; //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
                                         <?php if($isNotExited == false) {
                                         
                                     ?>

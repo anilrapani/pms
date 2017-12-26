@@ -93,4 +93,7 @@ define('PROJECT_NAME',                                'PMS');
 define('PER_PAGE_RECORDS',                              '5');
 define('STATUS_ARRAY',                                  array(1=>'Active',2=>'In Active'));
 define('GATE_TYPE_ARRAY',                                  array(1=>'Entry',2=>'Exit'));
+define('DEVICE_IP_TYPES',                                  array(1=>'Company',2=>'Employee'));
+define('CUSTOMER_PAID_BY_CASH_OR_CARD_ARRAY',                                  array(1=>'Cash',2=>'Card'));
+define('REPORT_PAID_TO_ADMIN',                                  array(1=>'Generated',2=>'Updated',3=>'Submitted'));
 define('EXT',                              '');

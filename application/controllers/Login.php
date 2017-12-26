@@ -38,7 +38,9 @@ class Login extends CI_Controller
         
         if(!isset($isLoggedIn) || $isLoggedIn != TRUE)
         {
-            $this->load->view('login');
+            $this->load->model('k_master_vehicle_gate_model');
+            $data['gatesList'] = $this->k_master_vehicle_gate_model->getGatesList();
+            $this->load->view('login',$data);
         }
         else
         {
@@ -58,6 +60,7 @@ class Login extends CI_Controller
         
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[128]|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|max_length[32]');
+        $this->form_validation->set_rules('gate_id', 'gate selection', 'required|max_length[32]');
 
         if($this->form_validation->run() == FALSE)
         {
@@ -69,9 +72,11 @@ class Login extends CI_Controller
                  
             $email = $this->input->post('email');
             $password = $this->input->post('password');
+            $gate_id = $this->input->post('gate_id');
             
             $result = $this->login_model->loginMe($email, $password);
             $userStatus = 2;
+            $sessionArray['role'] = 0;
             if(count($result) > 0)
             {
                 foreach ($result as $res)
@@ -87,11 +92,42 @@ class Login extends CI_Controller
                     
                 }
                 
+                
+                
                 if($userStatus == 2){
                     $this->session->set_flashdata('error', 'User is not activated!');
                     redirect('/login');
                 }
                 
+                if($sessionArray['role'] != 2 && $this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE || $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == TRUE){
+                        $this->load->model('k_master_vehicle_gate_model');
+                        $ip = $this->input->ip_address();
+                        $inputArray = array(
+                            'user_id'   =>  $sessionArray['userId'],
+                            'ipaddress' =>  $ip,
+                            'vehicle_gate_id' =>   $gate_id
+                        );
+
+                        $gate_access = $this->k_master_vehicle_gate_model->checkForUserAccess($inputArray);
+                    
+                        if(count($gate_access) > 0){
+                            echo 'if';
+                        }else{
+                            echo 'else'; 
+                                $this->session->set_flashdata('error', 'Gate Access denied!');
+                            redirect('/login');
+                            
+                        }
+                       
+//                            echo "<pre>";
+//                        echo $this->db->last_query()."<br>";
+//                        echo count($gate_access)."<br>";
+//                        var_dump($gate_access)."<br>";
+//                        exit;
+
+                        
+                }
+                 $sessionArray['login_gate_id'] = $gate_id;
                 $this->session->set_userdata($sessionArray);
                 redirect('/dashboard');
             }

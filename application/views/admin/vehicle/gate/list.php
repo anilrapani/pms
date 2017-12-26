@@ -35,6 +35,7 @@
                     <tr>
                       <th>Id</th>
                       <th>Name</th>
+                      <th>Type</th>
                       <th>Status</th>
                       <th class="text-center">Actions</th>
                     </tr>
@@ -47,6 +48,7 @@
                     <tr>
                       <td><?php echo $record->id ?></td>
                       <td><?php echo $record->name ?></td>
+                      <td><?php echo ($record->type == 1)?"Entry":"Exit"; ?></td>
                       <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
                       <td class="text-center">
                           <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/vehicle/edit/gate/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
@@ -69,6 +71,6 @@
     </section>
 </div>
 <script type="text/javascript">
-    deleteUrl = "admin/vehicle/deleteType";
+    deleteUrl = "admin/vehicle/deletegate";
 </script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/admin/common.js" charset="utf-8"></script>

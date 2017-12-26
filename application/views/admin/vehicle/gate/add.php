@@ -1,3 +1,21 @@
+<style type="text/css">
+    [data-role="dynamic-fields"] > .form-inline + .form-inline {
+    margin-top: 0.5em;
+}
+
+[data-role="dynamic-fields"] > .form-inline [data-role="add"] {
+    display: none;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="add"] {
+    display: inline-block;
+}
+
+[data-role="dynamic-fields"] > .form-inline:last-child [data-role="remove"] {
+    display: none;
+}
+</style>
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -39,7 +57,7 @@
         </div>
         <div class="row">
             <!-- left column -->
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <!-- general form elements -->
 
 
@@ -61,19 +79,7 @@
 
                                 </div>
                                 
-                                <div class="col-md-6">                                
-                                    <div class="form-group">
-                                        <label for="ipaddress">IP Address</label>
-                                        <input type="text" class="form-control required" id="ipaddress" name="ipaddress" maxlength="128">
-                                    </div>
-
-                                </div>
-                                   
-                                
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
+                             <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="type">Type</label>
                                         <select class="form-control required" id="type" name="type">
@@ -93,10 +99,76 @@
                                         </select>
                                     </div>
                                 </div>
+                                   
+                                
                             </div>
-                                                         
+                            <div class="row">
+        <div class="col-md-12">
+            <div data-role="dynamic-fields">
+                <div class="form-inline">
+                   
+                        
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Select Employee</label>
+                        
+                               <select class="form-control required" id="user_id" name="user_id[]">
+                                            <option value='0' >All Users</option>
+                                            <?php
+                                            
+                                            if(!empty($userListArray))
+                                            {
+                                                foreach ($userListArray as $user)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $user->id; ?>" ><?php echo $user->name.' - '.$user->id; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                        
+                    </div>
                     
-                            
+                     <div class="form-group">
+                        <label class="sr-only" for="field-name">Field Name</label>
+                        <input type="text" class="form-control required timepicker3" id="field-name" name="from_time[]" placeholder="From Time - 00:00:00">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Field Value</label>
+                        <input type="text" class="form-control required timepicker3" id="field-value" name="to_time[]" placeholder="To Time - 00:00:00">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Select Device</label>
+                        
+                               <select class="form-control required" id="device_registry_id" name="device_registry_id[]">
+                                            <option value='0' >All Devices</option>
+                                            <?php
+                                            
+                                            if(!empty($deviceRegistryListArray))
+                                            {
+                                                foreach ($deviceRegistryListArray as $device)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $device->id; ?>" ><?php echo $device->name.' - '.$device->ipaddress; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                        
+                        
+                      </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div>  <!-- /div.form-inline -->
+            </div>  <!-- /div[data-role="dynamic-fields"] -->
+        </div>  <!-- /div.col-md-12 -->
+
 
 
 
@@ -116,5 +188,34 @@
     </section>
 
 </div>
+<script type="text/javascript">
+    $(function() {
+    // Remove button click
+    $(document).on(
+        'click',
+        '[data-role="dynamic-fields"] > .form-inline [data-role="remove"]',
+        function(e) {
+            e.preventDefault();
+            $(this).closest('.form-inline').remove();
+        }
+    );
+    // Add button click
+    $(document).on(
+        'click',
+        '[data-role="dynamic-fields"] > .form-inline [data-role="add"]',
+        function(e) {
+            e.preventDefault();
+            var container = $(this).closest('[data-role="dynamic-fields"]');
+            new_field_group = container.children().filter('.form-inline:first-child').clone();
+            new_field_group.find('input').each(function(){
+                $(this).val('');
+            });
+            container.append(new_field_group);
+        }
+    );
+    
+  
+});
 
+</script>
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

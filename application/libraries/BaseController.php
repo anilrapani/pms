@@ -44,8 +44,10 @@ class BaseController extends CI_Controller {
 			$this->vendorId = $this->session->userdata ( 'userId' );
 			$this->name = $this->session->userdata ( 'name' );
 			$this->roleText = $this->session->userdata ( 'roleText' );
+                        $this->login_gate_id = $this->session->userdata ( 'login_gate_id' );
 			
 			$this->global ['name'] = $this->name;
+                        $this->global ['gate_id'] = $this->gate_id;
 			$this->global ['role'] = $this->role;
 			$this->global ['role_text'] = $this->roleText;
 		}

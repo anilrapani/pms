@@ -527,3 +527,6 @@ $config['js_gz_extension'] = '.js';
 $config['css_gz_extension'] = '.css';
 $config['js_public_path'] = '';
 $config['js_public_path'] = '';
+
+$config['enable_ip_restriction_for_employee_at_employee_login'] = FALSE;
+$config['enable_gate_restriction_for_employee_at_employee_login'] = TRUE;

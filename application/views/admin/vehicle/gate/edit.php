@@ -68,7 +68,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" action="<?php echo base_url() ?>admin/vehicle/edittype" method="post" id="editCompany" role="form">
+                    <form role="form" action="<?php echo base_url() ?>admin/vehicle/editgate" method="post" id="editCompany" role="form">
                         <div class="box-body">
                               <div class="row">
                                 <div class="col-md-6">                                
@@ -78,19 +78,33 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-6">                                
-
+                                     <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="number_of_wheels">Number of wheels</label>
-                                        <input type="text" class="form-control required" id="number_of_wheels" name="number_of_wheels" maxlength="150" value="<?php echo $resultInfo->number_of_wheels; ?>" >
+                                        <label for="type">Type</label>
+                                        <select class="form-control required" id="type" name="type">
+                                            
+                                            <?php
+                                            $gate_type_array = GATE_TYPE_ARRAY;
+                                            if(!empty($gate_type_array))
+                                            {
+                                                foreach ($gate_type_array as $key => $value)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $key; ?>" <?php if($key == $resultInfo->type) {echo "selected=selected";} ?> ><?php echo $value; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
                                     </div>
-
                                 </div>
+                                
                             </div>
                             
                             
                             <div class="row">
-                               <div class="col-md-6">
+                             
+                                  <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <select class="form-control required" id="status" name="status">
@@ -109,71 +123,153 @@
                                         </select>
                                     </div>
                                 </div>
-                              
                             </div>
-                            
-                              <div class="row">
+                            <div class="row">
         <div class="col-md-12">
             <div data-role="dynamic-fields">
-                
-                <?php foreach ($priceListArray as $key => $value) {
+                     <?php foreach ($userListAtGateArray as $userListAtGate) {
                         ?>
-                  <div class="form-inline">
+                <div class="form-inline">
+                   
+                        
                     <div class="form-group">
+                        <label class="sr-only" for="field-name">Select Employee</label>
+                        
+                               <select class="form-control required" id="user_id" name="user_id[]">
+                                   
+                                            <option value='0' <?php if($userListAtGate->user_id == 0) echo "selected=selected"; ?> >All Users</option>
+                                   
+                                            <?php
+                                            
+                                            if(!empty($userListArray))
+                                            {
+                                                foreach ($userListArray as $user)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $user->id; ?>" <?php if($userListAtGate->user_id == $user->id) echo "selected=selected"; ?> ><?php echo $user->name.' - '.$user->id; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                        
+                    </div>
+                    
+                     <div class="form-group">
                         <label class="sr-only" for="field-name">Field Name</label>
-                        <input type="text" class="form-control required" id="field-name" name="from_minutes[]" placeholder="From Minutes" value="<?php echo $value->from_minutes; ?>">
+                        <input type="text" class="form-control required timepicker3" id="field-name" name="from_time[]" placeholder="From Time - 00:00:00" value="<?php echo $userListAtGate->from_time; ?>" >
                     </div>
                     <span>-</span>
                     <div class="form-group">
                         <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control required" id="field-value" name="to_minutes[]" placeholder="To Minutes" value="<?php echo $value->to_minutes; ?>">
+                        <input type="text" class="form-control required timepicker3" id="field-value" name="to_time[]" placeholder="To Time - 00:00:00" value="<?php echo $userListAtGate->to_time; ?>" >
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control required" id="field-value" name="amount[]" placeholder="Amount" value="<?php echo $value->amount; ?>">
-                    </div>
+                        <label class="sr-only" for="field-name">Select Device</label>
+                        
+                               <select class="form-control required" id="device_registry_id" name="device_registry_id[]">
+                                            <option value='0' <?php if($userListAtGate->device_registry_id == 0) echo "selected=selected"; ?> >All Devices</option>
+                                            <?php
+                                            
+                                            if(!empty($deviceRegistryListArray))
+                                            {
+                                                foreach ($deviceRegistryListArray as $device)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $device->id; ?>" <?php if($userListAtGate->device_registry_id == $device->id) echo "selected=selected"; ?> ><?php echo $device->name.' - '.$device->ipaddress; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                        
+                        
+                      </div>
                     <button class="btn btn-danger" data-role="remove">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
                     <button class="btn btn-primary" data-role="add">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
-                </div> 
-                <?php
+                </div>  <!-- /div.form-inline -->
+                   <?php
                       }
-                      
-                      if(count($priceListArray) == 0 ){
+                       if(count($userListAtGateArray) == 0 ){
                           ?>
                  <div class="form-inline">
+                   
+                        
                     <div class="form-group">
+                        <label class="sr-only" for="field-name">Select Employee</label>
+                        
+                               <select class="form-control required" id="user_id" name="user_id[]">
+                                            <option value='0' >All Users</option>
+                                            <?php
+                                            
+                                            if(!empty($userListArray))
+                                            {
+                                                foreach ($userListArray as $user)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $user->id; ?>" ><?php echo $user->name.' - '.$user->id; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                        
+                    </div>
+                    
+                     <div class="form-group">
                         <label class="sr-only" for="field-name">Field Name</label>
-                        <input type="text" class="form-control required" id="field-name" name="from_minutes[]" placeholder="From Minutes" value="">
+                        <input type="text" class="form-control required timepicker3" id="field-name" name="from_time[]" placeholder="From Time - 00:00:00">
                     </div>
                     <span>-</span>
                     <div class="form-group">
                         <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control required" id="field-value" name="to_minutes[]" placeholder="To Minutes" value="">
+                        <input type="text" class="form-control required timepicker3" id="field-value" name="to_time[]" placeholder="To Time - 00:00:00">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control required" id="field-value" name="amount[]" placeholder="Amount" value="">
-                    </div>
+                        <label class="sr-only" for="field-name">Select Device</label>
+                        
+                               <select class="form-control required" id="device_registry_id" name="device_registry_id[]">
+                                            <option value='0' >All Devices</option>
+                                            <?php
+                                            
+                                            if(!empty($deviceRegistryListArray))
+                                            {
+                                                foreach ($deviceRegistryListArray as $device)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $device->id; ?>" ><?php echo $device->name.' - '.$device->ipaddress; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                        
+                        
+                      </div>
                     <button class="btn btn-danger" data-role="remove">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
                     <button class="btn btn-primary" data-role="add">
                         <span class="glyphicon glyphicon-plus"></span>
                     </button>
-                </div> 
+                </div>  <!-- /div.form-inline -->
                 <?php
                       }
                                                             
                 ?>
                 
-            
             </div>  <!-- /div[data-role="dynamic-fields"] -->
         </div>  <!-- /div.col-md-12 -->
-    </div>  <!-- /div.row -->
+
+
+
+
+                        </div><!-- /.box-body -->
+                              
                             
 
                               <input type="hidden" value="<?php echo $resultInfo->id; ?>" name="id" id="id" />    
@@ -216,6 +312,8 @@
             container.append(new_field_group);
         }
     );
+    
+  
 });
 
 </script>

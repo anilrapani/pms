@@ -94,11 +94,11 @@
                             <div style="text-align: left;">
                            
                             <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
-                              <h4>Entry Date and Time: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
+                              <h4>Entry Date and Time: <span><?php echo $entryDetails->entry_time; // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
                              <?php if($isNotExited == false) { ?>
                                     
                           
-                            <h4>Exit Date and Time: <span><?php echo date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
+                            <h4>Exit Date and Time: <span><?php echo $entryDetails->exit_time; //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
                            
                                     <h4>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></h4>
                                     

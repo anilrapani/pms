@@ -25,9 +25,10 @@ class K_parking_model extends Common_Model {
     var $status = 'status';
     var $deleted = 'deleted';
     var $paid_to_admin = 'paid_to_admin';
-    var $terminal_id = 'terminal_id';
+    var $gate_id_entry = 'gate_id_entry';
+    var $gate_id_exit = 'gate_id_exit';
     var $exited_by = 'exited_by';
-    
+    var $customer_paid_by_cash_or_card = 'customer_paid_by_cash_or_card';
     
     function __construct() {
         parent::__construct();
@@ -65,8 +66,7 @@ class K_parking_model extends Common_Model {
             $this->db->or_like('id', $inputData['searchText']);
 
             $this->db->group_end();
-            //    $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
-        //    $this->db->where($likeCriteria);
+          
         }
         $this->db->where(
                  array(
@@ -205,5 +205,37 @@ class K_parking_model extends Common_Model {
         $query = $this->db->get();
         return $query->row();
     }
+    
+    function getReport($inputData){
+        
+        $this->db->select("sum(BaseTbl.$this->total_amount) as total_amount, BaseTbl.$this->gate_id_exit, gate.name as gate_name, BaseTbl.$this->exited_by, SUM(CASE WHEN BaseTbl.$this->customer_paid_by_cash_or_card = 1 THEN BaseTbl.$this->total_amount ELSE 0 END) as cash_amount, SUM(CASE WHEN BaseTbl.$this->customer_paid_by_cash_or_card = 2 THEN BaseTbl.$this->total_amount ELSE 0 END) as card_amount, min(BaseTbl.$this->exit_time) as first_parking_id_time_after_login, max(BaseTbl.$this->exit_time) as last_parking_id_time_after_login, min(BaseTbl.$this->id) as parking_id_from, max(BaseTbl.$this->id) as parking_id_to ");
+        $this->db->from("$this->table_name as BaseTbl");
+        $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id_exit",'left');
+        
+//        if($inputData['isTotalReportCountZero'] == FALSE)
+//            $this->db->join('k_report as report', "report.user_id = BaseTbl.$this->exited_by",'left');
+        
+                    
+                    $this->db->where("BaseTbl.$this->exited_by",$inputData['vendorId']);
+                    $this->db->where("BaseTbl.$this->exit_time !=",'0000-00-00 00:00:00');
+        $userId = $inputData['vendorId'];
+        
+        if($inputData['isTotalReportCountZero'] == FALSE) {
+            $last_parking_id_time_after_login = "BaseTbl.$this->exit_time > (select max(last_parking_id_time_after_login) from k_report where user_id = $userId)";
+            $this->db->where($last_parking_id_time_after_login);
+        }    
+        
+                    $this->db->group_by("BaseTbl.$this->gate_id_exit"); 
+                    $this->db->order_by("BaseTbl.$this->id", 'asc'); 
+                    $query = $this->db->get();
+//            echo $this->db->last_query();
+//            exit;
+        return $query->result();
+       
+                    
+        } 
+        
+        
+    
 
 }

@@ -102,6 +102,12 @@ $route['admin/vehicle/add/gate'] = "admin/vehicle/addGateView";
 $route['admin/vehicle/edit/gate/(:any)'] = "admin/vehicle/editGateView/$1";
 
 
+$route['admin/employee/deviceregistry/list'] = "admin/employee/deviceRegistryList";
+$route['admin/employee/deviceregistry/list/(:num)'] = "admin/employee/deviceRegistryList/$1";
+$route['admin/employee/add/deviceregistry'] = "admin/employee/addDeviceRegistryView";
+$route['admin/employee/edit/deviceregistry/(:any)'] = "admin/employee/editDeviceRegistryView/$1";
+
+
 
 //$route['employee/vehicle/entry/list'] = "employee/vehicle/entryList";
 //$route['employee/vehicle/entry/list/(:num)'] = "employee/vehicle/entryList/$1";
@@ -121,3 +127,10 @@ $route['employee/vehicle/exitdetails/(:any)'] = "employee/vehicle/exitdetailsbyb
 
 $route['admin/vehicle/parking/list'] = "admin/vehicle/parkingList";
 $route['admin/vehicle/parking/list/(:num)'] = "admin/vehicle/parkingList/$1";
+
+$route['employee/report/current/list'] = "employee/report/currentlist";
+$route['employee/report/current/list/(:num)'] = "employee/report/currentlist/$1";
+$route['employee/report/submitted/list'] = "employee/report/submittedlist";
+$route['employee/report/submitted/list/(:num)'] = "employee/report/submittedlist/$1";
+
+// $route['employee/report/list'] = "employee/report/myReportList";

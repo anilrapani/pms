@@ -12,7 +12,10 @@ class K_master_vehicle_gate_model extends Common_Model {
     
     var $status = 'status';
     var $deleted = 'deleted';
-    
+    var $vehicle_gate_id = 'vehicle_gate_id';
+    var $user_id = 'user_id';
+    var $device_registry_id = 'device_registry_id';
+
     function __construct() {
         parent::__construct();
         $this->setTableName($this->table_name);
@@ -104,6 +107,128 @@ class K_master_vehicle_gate_model extends Common_Model {
         $this->db->where($this->id, $id);
         $this->db->update($this->table_name, $data);
         return $this->db->affected_rows();
+    }
+    
+    function getGatesList(){
+              $this->db->select("*");
+        $this->db->from("$this->table_name");
+         $this->db->where(
+                 array(
+                     $this->status => 1,
+                     $this->deleted => 2,
+                    )
+        );
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    
+    function checkForUserAccess($inputArray){
+        $this->db->select("BaseTbl.id");
+        $this->db->from("$this->table_name as BaseTbl");
+        $this->db->join('k_master_vehicle_gate_employee as vehicle_gate_employee', 'vehicle_gate_employee.vehicle_gate_id = BaseTbl.id','left');
+        $this->db->join('K_master_device_registry as device_registry', 'device_registry.id = vehicle_gate_employee.device_registry_id','left');
+        
+        if($this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE && $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == FALSE){
+                    $this->db->group_start();
+                        $this->db->where("vehicle_gate_employee.$this->user_id" ,0);
+                        $this->db->or_where("vehicle_gate_employee.$this->user_id" ,$inputArray['user_id']);
+                    $this->db->group_end();
+                    
+                    $this->db->where(
+                         array(
+                             "vehicle_gate_employee.$this->status" => 1,
+                             "vehicle_gate_employee.$this->deleted" => 2,
+                    ));
+                    
+        } 
+        
+        if($this->config->item('enable_gate_restriction_for_employee_at_employee_login') == FALSE && $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == TRUE){
+                    $this->db->group_start();
+                        
+                        $this->db->group_start();
+                            $this->db->where("vehicle_gate_employee.$this->device_registry_id" ,0);
+                            $this->db->where("vehicle_gate_employee.$this->status" , 1);
+                            $this->db->where("vehicle_gate_employee.$this->deleted" , 2);
+                        $this->db->group_end();
+                        
+                        $this->db->or_group_start();
+                                $this->db->where('device_registry.ipaddress' , $inputArray['ipaddress']);
+                                $this->db->where("device_registry.$this->status" , 1);
+                                $this->db->where("device_registry.$this->deleted", 2);
+                        $this->db->group_end();
+                        
+                    $this->db->group_end();
+                    
+                     
+                    
+                    
+        }
+         
+         
+            if($this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE && $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == TRUE){
+                $this->db->group_start();
+                    $this->db->group_start();
+                        $this->db->where(
+                                array(
+                                    "vehicle_gate_employee.$this->user_id" => 0,
+                                    "vehicle_gate_employee.$this->device_registry_id" => 0,
+                                    "vehicle_gate_employee.$this->status" => 1,
+                                    "vehicle_gate_employee.$this->deleted" => 2
+                                )
+                        );
+                    $this->db->group_end();
+
+                    $this->db->or_group_start();
+                        $this->db->where(
+                                array(
+                                    "vehicle_gate_employee.$this->user_id" => $inputArray['user_id'],
+                                    "vehicle_gate_employee.$this->device_registry_id" => 0,
+                                    "vehicle_gate_employee.$this->status" => 1,
+                                    "vehicle_gate_employee.$this->deleted" => 2
+                                )
+                        );
+                    $this->db->group_end();    
+
+                    $this->db->or_group_start();
+                        $this->db->where(
+                                array(
+                                    "vehicle_gate_employee.$this->user_id" => 0,
+                                    'device_registry.ipaddress' => $inputArray['ipaddress'],
+                                    "vehicle_gate_employee.$this->status" => 1,
+                                    "vehicle_gate_employee.$this->deleted" => 2,
+                                    "device_registry.$this->status" => 1,
+                                    "device_registry.$this->deleted" => 2
+                                )
+                        );
+                    $this->db->group_end();
+
+                    $this->db->or_group_start();
+                        $this->db->where(
+                                array(
+                                    "vehicle_gate_employee.$this->user_id" => $inputArray['user_id'],
+                                    'device_registry.ipaddress' => $inputArray['ipaddress'],
+                                    "vehicle_gate_employee.$this->status" => 1,
+                                    "vehicle_gate_employee.$this->deleted" => 2,
+                                    "device_registry.$this->status" => 1,
+                                    "device_registry.$this->deleted" => 2
+                                )
+                        );
+                    $this->db->group_end();
+                     $this->db->group_end();
+            }
+
+         
+         $this->db->where(
+                 array(
+                     "BaseTbl.$this->id" => $inputArray['vehicle_gate_id'],
+                     "BaseTbl.$this->status" => 1,
+                     "BaseTbl.$this->deleted" => 2
+                     )
+        );
+         
+        $query = $this->db->get();
+        return $query->result();
     }
 
 }

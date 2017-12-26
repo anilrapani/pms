@@ -17,9 +17,12 @@ class Employee extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model('k_master_user_company_model');
-        $this->load->model('k_master_government_proof_type_model');
-        $this->load->model('k_master_user_shift_model');
+        $this->load->model(array(   'k_master_user_company_model',
+                                    'k_master_government_proof_type_model',
+                                    'k_master_user_shift_model',
+                                    'k_master_device_registry_model',
+                                    'user_model'    )
+                           );
         $this->isLoggedIn();
     }
 
@@ -598,6 +601,202 @@ class Employee extends BaseController {
             }
         }
     }
+    
+    
+    
+    /**
+     * This function is used to load the company list
+     */
+    function deviceRegistryList() {
+        
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+
+            $searchText = $this->input->post('searchText');
+            $data['searchText'] = $searchText;
+
+            $data['totalCount'] = true;
+            $data['searchText'] = $searchText;
+
+            $result = $this->k_master_device_registry_model->getlist($data);
+            $count = $result['count'];
+            $data['totalCount'] = false;
+            $segment = 5;
+            $returns = $this->paginationCompress("admin/employee/deviceregistry/list/", $count, PER_PAGE_RECORDS, $segment);
+
+            $data['page'] = $returns['page'];
+            $data['offset'] = $returns['offset'];
+
+            $data['records'] = $this->k_master_device_registry_model->getList($data);
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Device Registry List';
+            $data['title'] = 'Device Registry';
+            $data['sub_title'] = 'List';
+
+            $this->loadViews("admin/employee/deviceregistry/list", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addDeviceRegistryView() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $data = array();
+
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Device';
+            $data['title'] = "Device Registry";
+            $data['userListArray'] = $this->user_model->getUserList();
+            
+
+            $data['sub_title'] = "Add";
+            $this->loadViews("admin/employee/deviceregistry/add", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addDeviceRegistry() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('ipaddress', 'Ipaddress', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('user_id', 'User', 'trim|required|max_length[128]');
+           
+            if ($this->form_validation->run() == FALSE) {
+                $this->addDeviceRegistryView();
+            } else {
+                $name = ucwords($this->input->post('name'));
+                $ipaddress = $this->input->post('ipaddress');
+                $user_id = $this->input->post('user_id');
+                
+                
+                $insertData = array(
+                    'name' => $name,
+                    'ipaddress' => $ipaddress,
+                    'user_id' => $user_id,
+                    'status' => 1,
+                    'deleted' => 2,
+                    'created_by' => $this->vendorId,
+                    'created_time' => date('Y-m-d H:i:s')
+                );
+
+                $vehicle_deviceregistry_id = $this->k_master_device_registry_model->insert($insertData);
+
+                if ($vehicle_deviceregistry_id > 0) {
+                    $this->session->set_flashdata('success', 'New device registry successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Device Registry failed');
+                }
+
+                $this->global['pageTitle'] = PROJECT_NAME . ' : Device Registry';
+                $data['title'] = "Device Registry";
+
+                $data['sub_title'] = "Add";
+                redirect('admin/employee/deviceregistry/list');
+                            }
+        }
+    }
+
+    /**
+     * This function is used to load Device Registry edit information
+     * @param number $id : Optional : This is gate id
+     */
+    function editDeviceRegistryView($id = NULL) {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            if ($id == null) {
+                redirect('admin/employee/deviceregistrylist');
+            }
+            
+            $data['resultInfo'] = $this->k_master_device_registry_model->getDetails($id);
+            $data['userListArray'] = $this->user_model->getUserList();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Edit Device Registry';
+            $data['title'] = "Device Registry";
+
+            $data['sub_title'] = "Edit";
+
+            $this->loadViews("admin/employee/deviceregistry/edit", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to edit the gate information
+     */
+    function editDeviceRegistry() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+           
+            
+            $this->load->library('form_validation');
+
+            $id = $this->input->post('id');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('ipaddress', 'Ipaddress', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('user_id', 'User', 'trim|required|max_length[128]');
+            
+
+            if ($this->form_validation->run() == FALSE) {
+                
+                redirect("admin/employee/edit/deviceregistry/$id");
+            } else {
+                $name = ucwords($this->input->post('name'));
+                $ipaddress = $this->input->post('ipaddress');
+                $user_id = $this->input->post('user_id');
+                $status = $this->input->post('status');
+                
+                $updateInfo = array(
+                    'name' => $name,
+                    'ipaddress' => $ipaddress,
+                    'user_id' => $user_id,
+                    'status' => $status,
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s')
+                );
+                
+                $result = $this->k_master_device_registry_model->update($updateInfo, $id);
+                
+                if ($result == true) {
+                    $this->session->set_flashdata('success', 'Deveice Registry updated successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Device Registry updation failed');
+                }
+
+                redirect("admin/employee/edit/deviceregistry/$id");
+            }
+        }
+    }
+
+    /**
+     * This function is used to delete the the record using id
+     * @return boolean $result : TRUE / FALSE
+     */
+    function deleteDeviceRegistry() {
+
+        if ($this->isAdmin() == TRUE) {
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $data = array('deleted' => 1, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_device_registry_model->delete($id, $data);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
+    
     
     
     function pageNotFound() {

@@ -389,13 +389,14 @@ class Vehicle extends BaseController {
                     'image_vehicle_number_plate' => $image_vehicle_number_plate,
                     'image_driving_license_number' => $image_driving_license_number,
                     'driver_name' => $driver_name,
+                    'gate_id_entry' => $this->login_gate_id,
                     'rc' => $rc,
                     'entry_time' => date('Y-m-d H:i:s'),
                     'barcode' =>  $code, 
                     'status' => 1,
                     'deleted' => 2,
-                    'updated_by' => $this->vendorId,
-                    'updated_time' => date('Y-m-d H:i:s')
+                    'created_by' => $this->vendorId,
+                    'created_time' => date('Y-m-d H:i:s')
                     
                 );
                    
@@ -597,12 +598,16 @@ class Vehicle extends BaseController {
             
             
             $this->form_validation->set_rules('entryId', 'Vehicle Entry Id', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('customer_paid_by_cash_or_card', 'Cash or Card', 'trim|required|max_length[128]');
+            
             // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
                 
             if ($this->form_validation->run() == FALSE) {
                 $this->exitDetailsView();
             } else {
                 $entryId = $this->input->post('entryId');
+                $customer_paid_by_cash_or_card = $this->input->post('customer_paid_by_cash_or_card');
+                
             }
             $data['entryId'] = $entryId;
             $entryDetails = $this->k_parking_model->getDetails($entryId);
@@ -663,6 +668,9 @@ class Vehicle extends BaseController {
                    $vehicleExitInfo = array(
                     'total_amount' => $amount,
                     'exit_time' => date('Y-m-d H:i:s'),
+                    'customer_paid_by_cash_or_card' => $customer_paid_by_cash_or_card,   
+                    'gate_id_exit' => $this->login_gate_id,
+                    'exited_by' => $this->vendorId,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s'),
                     'image_vehicle_number_plate_exit' => $image_vehicle_number_plate_exit
