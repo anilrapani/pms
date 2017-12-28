@@ -156,7 +156,7 @@
         <?php } ?>
                         <div class="box box-primary ">
                             <div class="box-header">
-                                <form role="form" id="addEntry" action="http://localhost/pms/employee/vehicle/generateexitreciept" method="post" enctype="multipart/form-data" novalidate="novalidate">
+                                <form role="form" id="addEntry" action="<?php echo base_url() ?>employee/vehicle/generateexitreciept" method="post" enctype="multipart/form-data" novalidate="novalidate">
                                 <div class="box-footer" style="float:right;" >
                                                                     <input type="hidden" id="entryId" name="entryId" value="<?php echo $entryDetails->id; ?>" />
                                         <input type="submit" class="btn btn-primary"  value="Submit">

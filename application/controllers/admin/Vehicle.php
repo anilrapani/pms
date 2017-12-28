@@ -1,5 +1,4 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/BaseController.php';
 /*
  * Copyright (C) 2017 Kastech
@@ -654,5 +653,3 @@ class Vehicle extends BaseController {
     }
 
 }
-?>
-

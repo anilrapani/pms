@@ -1,5 +1,4 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/BaseController.php';
 /*
  * Copyright (C) 2017 Kastech
@@ -53,7 +52,7 @@ class Report extends BaseController {
         $this->global['assets'] = array(
                                         'cssTopArray'     => array(),
                                         'cssBottomArray'  => array(),
-                                        'jsTopArray'      => array(base_url() . 'assets/plugins/chartjs/chart'),
+                                        'jsTopArray'      => array(base_url() . 'assets/plugins/chartjs/Chart'),
                                         'jsBottomArray'   => array()
                                         );
         
@@ -201,11 +200,13 @@ class Report extends BaseController {
                  $this->load->model('k_report_model');
                 $result = $this->k_report_model->update($updatedInfo, $report_id);
           
-                if ($result == true) {
+               /* if ($result == true) {
                     $this->session->set_flashdata('success', 'Updated successfully');
                 } else {
                     $this->session->set_flashdata('error', 'Updation failed');
                 }
+                * 
+                */
                 $gate_id = $this->input->get('gate_id');
                 $gate_id = (isset($gate_id) && $gate_id > 0)?$gate_id:0;
                 $url_params.= 'gate_id='.$gate_id;
@@ -269,5 +270,3 @@ class Report extends BaseController {
     }
 
 }
-?>
-

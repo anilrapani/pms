@@ -1,6 +1,4 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 require_once 'Common_model.php';
 
 class K_master_vehicle_type_model extends Common_Model {

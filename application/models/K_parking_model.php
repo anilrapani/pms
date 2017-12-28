@@ -1,6 +1,4 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 require_once 'Common_model.php';
 
 class K_parking_model extends Common_Model {

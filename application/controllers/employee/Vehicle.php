@@ -1,5 +1,4 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/BaseController.php';
 /*
  * Copyright (C) 2017 Kastech
@@ -659,8 +658,8 @@ class Vehicle extends BaseController {
                 if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate_exit'))
                 {
                          if(!$this->config->item('disable_uploadimage_exit')) { 
-                       $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
-                       $image_error = true;
+//                            $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
+//                            $image_error = true;
                          }
                 }  else
                 {
@@ -997,5 +996,3 @@ class Vehicle extends BaseController {
     }
 
 }
-?>
-

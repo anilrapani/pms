@@ -1,6 +1,4 @@
 <?php
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
 require_once 'Common_model.php';
 
 class K_master_vehicle_gate_model extends Common_Model {
@@ -127,7 +125,7 @@ class K_master_vehicle_gate_model extends Common_Model {
         $this->db->select("BaseTbl.id,BaseTbl.name as gate_name, (CASE WHEN BaseTbl.$this->type = 1 THEN 'entry' ELSE 'exit' END) as gate_type ");
         $this->db->from("$this->table_name as BaseTbl");
         $this->db->join('k_master_vehicle_gate_employee as vehicle_gate_employee', 'vehicle_gate_employee.vehicle_gate_id = BaseTbl.id','left');
-        $this->db->join('K_master_device_registry as device_registry', 'device_registry.id = vehicle_gate_employee.device_registry_id','left');
+        $this->db->join('k_master_device_registry as device_registry', 'device_registry.id = vehicle_gate_employee.device_registry_id','left');
         
         if($this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE && $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == FALSE){
                     $this->db->group_start();

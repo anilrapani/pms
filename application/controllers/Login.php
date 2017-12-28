@@ -113,10 +113,9 @@ class Login extends CI_Controller
                         $gate_access = $this->k_master_vehicle_gate_model->checkForUserAccess($inputArray);
   
                         if(count($gate_access) > 0){
-                            echo 'if';
+                            
                         }else{
-                            echo 'else'; 
-                                $this->session->set_flashdata('error', 'Gate Access denied!');
+                            $this->session->set_flashdata('error', 'Gate Access denied!');
                             redirect('/login');
                             
                         }
@@ -139,7 +138,6 @@ class Login extends CI_Controller
             else
             {
                 $this->session->set_flashdata('error', 'Email or password mismatch');
-                
                 redirect('/login');
             }
         }
