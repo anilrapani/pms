@@ -66,7 +66,7 @@
                                         <label for="status">Status</label>
                                         <select class="form-control required" id="status" name="status">
                                             <?php
-                                            $status_array = STATUS_ARRAY;
+                                            $status_array = json_decode(STATUS_ARRAY,true);
                                             if(!empty($status_array))
                                             {
                                                 foreach ($status_array as $key => $value)

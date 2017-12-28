@@ -1,7 +1,7 @@
 <?php
-require_once 'common_model.php';
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
+require_once 'Common_model.php';
 
 class K_report_model extends Common_Model {
     
@@ -260,7 +260,7 @@ class K_report_model extends Common_Model {
         
         function getReportSummaryData($inputData){
               // $this->db->select("sum(total)");
-        $this->db->select('baseTbl.gate_id, gate.name as gate_name, sum(BaseTbl.total_amount) as total_amount, sum(BaseTbl.cash_amount) as cash_amount,sum(BaseTbl.card_amount) as card_amount');
+        $this->db->select('BaseTbl.gate_id, gate.name as gate_name, sum(BaseTbl.total_amount) as total_amount, sum(BaseTbl.cash_amount) as cash_amount,sum(BaseTbl.card_amount) as card_amount');
         $this->db->from("$this->table_name as BaseTbl");
         // $this->db->join('k_report as report', "report.user_id = BaseTbl.$this->gate_id",'left');
         $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id",'left');

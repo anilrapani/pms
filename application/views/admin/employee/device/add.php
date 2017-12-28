@@ -79,7 +79,7 @@
                                         <select class="form-control required" id="type" name="type">
                                             <option value='' >Select Type</option>
                                             <?php
-                                            $gate_type_array = GATE_TYPE_ARRAY;
+                                            $gate_type_array = json_decode(GATE_TYPE_ARRAY,TRUE);
                                             if(!empty($gate_type_array))
                                             {
                                                 foreach ($gate_type_array as $key => $value)

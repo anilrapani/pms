@@ -1,5 +1,7 @@
-<?php if(!defined('BASEPATH')) exit('No direct script access allowed');
-require_once 'common_model.php';
+<?php 
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
+require_once 'Common_model.php';
 class User_model extends Common_Model
 {
      var $id ='id';

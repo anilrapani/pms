@@ -79,7 +79,7 @@
                                         <select class="form-control required" id="type" name="type">
                                             
                                             <?php
-                                            $gate_type_array = GATE_TYPE_ARRAY;
+                                            $gate_type_array = json_decode(GATE_TYPE_ARRAY,TRUE);
                                             if(!empty($gate_type_array))
                                             {
                                                 foreach ($gate_type_array as $key => $value)
@@ -98,7 +98,7 @@
                                         <label for="status">Status</label>
                                         <select class="form-control required" id="status" name="status">
                                             <?php
-                                            $status_array = STATUS_ARRAY;
+                                            $status_array = json_decode(STATUS_ARRAY,true);
                                             if(!empty($status_array))
                                             {
                                                 foreach ($status_array as $key => $value)

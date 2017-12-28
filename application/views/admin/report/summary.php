@@ -247,7 +247,7 @@
                       <td><?php echo $record->last_parking_id_time_after_login; ?></td>
                       <td><?php echo $record->parking_id_from; ?></td>
                       <td><?php echo $record->parking_id_to; ?></td>
-                      <td><?php $report_paid_to_admin = REPORT_PAID_TO_ADMIN;
+                      <td><?php $report_paid_to_admin = json_decode(REPORT_PAID_TO_ADMIN,TRUE);
                                 echo $report_paid_to_admin[$record->paid_to_admin];
                           ?></td>
                       <td class="text-center">

@@ -130,14 +130,15 @@
                     
                 </div>
                 </div>
-            <?php if($isNotExited == false) {
+            <?php if($isNotExited == false && !$this->config->item('disable_uploadimage_exit')) {
+                
                 ?>
             <div class="col-md-6">
                         <div class="box box-primary">
                             <div class="box-body">
 
                                 <div class="clearfix" >
-                                    <label id="display_label">Preview Entry Number Plate</label>
+                                    <label id="display_label">Preview Exit Number Plate</label>
                                 </div>
 
                                 <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/exit/<?php echo $entryDetails->image_vehicle_number_plate_exit; ?>" alt="" style="width:400px">

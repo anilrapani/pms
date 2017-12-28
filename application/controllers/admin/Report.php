@@ -1,5 +1,5 @@
 <?php
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/BaseController.php';
 /*
  * Copyright (C) 2017 Kastech
@@ -21,7 +21,7 @@ class Report extends BaseController {
         $this->isLoggedIn();
     }
     function reportchart(){
-        
+        $this->global['pageTitle'] = PROJECT_NAME . ' : Report Chart';
         $data = array();
         $this->load->model(array('k_parking_model','k_report_model'));
         $data['group_by'] = array('gate_id');

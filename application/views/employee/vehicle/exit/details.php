@@ -122,7 +122,7 @@
                                         <select class="form-control required" id="customer_paid_by_cash_or_card" name="customer_paid_by_cash_or_card">
                                             <option value="" >Select Cash or Card</option>
                                             <?php
-                                            $customer_paid_by_cash_or_card = CUSTOMER_PAID_BY_CASH_OR_CARD_ARRAY;
+                                            $customer_paid_by_cash_or_card = json_decode(CUSTOMER_PAID_BY_CASH_OR_CARD_ARRAY,TRUE);
                                             if(!empty($customer_paid_by_cash_or_card))
                                             {
                                                 foreach ($customer_paid_by_cash_or_card as $key => $value)
@@ -219,7 +219,8 @@
 
                         </div>
                     </div>
-<!--     rEVERT                   <div class="col-md-6">
+                    <?php if(!$this->config->item('disable_uploadimage_exit')) { ?>
+            <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-body">
                                         <label id="display_label">Preview Exit Number Plate</label>
@@ -228,8 +229,8 @@
                         </div>
                          <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> 
                     </div>
-                </div>-->
-                    
+                </div>
+                    <?php } ?>
                     <div class="col-md-6">
                         <div class="box box-primary">
                             <div class="box-body">

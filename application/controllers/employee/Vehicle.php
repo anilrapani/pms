@@ -1,5 +1,5 @@
 <?php
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 require APPPATH . '/libraries/BaseController.php';
 /*
  * Copyright (C) 2017 Kastech
@@ -373,7 +373,7 @@ class Vehicle extends BaseController {
 		//load in folder Zend
 		$this->zend->load('Zend/Barcode');
 		//generate barcode
-                $code = time().'1222';
+                $code = mt_rand(1000,10000).time().mt_rand(1000,10000);
 		$file = Zend_Barcode::draw('code128', 'image', array('text'=>$code), array());
                 
                 //$code = time().'1222';
