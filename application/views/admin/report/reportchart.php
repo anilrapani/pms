@@ -62,15 +62,11 @@
             
             
             
-              <div class="col-xs-6">
-              <div class="box">
-                <div class="box-header">
-                    <h3 class="box-title">Exit Terminal's Pending Amount</h3>
-                </div>
-              </div>   
-            </div>
             <div class="col-xs-6">
                     <div class="box">
+                          <div class="box-header">
+                    <h3 class="box-title">Exit Terminal's Pending Amount</h3>
+                </div>
             <div class="box-body table-responsive no-padding">
                   <table class="table table-hover">
                     <tbody><tr>
