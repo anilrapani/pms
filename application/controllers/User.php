@@ -151,7 +151,7 @@ class User extends BaseController
                                   'user_company_id'    => $user_company_id,
                                   'shift_id'   => $shift_id,
                                   'created_by'=>$this->vendorId,
-                                  'create_time'=>date('Y-m-d H:i:s')
+                                  'created_time'=>date('Y-m-d H:i:s')
                     );
                 
                 $this->load->model('user_model');
@@ -257,7 +257,7 @@ class User extends BaseController
                 {
                     $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'role_id'=>$roleId,
                         'name'=>ucwords($name), 'mobile'=>$mobile, 'updated_by'=>$this->vendorId, 
-                        'update_time'=>date('Y-m-d H:i:s'));
+                        'updated_time'=>date('Y-m-d H:i:s'));
                 }
                 
                 $result = $this->user_model->editUser($userInfo, $userId);
@@ -292,7 +292,7 @@ class User extends BaseController
         else
         {
             $userId = $this->input->post('userId');
-            $userInfo = array('deleted'=>1,'updated_by'=>$this->vendorId, 'update_time'=>date('Y-m-d H:i:s'));
+            $userInfo = array('deleted'=>1,'updated_by'=>$this->vendorId, 'updated_time'=>date('Y-m-d H:i:s'));
            
             $result = $this->user_model->deleteUser($userId, $userInfo);
             

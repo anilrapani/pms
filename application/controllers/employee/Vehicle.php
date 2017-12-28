@@ -235,7 +235,8 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addEntryView($entryId = 0) {
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+    
+        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
             $this->loadThis();
         } else {
             $data = array();
@@ -295,7 +296,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addEntry() {
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -351,8 +352,10 @@ class Vehicle extends BaseController {
     
                 if ( ! $this->dl_upload->do_upload('image_driving_license_number') )
                 {
+                    if(!$this->config->item('disable_mandatory_field_entry')) { 
                        $this->session->set_flashdata('error','Driving License Image: '. $this->dl_upload->display_errors());
                        $image_error = true;
+                    } 
                        
                 } else
                 {
@@ -389,7 +392,7 @@ class Vehicle extends BaseController {
                     'image_vehicle_number_plate' => $image_vehicle_number_plate,
                     'image_driving_license_number' => $image_driving_license_number,
                     'driver_name' => $driver_name,
-                    'gate_id_entry' => $this->login_gate_id,
+                    'gate_id_entry' => $this->global['gateDetails']->id,
                     'rc' => $rc,
                     'entry_time' => date('Y-m-d H:i:s'),
                     'barcode' =>  $code, 
@@ -428,9 +431,10 @@ class Vehicle extends BaseController {
     
     
     function exitDetailsView(){
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
+            
            $data = array();
            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit';
            $data['titleScannerEntry'] = "Scanner entry";
@@ -449,9 +453,10 @@ class Vehicle extends BaseController {
     }
     
     function exitDetails(){
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
+            
             $data = array();
             $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit Details';
             $data['title'] = "Entry No";
@@ -531,7 +536,7 @@ class Vehicle extends BaseController {
     
     function exitDetailsByBarcode($barcode){
         
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
             $data = array();
@@ -586,7 +591,7 @@ class Vehicle extends BaseController {
     }
     
     function generateExitReciept(){
-           if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+           if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
             $data = array();
@@ -598,8 +603,9 @@ class Vehicle extends BaseController {
             
             
             $this->form_validation->set_rules('entryId', 'Vehicle Entry Id', 'trim|required|max_length[128]');
-            $this->form_validation->set_rules('customer_paid_by_cash_or_card', 'Cash or Card', 'trim|required|max_length[128]');
-            
+             if(!$this->config->item('disable_uploadimage_exit')) {
+                $this->form_validation->set_rules('customer_paid_by_cash_or_card', 'Cash or Card', 'trim|required|max_length[128]');
+             }
             // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
                 
             if ($this->form_validation->run() == FALSE) {
@@ -607,8 +613,8 @@ class Vehicle extends BaseController {
             } else {
                 $entryId = $this->input->post('entryId');
                 $customer_paid_by_cash_or_card = $this->input->post('customer_paid_by_cash_or_card');
-                
             }
+            
             $data['entryId'] = $entryId;
             $entryDetails = $this->k_parking_model->getDetails($entryId);
             
@@ -652,9 +658,10 @@ class Vehicle extends BaseController {
                 $image_error = false;
                 if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate_exit'))
                 {
+                         if(!$this->config->item('disable_uploadimage_exit')) { 
                        $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
                        $image_error = true;
-                       
+                         }
                 }  else
                 {
                         $upload_data_image_vehicle_number_plate_exit = array('upload_data' => $this->number_plate_upload->data());
@@ -669,7 +676,7 @@ class Vehicle extends BaseController {
                     'total_amount' => $amount,
                     'exit_time' => date('Y-m-d H:i:s'),
                     'customer_paid_by_cash_or_card' => $customer_paid_by_cash_or_card,   
-                    'gate_id_exit' => $this->login_gate_id,
+                    'gate_id_exit' => $this->global['gateDetails']->id,
                     'exited_by' => $this->vendorId,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s'),

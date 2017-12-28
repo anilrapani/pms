@@ -84,10 +84,8 @@
 <!--                        <h3 class="box-title">Print Preview</h3>-->
                         <div class="box-body printTicket" >
                             <div style="text-align: center; ">
-                            <h2>Employee Company</h2>
-                            <h3>Cargo Terminal 1?</h3>
-                            <h3>Bangalore International Airport?</h3>
-                            <h3>Entry Ticket</h3>
+                            <h2><?php echo $login_user_company_name; ?></h2>
+                            <h3><?php echo $gateDetails->name; ?></h3>
                             <h3><img src="<?php echo base_url().'/barcode/'.$entryDetails->barcode.'.png';?>"</h3>
                             
                             </div>
@@ -224,7 +222,8 @@
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="vehicle_number">Vehicle Number</label>
-                                        <input type="text" class="form-control required" id="vehicle_number" name="vehicle_number" value="">
+                                        
+                    <input type="text" class="form-control <?php if(!$this->config->item('disable_mandatory_field_entry')) { ?>required <?php } ?>" id="vehicle_number" name="vehicle_number" value="">
                                     </div>
                                 </div>
                                 
@@ -252,7 +251,7 @@
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="image_driving_license_number">Driving License Number Image</label>
-                                        <input type="file" class="form-control required" id="image_driving_license_number" name="image_driving_license_number" value="">
+                                        <input type="file" class="form-control <?php if(!$this->config->item('disable_mandatory_field_entry')) { ?>required<?php } ?>" id="image_driving_license_number" name="image_driving_license_number" value="">
                                         
                                     </div>
                                 </div>

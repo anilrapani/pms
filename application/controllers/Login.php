@@ -75,6 +75,7 @@ class Login extends CI_Controller
             $gate_id = $this->input->post('gate_id');
             
             $result = $this->login_model->loginMe($email, $password);
+            
             $userStatus = 2;
             $sessionArray['role'] = 0;
             if(count($result) > 0)
@@ -85,6 +86,7 @@ class Login extends CI_Controller
                                             'role'=>$res->role_id,
                                             'roleText'=>$res->role_name,
                                             'name'=>$res->user_name,
+                                            'login_user_company_name'=>$res->company_name,
                                             'isLoggedIn' => TRUE
                                     );
                                     
@@ -98,18 +100,18 @@ class Login extends CI_Controller
                     $this->session->set_flashdata('error', 'User is not activated!');
                     redirect('/login');
                 }
-                
+                 $this->load->model('k_master_vehicle_gate_model');
                 if($sessionArray['role'] != 2 && $this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE || $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == TRUE){
-                        $this->load->model('k_master_vehicle_gate_model');
+                       
                         $ip = $this->input->ip_address();
                         $inputArray = array(
                             'user_id'   =>  $sessionArray['userId'],
                             'ipaddress' =>  $ip,
-                            'vehicle_gate_id' =>   $gate_id
+                            'vehicle_gate_id' =>   $gate_id,
                         );
 
                         $gate_access = $this->k_master_vehicle_gate_model->checkForUserAccess($inputArray);
-                    
+  
                         if(count($gate_access) > 0){
                             echo 'if';
                         }else{
@@ -125,9 +127,12 @@ class Login extends CI_Controller
 //                        var_dump($gate_access)."<br>";
 //                        exit;
 
-                        
+                 
                 }
-                 $sessionArray['login_gate_id'] = $gate_id;
+                 $gateDetails = $this->k_master_vehicle_gate_model->getDetails($gate_id);
+                 $sessionArray['gateDetails'] = $gateDetails;          
+                 
+                 
                 $this->session->set_userdata($sessionArray);
                 redirect('/dashboard');
             }
@@ -174,7 +179,7 @@ class Login extends CI_Controller
                 $this->load->helper('string');
                 $data['email'] = $email;
                 $data['activation_id'] = random_string('alnum',15);
-                $data['create_time'] = date('Y-m-d H:i:s');
+                $data['created_time'] = date('Y-m-d H:i:s');
                 $data['agent'] = getBrowserAgent();
                 $data['client_ip'] = $this->input->ip_address();
                 

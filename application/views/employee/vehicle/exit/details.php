@@ -35,7 +35,7 @@
                     <div class="input-group">
                         <input type="text" name="barcode" id="barcodeEntryId" autofocus class="form-control input-sm pull-right" style="width: 150px;" placeholder="Scan Barcode" value="" >
                         <div class="input-group-btn">
-                            <button class="btn btn-sm btn-default searchList"><i class="fa fa-search"></i></button>
+                            <button class="btn btn-sm btn-default searchList"><i class="fa fa-barcode"></i></button>
                         </div>
                     </div>
                 </form>
@@ -108,13 +108,14 @@
 
 
         <?php if ($isNewEntry == false && $isNotExited == true) { ?>
-                            <form role="form" id="addEntry" action="<?php echo base_url() ?>employee/vehicle/generateexitreciept" method="post" role="form" enctype="multipart/form-data">
+<!--                            <form role="form" id="addEntry" action="<?php echo base_url() ?>employee/vehicle/generateexitreciept" method="post" role="form" enctype="multipart/form-data">
                                 <input type="hidden" id="entryId" name="entryId" value="<?php echo $entryDetails->id; ?>" />
                                 <div class="box box-primary ">
                                     <div class="box-header">
                                         <h3 class="box-title">Preview Details</h3>
                                     </div>
                                     <div class="box-body " >
+                                        <?php      if(!$this->config->item('disable_cashtype_exit')) {  ?>
                                           <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Cash or Card</label>
@@ -135,6 +136,8 @@
                                         </select>
                                     </div>
                                 </div>
+                                        <?php } ?>
+                                        <?php      if(!$this->config->item('disable_uploadimage_exit')) {  ?>
                                         <div class="col-md-6">                                
                                             <div class="form-group">
                                                 <label for="image_vehicle_number_plate_exit">Exit Vehicle Number Plate Image</label>
@@ -142,18 +145,25 @@
 
                                             </div>
                                         </div>
-                                      
+                                        <?php } ?>
                                     </div>
                                     <div class="box-footer">
                                         <input type="submit" class="btn btn-primary" value="Submit" />
                                         <input type="reset" class="btn btn-default" value="Reset" />
                                     </div>
                                 </div>
-                            </form>
+                            </form>-->
         <?php } ?>
                         <div class="box box-primary ">
                             <div class="box-header">
-                                 <h3 class="box-title">Preview Details<?php //echo $sub_title . ' No : ' . $entryId; ?></h3> <?php if ($isNewEntry == false) { ?><input type="submit" class="btn btn-primary float-right" style="float:right;"value="Print"><?php } ?>
+                                <form role="form" id="addEntry" action="http://localhost/pms/employee/vehicle/generateexitreciept" method="post" enctype="multipart/form-data" novalidate="novalidate">
+                                <div class="box-footer" style="float:right;" >
+                                                                    <input type="hidden" id="entryId" name="entryId" value="<?php echo $entryDetails->id; ?>" />
+                                        <input type="submit" class="btn btn-primary"  value="Submit">
+                                        <?php if ($isNewEntry == false) { ?><input type="reset" class="btn btn-primary float-right" value="Print"><?php } ?>
+                                </div>
+                                </form>
+                                 <h3 class="box-title">Preview Details<?php //echo $sub_title . ' No : ' . $entryId; ?></h3> 
 <!--                                <br>
                                 <br>
                                 <h3 class="box-title">Preview Details</h3>-->
@@ -162,10 +172,8 @@
                                 <?php if($isNotExited == false) { ?>
                                 
                                 <div style="text-align: center; ">
-                                    <h2>Employee Company</h2>
-                                    <h3>Cargo Terminal 1?</h3>
-                                    <h3>Bangalore International Airport?</h3>
-                                    <h3>Exit Ticket</h3>
+                                    <h2><?php echo $login_user_company_name; ?></h2>
+                                    <h3><?php echo $gateDetails->name; ?></h3>
                                     <h3><img src="<?php echo base_url().'/barcode/'.$entryDetails->barcode.'.png';?>"</h3>
                                 </div>
                                 <?php } ?>
@@ -179,7 +187,7 @@
                                         <?php if($isNotExited == false) {
                                         
                                     ?>
-                                    <h4>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></h4>
+                                    <h4><b>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></b></h4>
                                     <?php
                                     } ?>
                                     <h4>Vehicle : <span><?php echo $entryDetails->number_of_wheels; ?>W</span></h4>
@@ -211,16 +219,16 @@
 
                         </div>
                     </div>
-                        <div class="col-md-6">
+<!--     rEVERT                   <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-body">
                                         <label id="display_label">Preview Exit Number Plate</label>
                                          <img id="display_number_plate_image_exit" src="<?php echo base_url() ?>/assets/images/upload/numberplate/exit/<?php echo $entryDetails->image_vehicle_number_plate_exit; ?>" alt="" style="width:500px" />
                                          
                         </div>
-                        <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
+                         <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> 
                     </div>
-                </div>
+                </div>-->
                     
                     <div class="col-md-6">
                         <div class="box box-primary">

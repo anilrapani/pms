@@ -161,7 +161,7 @@
                                         </select>
                                     </div>
                                 </div>    
-                                  <div class="col-md-6">
+<!--                                  <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="shift_id">Employee Shift</label>
                                         <select class="form-control required" id="shift_id" name="shift_id">
@@ -179,7 +179,7 @@
                                             ?>
                                         </select>
                                     </div>
-                                </div>   
+                                </div>   -->
                               
                             </div>
                         </div><!-- /.box-body -->

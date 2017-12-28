@@ -73,7 +73,7 @@ class K_master_vehicle_gate_model extends Common_Model {
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->name,$this->type,$this->status");
+        $this->db->select("$this->id,$this->name,$this->type,$this->status,(CASE WHEN $this->type = 1 THEN 'entry' ELSE 'exit' END) as type_name");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
@@ -124,7 +124,7 @@ class K_master_vehicle_gate_model extends Common_Model {
     
     
     function checkForUserAccess($inputArray){
-        $this->db->select("BaseTbl.id");
+        $this->db->select("BaseTbl.id,BaseTbl.name as gate_name, (CASE WHEN BaseTbl.$this->type = 1 THEN 'entry' ELSE 'exit' END) as gate_type ");
         $this->db->from("$this->table_name as BaseTbl");
         $this->db->join('k_master_vehicle_gate_employee as vehicle_gate_employee', 'vehicle_gate_employee.vehicle_gate_id = BaseTbl.id','left');
         $this->db->join('K_master_device_registry as device_registry', 'device_registry.id = vehicle_gate_employee.device_registry_id','left');

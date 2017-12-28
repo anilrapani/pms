@@ -71,7 +71,8 @@
           <!-- Sidebar toggle button-->
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
-          </a><?php echo $gate_id; ?>
+            <?php echo "At ".$gateDetails->name; ?>
+          </a>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <!-- User Account: style can be found in dropdown.less -->
@@ -165,16 +166,31 @@
                           
               </ul>
             </li>
-            <li class="treeview">
-                            <a href="<?php echo base_url(); ?>admin/vehicle/parking/list" >
-                              <i class="fa fa-ticket"></i>
-                              <span>Vehicle Parking List</span>
-                            </a>
-                          </li>
-                        <li class="treeview">
+            
+               <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'report' ))?'active':''; ?> ">
+              <a href="#"><i class="fa fa-database"></i><span>Report</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+            
+              <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/report/reportchart" >
                               <i class="fa fa-ticket"></i>
                               <span>Report Chart</span>
+                            </a>
+                          </li>
+                        
+                          
+<!--                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/report/amountcollection" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Amount Collection</span>
+                            </a>
+                          </li>-->
+                              
+                       
+                           <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/report/summary" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Report Summary</span>
                             </a>
                           </li>
                            <li class="treeview">
@@ -183,22 +199,15 @@
                               <span>Collected list</span>
                             </a>
                           </li>
-                          <li class="treeview">
-                            <a href="<?php echo base_url(); ?>admin/report/amountcollection" >
+                         
+                      </ul>    
+               </li>
+                            <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/vehicle/parking/list" >
                               <i class="fa fa-ticket"></i>
-                              <span>Amount Collection</span>
+                              <span>All Exited List</span>
                             </a>
                           </li>
-                              
-                          
-                           <li class="treeview">
-                            <a href="<?php echo base_url(); ?>admin/report/summary" >
-                              <i class="fa fa-ticket"></i>
-                              <span>Report Summary</span>
-                            </a>
-                          </li>
-                          
-                          
 <!--                                    <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/report" >
                               <i class="fa fa-ticket"></i>
@@ -234,14 +243,18 @@
                           
               </ul>
             </li>-->
-            <?php } ?>
+            <?php } 
+            if($role == ROLE_ADMIN || $gateDetails->type_name == 'entry'){ 
+            ?>
                 <li class="treeview">
                             <a href="<?php echo base_url(); ?>employee/vehicle/add/entry" >
                               <i class="fa fa-ticket"></i>
                               <span>Vehicle Entry</span>
                             </a>
                           </li>
-                          
+            <?php } 
+            if($role == ROLE_ADMIN || $gateDetails->type_name == 'exit'){ 
+            ?>              
                           
                             <li class="treeview">
                             <a href="<?php echo base_url(); ?>employee/vehicle/exit/details" >
@@ -249,7 +262,9 @@
                               <span>Vehicle Exit</span>
                             </a>
                           </li>
-                          
+                   <?php } 
+            
+            ?>             
                            <li class="treeview">
                             <a href="<?php echo base_url(); ?>employee/report/current/list" >
                               <i class="fa fa-ticket"></i>
