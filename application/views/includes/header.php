@@ -149,12 +149,12 @@
                               <span>Vehicle Types and Rates</span>
                             </a>
                           </li>
-                            <li class="treeview">
+<!--                            <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/employee/deviceregistry/list" >
                               <i class="fa fa-ticket"></i>
                               <span>Device Registry</span>
                             </a>
-                          </li>
+                          </li>-->
                             <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/gate/list" >
                               <i class="fa fa-ticket"></i>
@@ -244,7 +244,7 @@
               </ul>
             </li>-->
             <?php } 
-            if($role == ROLE_ADMIN || $gateDetails->type_name == 'entry'){ 
+            if($gateDetails->type_name == 'entry'){ 
             ?>
                 <li class="treeview">
                             <a href="<?php echo base_url(); ?>employee/vehicle/add/entry" >
@@ -253,7 +253,7 @@
                             </a>
                           </li>
             <?php } 
-            if($role == ROLE_ADMIN || $gateDetails->type_name == 'exit'){ 
+            if($gateDetails->type_name == 'exit'){ 
             ?>              
                           
                             <li class="treeview">

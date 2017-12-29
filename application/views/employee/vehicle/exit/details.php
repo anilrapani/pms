@@ -1,17 +1,128 @@
 <style type="text/css">
     .printTicket{
-    border: 1px solid black; 
-}
-  .printTicketMain{
+        border: 1px solid black; 
+    }
+    .printTicketMain{
         padding-bottom: 10%;
     }
 
+    @media (max-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
+
+        .printTicket{
+            width: 82%;
+            margin-left: 15%;
+        }
+        .printTicket h4{
+            font-size: 10px !important;
+        }
+        .printTicket h3{
+            font-size: 12px !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 3px;
+        }
+        #display_image{
+            width: auto !important;
+        }
+
+    }
+    @media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
+        .printTicket{
+            width: 80%;
+            margin-left: 15%;
+        }
+        .printTicket h4{
+            font-size: 10px !important;
+
+        }
+        .printTicket h3{
+            font-size: 12px !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 3px;
+        }
+        #display_image{
+            width: auto !important;
+        }
+
+    }
+    @media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ 
+        .printTicket{
+            width: 60%;
+        }
+        .printTicket h4{
+            font-size: 14px !important;
+        }
+        .printTicket h3{
+            font-size: 12px !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 6px;
+        }
+    }
+    @media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
+        .printTicket{
+            width: 60%;
+        }
+        .printTicket h4{
+            font-size: 14px !important;
+        }
+        .printTicket h3{
+            font-size: 12px !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 12px;
+        }
+    }
+    @media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ 
+        .printTicket{
+            width: 60%;
+        }
+        .printTicket h4{
+            font-size: 16px !important;
+        }
+        .printTicket h3{
+            font-size: 14px !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 12px;
+        }
+    }
+    @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
+        .printTicket{
+            width: 82%;
+        }
+        .printTicket h4{
+            font-size: 17px !important;
+        }
+        .printTicket h3{
+            font-size: 15px !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 12px;
+        }
+    }
+    @media (min-width:1281px) { /* hi-res laptops and desktops */ 
+        .printTicket{
+            width: 70%;
+        }
+        .printTicket h4{
+            font-size: 18px !important;
+        }
+        .printTicket h3{
+            font-size: 16px !important;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 12px;
+        }
+    }  
 </style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="row">
-        <div class="box-header col-md-6">
+        <div class="box-header col-md-3">
                   <h1 class="box-title"><i class="fa "><?php if (isset($barcode)) {
     echo  $title.' : ' . $barcode;
 } else {
@@ -20,11 +131,11 @@
            
          
         </div>
-               <div class="box-tools">
+               <div class="box-tools" style="padding-left: 10px;">
                 <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
-                        <input type="text" name="barcode" id="barcodeEntryId" autofocus class="form-control input-sm pull-right" style="width: 150px;" placeholder="Scan Barcode" value="" >
-                        <div class="input-group-btn">
+                        <input type="text" name="barcode" id="barcodeEntryId" autofocus class="form-control input-sm pull-left" style="width: 150px;" placeholder="Scan Barcode" value="" >
+                        <div class="input-group-btn pull-left " >
                             <button class="btn btn-sm btn-default searchList"><i class="fa fa-barcode"></i></button>
                         </div>
                     </div>
@@ -34,7 +145,7 @@
 
         
         <div class="row">
-        <div class="box-header col-md-6">
+        <div class="box-header col-md-3">
                   <h1 class="box-title"><i class="fa "><?php if (isset($entryDetails->id)) {
     echo  'Ticket Id : ' . $entryDetails->id;
 } else {
@@ -43,11 +154,11 @@
            
         </div>
             
-            <div class="box-tools">
+            <div class="box-tools" style="padding-left: 10px;">
                 <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
-                        <input type="text" name="entryId" id="entryId" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Ticket Id" value="" >
-                        <div class="input-group-btn">
+                        <input type="text" name="entryId" id="entryId" class="form-control input-sm pull-left" style="width: 150px;" placeholder="Ticket Id" value="" >
+                        <div class="input-group-btn pull-left">
                             <button class="btn btn-sm btn-default searchList"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
@@ -418,119 +529,3 @@ $("#barcodeEntryId").on("paste", function () {
     });
 </script>
 <script src="<?php echo base_url(); ?>assets/js/employee/common.js" type="text/javascript"></script>
-<style type="text/css">
-    @media (max-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
-      
-     .printTicket{
-        width: 82%;
-         margin-left: 15%;
-        
-    }
-    .printTicket h4{
-        font-size: 10px !important;
-        
-    }
-    .printTicket h3{
-        font-size: 12px !important;
-    }
-     h1, h2, h3, h4, h5, h6 {
-line-height: 3px;
-}
-  #display_image{
-            width: auto !important;
-        }
-
-}
-@media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
-     .printTicket{
-         width: 80%;
-         margin-left: 15%;
-    }
-    .printTicket h4{
-        font-size: 10px !important;
-        
-    }
-    .printTicket h3{
-        font-size: 12px !important;
-    }
-     h1, h2, h3, h4, h5, h6 {
-        line-height: 3px;
-        }
-        #display_image{
-            width: auto !important;
-        }
-
-}
-@media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ 
-    .printTicket{
-        width: 60%;
-    }
-    .printTicket h4{
-        font-size: 14px !important;
-    }
-    .printTicket h3{
-        font-size: 12px !important;
-    }
-    h1, h2, h3, h4, h5, h6 {
-line-height: 6px;
-}
-}
-@media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
-    .printTicket{
-        width: 60%;
-    }
-    .printTicket h4{
-        font-size: 14px !important;
-    }
-    .printTicket h3{
-        font-size: 12px !important;
-    }
-    h1, h2, h3, h4, h5, h6 {
-line-height: 12px;
-}
-}
-@media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ 
-.printTicket{
-        width: 60%;
-    }
-    .printTicket h4{
-        font-size: 16px !important;
-    }
-    .printTicket h3{
-        font-size: 14px !important;
-    }
-    h1, h2, h3, h4, h5, h6 {
-line-height: 12px;
-}
-}
-@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
-.printTicket{
-        width: 82%;
-    }
-    .printTicket h4{
-        font-size: 17px !important;
-    }
-    .printTicket h3{
-        font-size: 15px !important;
-    }
-    h1, h2, h3, h4, h5, h6 {
-line-height: 12px;
-}
-}
-@media (min-width:1281px) { /* hi-res laptops and desktops */ 
-.printTicket{
-        width: 70%;
-    }
-    .printTicket h4{
-        font-size: 18px !important;
-    }
-    .printTicket h3{
-        font-size: 16px !important;
-    }
-    h1, h2, h3, h4, h5, h6 {
-line-height: 12px;
-}
-}
-    
-
-</style>

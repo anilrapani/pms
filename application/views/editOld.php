@@ -9,6 +9,7 @@ $government_proof_type_id = '';
 $government_id_number = '';
 $user_company_id = '';
 $shift_id = '';
+$status = '';
 if(!empty($userInfo))
 {
     foreach ($userInfo as $uf)
@@ -23,6 +24,7 @@ if(!empty($userInfo))
         $government_id_number = $uf->government_id_number;
         $user_company_id = $uf->user_company_id;
         $shift_id = $uf->shift_id;
+        $status = $uf->status;
     }
 }
 
@@ -163,7 +165,27 @@ if(!empty($userInfo))
                                         </select>
                                     </div>
                                 </div>    
-                                  <div class="col-md-6">
+                                     <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control required" id="status" name="status">
+                                            <?php
+                                            $status_array = json_decode(STATUS_ARRAY,true);
+                                            if(!empty($status_array))
+                                            {
+                                                foreach ($status_array as $key => $value)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $key; ?>" <?php if($key == $status) {echo "selected=selected";} ?> ><?php echo $value; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                 
+<!--                                  <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="shift_id">Employee Shift</label>
                                         <select class="form-control required" id="shift_id" name="shift_id">
@@ -181,7 +203,7 @@ if(!empty($userInfo))
                                             ?>
                                         </select>
                                     </div>
-                                </div>   
+                                </div>   -->
                               
                             </div>
                             

@@ -113,7 +113,7 @@ class User_model extends Common_Model
      */
     function getUserInfo($userId)
     {
-        $this->db->select('id, name, email, mobile, role_id, government_proof_type_id, government_id_number, user_company_id, shift_id');
+        $this->db->select('id, name, email, mobile, role_id, government_proof_type_id, government_id_number, user_company_id, shift_id,status');
         $this->db->from('k_user');
         $this->db->where('deleted', 2);
 		$this->db->where('role_id !=', 1);

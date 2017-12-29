@@ -225,6 +225,7 @@ class User extends BaseController
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]');
             
+            
             if($this->form_validation->run() == FALSE)
             {
                 $this->editOld($userId);
@@ -241,6 +242,7 @@ class User extends BaseController
                 $government_id_number = $this->input->post('government_id_number');
                 $user_company_id = $this->input->post('user_company_id');
                 $shift_id = $this->input->post('shift_id');
+                $status = $this->input->post('status');
                 
                 $userInfo = array();
                 
@@ -251,6 +253,7 @@ class User extends BaseController
                                         'government_id_number'   => $government_id_number,
                                         'user_company_id'    => $user_company_id,
                                         'shift_id'   => $shift_id,
+                                        'status'   => $status,
                                         'mobile'=>$mobile, 'updated_by'=>$this->vendorId, 'updated_time'=>date('Y-m-d H:i:s'));
                 }
                 else
