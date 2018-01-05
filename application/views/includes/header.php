@@ -122,6 +122,7 @@
             {
                 
             ?>
+            
             <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'employee' || $this->uri->segment(2) == 'vehicle' ))?'active':''; ?> ">
               <a href="#"><i class="fa fa-database"></i><span>Master Data</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
@@ -137,16 +138,33 @@
                               <span>Govt Proof Types</span>
                             </a>
                           </li>
-<!--                          <li class="treeview">
+                          <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/employee/shift/list" >
                               <i class="fa fa-ticket"></i>
-                              <span>Employee Shifts</span>
+                              <span>Shifts</span>
                             </a>
-                          </li>-->
+                          </li>
                           <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/vehicle/price/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Prices</span>
+                            </a>
+                          </li>
+                       
+                          
+                          
+              </ul>
+            </li>
+            
+            
+            <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'employee' || $this->uri->segment(2) == 'vehicle' ))?'active':''; ?> ">
+              <a href="#"><i class="fa fa-database"></i><span>Administrative Tasks</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                       
+                             <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/type/list" >
                               <i class="fa fa-ticket"></i>
-                              <span>Vehicle Types and Rates</span>
+                              <span>Vehicle Types and Prices</span>
                             </a>
                           </li>
 <!--                            <li class="treeview">
@@ -158,20 +176,27 @@
                             <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/gate/list" >
                               <i class="fa fa-ticket"></i>
-                              <span>Gates</span>
+                              <span>Gates and Employee</span>
                             </a>
                           </li>
-                          
+                                 <li class="treeview">
+              <a href="<?php echo base_url(); ?>userListing">
+                <i class="fa fa-users"></i>
+                <span>Users</span>
+              </a>
+            </li>
                           
                           
               </ul>
             </li>
             
+            
+            
                <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'report' ))?'active':''; ?> ">
               <a href="#"><i class="fa fa-database"></i><span>Report</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
             
-              <li class="treeview">
+                         <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/report/reportchart" >
                               <i class="fa fa-ticket"></i>
                               <span>Report Chart</span>

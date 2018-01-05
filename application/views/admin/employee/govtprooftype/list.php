@@ -33,19 +33,22 @@
                 <div class="box-body table-responsive no-padding">
                   <table class="table table-hover">
                     <tr>
-                      <th>Id</th>
+                      <th>S.No</th>  
+<!--                      <th>Id</th>-->
                       <th>Name</th>
                       <th>Status</th>
                       <th class="text-center">Actions</th>
                     </tr>
                     <?php
+                    $record_count = $offset+1;
                     if(!empty($records))
                     {
                         foreach($records as $record)
                         {
                     ?>
                     <tr>
-                      <td><?php echo $record->id ?></td>
+                      <td><?php echo $record_count++?></td>  
+<!--                      <td><?php echo $record->id ?></td>-->
                       <td><?php echo $record->name ?></td>
                       <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
                       <td class="text-center">

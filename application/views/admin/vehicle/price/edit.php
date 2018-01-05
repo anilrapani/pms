@@ -68,7 +68,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" action="<?php echo base_url() ?>admin/vehicle/edittype" method="post" id="editCompany" role="form">
+                    <form role="form" action="<?php echo base_url() ?>admin/vehicle/editprice" method="post" id="editPrice" role="form">
                         <div class="box-body">
                               <div class="row">
                                 <div class="col-md-6">                                
@@ -78,17 +78,11 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-6">                                
-
-                                    <div class="form-group">
-                                        <label for="number_of_wheels">Number of wheels</label>
-                                        <input type="text" class="form-control required" id="number_of_wheels" name="number_of_wheels" maxlength="150" value="<?php echo $resultInfo->number_of_wheels; ?>" >
-                                    </div>
-
-                                </div>
+                          
                             </div>
                             
-                               <div class="row">
+                            
+                            <div class="row">
                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Status</label>
@@ -111,108 +105,78 @@
                               
                             </div>
                             
-                            
-                                   <div class="row">
-                                <div class="col-md-6">                                
-                                    <div class="form-group">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="price_type" id="price_type" value="1" checked="">
-                                                Custom Price
-                                            </label>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                                <div class="col-md-6">   
-                                    <div class="form-group">
-
-
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="price_type" id="price_type" value="2">
-                                                Flat Price
-                                            </label>
-                                        </div>
-
-
-                                    </div>  
-                                </div>
-
-
-                            </div>
-                            
-                         
-<div class="row">
-    
-    
-                               <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="price_id">Price List</label>
-                                        <select class="form-control required" id="price_id" name="price_id">
-                                            <?php
-                                            
-                                            if(!empty($priceListArray && count($priceListArray) > 0))
-                                            {
-                                                foreach ($priceListArray as $value)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $value->id; ?>" ><?php echo $value->name; ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                              
-                              <div class="col-md-6">                                
-                                    <div class="form-group">
-                                        <label for="name">&nbsp;</label>
-                                        <input type="text" class="form-control required" id="name" name="name" maxlength="128">
-                                    </div>
-
-                                </div>
-    
-        
+                              <div class="row">
+        <div class="col-md-12 pricesMain" >
+            <div data-role="dynamic-fields">
+                
+                <?php foreach ($priceListArray as $key => $value) {
+                        ?>
+                  <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Field Name</label>
+                        <input type="text" class="form-control required" id="field-name" name="from_minutes[]" placeholder="From Minutes" value="<?php echo $value->from_minutes; ?>">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Field Value</label>
+                        <input type="text" class="form-control required toTime" id="field-value" name="to_minutes[]" placeholder="To Minutes" value="<?php echo $value->to_minutes; ?>">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Field Value</label>
+                        <input type="text" class="form-control required " id="field-value" name="amount[]" placeholder="Amount" value="<?php echo $value->amount; ?>">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div> 
+                <?php
+                      }
+                      ?>
+                 
+                <?php
+                      if(count($priceListArray) == 0 ){
+                          ?>
+                 <div class="form-inline">
+                    <div class="form-group">
+                        <label class="sr-only" for="field-name">Field Name</label>
+                        <input type="text" class="form-control required" id="field-name" name="from_minutes[]" placeholder="From Minutes" value="">
+                    </div>
+                    <span>-</span>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Field Value</label>
+                        <input type="text" class="form-control required" id="field-value" name="to_minutes[]" placeholder="To Minutes" value="">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="field-value">Field Value</label>
+                        <input type="text" class="form-control required" id="field-value" name="amount[]" placeholder="Amount" value="">
+                    </div>
+                    <button class="btn btn-danger" data-role="remove">
+                        <span class="glyphicon glyphicon-minus"></span>
+                    </button>
+                    <button class="btn btn-primary" data-role="add">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                </div> 
+                <?php
+                      }
+                                                            
+                ?>
+                
+            
+            </div>  <!-- /div[data-role="dynamic-fields"] -->
+            <div class="form-inline" style="padding-top: 8px;">
+                    <div class="form-group">
+                        <label for="status">Beyond this per hour
+                        </label> <input type="text" class="form-control required" name="more_than_minutes_per_hour_amount" value="<?php echo $resultInfo->more_than_minutes_per_hour_amount; ?>">
+                        <input type="hidden" name="more_than_minutes" value="<?php echo $value->to_minutes; ?>">
+                        
+                    </div>
+            </div>
+        </div>  <!-- /div.col-md-12 -->
     </div>  <!-- /div.row -->
-    
-    <div class="row">
-                                <div class="col-md-6">
-                                    <div class="box pricePerTimeList" >
-                                        <!-- /.box-header -->
-                                        <div class="box-body table-responsive no-padding">
-                                            <table class="table table-hover">
-                                                <tbody><tr>
-                                                        <th>From Time</th>
-                                                        <th>To Time</th>
-                                                        <th>Amount</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>0 M</td>
-                                                        <td>15 M</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15 M</td>
-                                                        <td>30 M</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>30 M</td>
-                                                        <td>60 M</td>
-                                                        <td>20</td>
-                                                    </tr>
-
-                                                </tbody></table>
-
-                                        </div><!-- /.box-body -->
-
-                                    </div>    
-                                </div>
-                                
-                            </div>
                             
 
                               <input type="hidden" value="<?php echo $resultInfo->id; ?>" name="id" id="id" />    
@@ -232,6 +196,7 @@
 </div>
 <script type="text/javascript">
     $(function() {
+        
     // Remove button click
     $(document).on(
         'click',
@@ -256,6 +221,15 @@
         }
     );
 });
+$('.pricesMain').on('keyup keypress click blur', function(e) {
+    $( "#moreThanMinutesDisplay" ).text($( ".toTime" ).last().val());
+    
+    // e.type is the type of event fired
+});
+$( ".pricesMain" ).keyup(function( event ) {
+    
+});
+
 
 </script>
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

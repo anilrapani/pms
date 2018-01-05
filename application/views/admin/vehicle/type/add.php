@@ -1,19 +1,19 @@
 <style type="text/css">
     [data-role="dynamic-fields"] > .form-inline + .form-inline {
-    margin-top: 0.5em;
-}
+        margin-top: 0.5em;
+    }
 
-[data-role="dynamic-fields"] > .form-inline [data-role="add"] {
-    display: none;
-}
+    [data-role="dynamic-fields"] > .form-inline [data-role="add"] {
+        display: none;
+    }
 
-[data-role="dynamic-fields"] > .form-inline:last-child [data-role="add"] {
-    display: inline-block;
-}
+    [data-role="dynamic-fields"] > .form-inline:last-child [data-role="add"] {
+        display: inline-block;
+    }
 
-[data-role="dynamic-fields"] > .form-inline:last-child [data-role="remove"] {
-    display: none;
-}
+    [data-role="dynamic-fields"] > .form-inline:last-child [data-role="remove"] {
+        display: none;
+    }
 </style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -70,14 +70,14 @@
                     <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/vehicle/addType" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-4">                                
+                                <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="name">Name</label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128">
                                     </div>
 
                                 </div>
-                                <div class="col-md-4">                                
+                                <div class="col-md-6">                                
 
                                     <div class="form-group">
                                         <label for="number_of_wheels">Number of wheels</label>
@@ -87,34 +87,98 @@
                                 </div>
                             </div>
                             <div class="row">
-        <div class="col-md-12">
-            <div data-role="dynamic-fields">
-                <div class="form-inline">
-                    <div class="form-group">
-                        <label class="sr-only" for="field-name">Field Name</label>
-                        <input type="text" class="form-control required" id="field-name" name="from_minutes[]" placeholder="From Minutes">
-                    </div>
-                    <span>-</span>
-                    <div class="form-group">
-                        <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control required" id="field-value" name="to_minutes[]" placeholder="To Minutes">
-                    </div>
-                    <div class="form-group">
-                        <label class="sr-only" for="field-value">Field Value</label>
-                        <input type="text" class="form-control required" id="field-value" name="amount[]" placeholder="Amount">
-                    </div>
-                    <button class="btn btn-danger" data-role="remove">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                    <button class="btn btn-primary" data-role="add">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </div>  <!-- /div.form-inline -->
-            </div>  <!-- /div[data-role="dynamic-fields"] -->
-        </div>  <!-- /div.col-md-12 -->
-    </div>  <!-- /div.row -->
+                                <div class="col-md-6">                                
+                                    <div class="form-group">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="price_type" id="price_type" value="1" checked="">
+                                                Custom Price
+                                            </label>
+                                        </div>
 
 
+                                    </div>
+                                </div>
+                                <div class="col-md-6">   
+                                    <div class="form-group">
+
+
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="price_type" id="price_type" value="2">
+                                                Flat Price
+                                            </label>
+                                        </div>
+
+
+                                    </div>  
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="pricelist">Price List</label>
+
+                                        <select class="form-control required" id="status" name="pricelist">
+                                            <option value="" >Select Price</option>
+                                            <?php
+                                            if (!empty($priceListArray)) {
+                                                foreach ($priceListArray as $key => $value) {
+                                                    ?>
+                                                    <option value="<?php echo $key; ?>" ><?php echo $value->name; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">                                
+                                    <div class="form-group">
+                                        <label for="name">&nbsp;</label>
+                                        <input type="text" class="form-control required" id="name" name="name" maxlength="128">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="box pricePerTimeList" >
+                                        <!-- /.box-header -->
+                                        <div class="box-body table-responsive no-padding">
+                                            <table class="table table-hover">
+                                                <tbody><tr>
+                                                        <th>From Time</th>
+                                                        <th>To Time</th>
+                                                        <th>Amount</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>0 M</td>
+                                                        <td>15 M</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>15 M</td>
+                                                        <td>30 M</td>
+                                                        <td>15</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>30 M</td>
+                                                        <td>60 M</td>
+                                                        <td>20</td>
+                                                    </tr>
+
+                                                </tbody></table>
+
+                                        </div><!-- /.box-body -->
+
+                                    </div>    
+                                </div>
+                                
+                            </div>
 
                         </div><!-- /.box-body -->
 
@@ -126,38 +190,43 @@
                 </div>
             </div>
 
-    
+
 
         </div>    
     </section>
 
 </div>
 <script type="text/javascript">
-    $(function() {
-    // Remove button click
-    $(document).on(
-        'click',
-        '[data-role="dynamic-fields"] > .form-inline [data-role="remove"]',
-        function(e) {
-            e.preventDefault();
-            $(this).closest('.form-inline').remove();
-        }
-    );
-    // Add button click
-    $(document).on(
-        'click',
-        '[data-role="dynamic-fields"] > .form-inline [data-role="add"]',
-        function(e) {
-            e.preventDefault();
-            var container = $(this).closest('[data-role="dynamic-fields"]');
-            new_field_group = container.children().filter('.form-inline:first-child').clone();
-            new_field_group.find('input').each(function(){
-                $(this).val('');
-            });
-            container.append(new_field_group);
-        }
-    );
-});
+    $(function () {
+        // Remove button click
+        $(document).on(
+                'click',
+                '[data-role="dynamic-fields"] > .form-inline [data-role="remove"]',
+                function (e) {
+                    e.preventDefault();
+                    $(this).closest('.form-inline').remove();
+                }
+        );
+        // Add button click
+        $(document).on(
+                'click',
+                '[data-role="dynamic-fields"] > .form-inline [data-role="add"]',
+                function (e) {
+                    e.preventDefault();
+                    var container = $(this).closest('[data-role="dynamic-fields"]');
+                    new_field_group = container.children().filter('.form-inline:first-child').clone();
+                    new_field_group.find('input').each(function () {
+                        $(this).val('');
+                    });
+                    container.append(new_field_group);
+                }
+        );
+    });
+    var largestID = $("#allthesets div:last input:first").attr("name")
+    $.ajax({
+        url: <?php echo base_url() . 'admin/vehicle/getPricePerTimeList/' ?>1;
+    });
+
 
 </script>
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

@@ -253,7 +253,7 @@ class Employee extends BaseController {
 
             $data['page'] = $returns['page'];
             $data['offset'] = $returns['offset'];
-
+        
             $data['records'] = $this->k_master_government_proof_type_model->getList($data);
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Government proof type list';
@@ -569,7 +569,7 @@ class Employee extends BaseController {
                 );
 
                 $result = $this->k_master_user_shift_model->update($updatedInfo, $companyId);
-
+                
                 if ($result == true) {
                     $this->session->set_flashdata('success', 'Updated successfully');
                 } else {

@@ -88,7 +88,7 @@
                                     <div class="form-group">
                                         <label for="start time">Start Time</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control required timepicker" id="start_time" name="start_time" >
+                                            <input type="text" class="form-control required timepicker" id="start_time" name="start_time" placeholder="00:00:00" value="<?php echo $resultInfo->start_time; ?>" >
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
@@ -100,7 +100,7 @@
                                     <div class="form-group">
                                         <label for="end time">End Time</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control required timepicker" id="end_time" name="end_time" >
+                                            <input type="text" class="form-control required timepicker" id="end_time" name="end_time" placeholder="00:00:00" value="<?php echo $resultInfo->end_time; ?>" >
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
@@ -127,10 +127,5 @@
         </div>    
     </section>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.timepicker').timepicker({
-        });
-    });
-</script>
+
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

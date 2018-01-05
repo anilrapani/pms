@@ -51,11 +51,11 @@ class User extends BaseController
             $this->load->library('pagination');
             
             $count = $this->user_model->userListingCount($searchText);
-            
+            $returns["offset"] = 0;
             $returns = $this->paginationCompress ( "userListing/", $count, 5, SEGMENT );
             
             $data['userRecords'] = $this->user_model->userListing($searchText, $returns["page"], $returns["offset"]);
-      
+            $data['offset'] = $returns["offset"];
             $this->global['pageTitle'] = PROJECT_NAME. ' : Employee Listing';
             $this->loadViews("users", $this->global, $data, NULL);
         }

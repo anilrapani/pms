@@ -136,3 +136,8 @@ $route['admin/report/collected/list'] = "admin/report/collectedlist";
 $route['admin/report/collected/list/(:num)'] = "admin/report/collectedlist/$1";
 
 // $route['employee/report/list'] = "employee/report/myReportList";
+
+$route['admin/vehicle/price/list'] = "admin/vehicle/priceList";
+$route['admin/vehicle/price/list/(:num)'] = "admin/vehicle/priceList/$1";
+$route['admin/vehicle/add/price'] = "admin/vehicle/addPriceView";
+$route['admin/vehicle/edit/price/(:any)'] = "admin/vehicle/editPriceView/$1";

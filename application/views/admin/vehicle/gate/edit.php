@@ -154,8 +154,21 @@
                                         </select>
                         
                     </div>
+                                        <div class="form-group">
+                        <label class="sr-only" for="field-name">Select Shift</label>
+                        
+                               <select class="form-control required" id="device_registry_id" name="device_registry_id[]">
+                                            <option value='0' <?php if($userListAtGate->device_registry_id == 0) echo "selected=selected"; ?> >Select Shift</option>
+                                            <option value="">First Shift  : 10:00 - 18:00</option>
+                                            <option value="">Second Shift : 18:00 - 02:00</option>
+                                            <option value="">Third Shift  : 02:00 - 10:00</option>
+                                      
+                                        </select>
+                        
+                        
+                      </div>
                     
-                     <div class="form-group">
+<!--                     <div class="form-group">
                         <label class="sr-only" for="field-name">Field Name</label>
                         <input type="text" class="form-control required timepicker3" id="field-name" name="from_time[]" placeholder="From Time - 00:00:00" value="<?php echo $userListAtGate->from_time; ?>" >
                     </div>
@@ -163,8 +176,10 @@
                     <div class="form-group">
                         <label class="sr-only" for="field-value">Field Value</label>
                         <input type="text" class="form-control required timepicker3" id="field-value" name="to_time[]" placeholder="To Time - 00:00:00" value="<?php echo $userListAtGate->to_time; ?>" >
-                    </div>
-                    <div class="form-group">
+                    </div>-->
+                    
+                    
+<!--                    <div class="form-group">
                         <label class="sr-only" for="field-name">Select Device</label>
                         
                                <select class="form-control required" id="device_registry_id" name="device_registry_id[]">
@@ -184,7 +199,7 @@
                                         </select>
                         
                         
-                      </div>
+                      </div>-->
                     <button class="btn btn-danger" data-role="remove">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>

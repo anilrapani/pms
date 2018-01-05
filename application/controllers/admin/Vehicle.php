@@ -20,7 +20,9 @@ class Vehicle extends BaseController {
                                     'k_master_vehicle_gate_model',
                                     'user_model',
                                     'k_master_device_registry_model',
-                                    'k_master_vehicle_gate_employee_model'
+                                    'k_master_vehicle_gate_employee_model',
+                                    'k_master_price_model',
+                                    'k_master_price_per_time_model'
                                 )
                             );
         $this->isLoggedIn();
@@ -62,6 +64,7 @@ class Vehicle extends BaseController {
 
             $data['page'] = $returns['page'];
             $data['offset'] = $returns['offset'];
+    
 
             $data['records'] = $this->k_master_vehicle_type_model->getList($data);
 
@@ -85,7 +88,9 @@ class Vehicle extends BaseController {
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Type';
             $data['title'] = "Vehicle Type";
-
+              $data['priceListArray'] = $this->k_master_price_model->getPriceList();
+            
+        
             $data['sub_title'] = "Add";
             $this->loadViews("admin/vehicle/type/add", $this->global, $data, NULL);
         }
@@ -104,13 +109,16 @@ class Vehicle extends BaseController {
             $this->form_validation->set_rules('number_of_wheels', 'Number of wheels', 'trim|required|max_length[128]');
 
             if ($this->form_validation->run() == FALSE) {
-                $this->addCompanyView();
+                $this->addTypeView();
             } else {
                 $name = ucwords(strtolower($this->input->post('name')));
                 $number_of_wheels = $this->input->post('number_of_wheels');
-               $fromMinutesArray = $this->input->post('from_minutes');
-               $toMinutesArray = $this->input->post('to_minutes');
-               $amountArray =  $this->input->post('amount');
+      
+                $fromMinutesArray = $this->input->post('from_minutes');
+                $toMinutesArray = $this->input->post('to_minutes');
+                $amountArray =  $this->input->post('amount');
+               
+               
                 
                 $insertData = array(
                     'name' => $name,
@@ -138,7 +146,7 @@ class Vehicle extends BaseController {
                 }
        
 
-                $this->load->model('k_master_price_model');
+                
                 $this->k_master_price_model->insertMultiplePricesByVehicleTypeId($finalArray);
 
 
@@ -168,10 +176,10 @@ class Vehicle extends BaseController {
             if ($id == null) {
                 redirect('admin/vehicle/typelist');
             }
-            $this->load->model('k_master_price_model');
             $data['resultInfo'] = $this->k_master_vehicle_type_model->getDetails($id);
-            $data['priceListArray'] = $this->k_master_price_model->getPriceListByVehicleType($id);
+            $data['priceListArray'] = $this->k_master_price_model->getPriceList();
             
+        
             $this->global['pageTitle'] = PROJECT_NAME . ' : Edit vehicle type';
             $data['title'] = "Vehicle type";
 
@@ -202,6 +210,8 @@ class Vehicle extends BaseController {
             } else {
                 $name = ucwords(strtolower($this->input->post('name')));
                 $number_of_wheels = $this->input->post('number_of_wheels');
+                $more_than_minutes = $this->input->post('more_than_minutes');
+                $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
                 $status = $this->input->post('status');
                 $fromMinutesArray = $this->input->post('from_minutes');
                 $toMinutesArray = $this->input->post('to_minutes');
@@ -210,6 +220,8 @@ class Vehicle extends BaseController {
                 $updateInfo = array(
                     'name' => $name,
                     'number_of_wheels' => $number_of_wheels,
+                    'more_than_minutes' => $more_than_minutes,
+                    'more_than_minutes_per_hour_amount' => $more_than_minutes_per_hour_amount,
                     'status' => $status,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s')
@@ -645,6 +657,249 @@ class Vehicle extends BaseController {
             $this->loadViews("admin/vehicle/report", $this->global, $data, NULL);
         }
     }
+    
+    
+    
+    
+    
+     
+    /**
+     * This function is used to load the company list
+     */
+    function priceList() {
+        
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+
+            $searchText = $this->input->post('searchText');
+            $data['searchText'] = $searchText;
+
+            $data['totalCount'] = true;
+            $data['searchText'] = $searchText;
+
+            $result = $this->k_master_price_model->getlist($data);
+            $count = $result['count'];
+            $data['totalCount'] = false;
+            $segment = 5;
+            $returns = $this->paginationCompress("admin/vehicle/price/list/", $count, PER_PAGE_RECORDS, $segment);
+
+            $data['page'] = $returns['page'];
+            $data['offset'] = $returns['offset'];
+
+            $data['records'] = $this->k_master_price_model->getList($data);
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Price List';
+            $data['title'] = 'Price';
+            $data['sub_title'] = 'List';
+
+            $this->loadViews("admin/vehicle/price/list", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addPriceView() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $data = array();
+
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Price';
+            $data['title'] = "Price";
+
+            $data['sub_title'] = "Add";
+            $this->loadViews("admin/vehicle/price/add", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addPrice() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+           
+            if ($this->form_validation->run() == FALSE) {
+                $this->addPriceView();
+            } else {
+               $name = ucwords(strtolower($this->input->post('name')));
+               $more_than_minutes = $this->input->post('more_than_minutes');
+               $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
+               $fromMinutesArray = $this->input->post('from_minutes');
+               $toMinutesArray = $this->input->post('to_minutes');
+               $amountArray =  $this->input->post('amount');
+                
+                $insertData = array(
+                    'name' => $name,
+                    'more_than_minutes' => $more_than_minutes,
+                    'more_than_minutes_per_hour_amount' => $more_than_minutes_per_hour_amount,
+                    'status' => 1,
+                    'deleted' => 2,
+                    'created_by' => $this->vendorId,
+                    'created_time' => date('Y-m-d H:i:s')
+                );
+
+                $price_id = $this->k_master_price_model->insert($insertData);
+                
+                
+                for($i=0; $i<count($fromMinutesArray);$i++) {
+                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
+                                          'to_minutes' => $toMinutesArray[$i],
+                                          'amount' => $amountArray[$i],
+                                          'price_id' => $price_id,
+                                          'status' => 1,
+                                            'deleted' => 2,
+                                            'created_by' => $this->vendorId,
+                                            'created_time' => date('Y-m-d H:i:s')
+                        
+                            );
+                }
+       
+                
+                $this->load->model('k_master_price_model');
+                $this->k_master_price_per_time_model->insertMultiplePricesByPriceId($finalArray);
+
+
+                if ($price_id > 0) {
+                    $this->session->set_flashdata('success', 'New price successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Price creation failed');
+                }
+
+                $this->global['pageTitle'] = PROJECT_NAME . ' : Add new price';
+                $data['title'] = "price";
+
+                $data['sub_title'] = "Add";
+                $this->loadViews("admin/vehicle/price/add", $this->global, $data, NULL);
+            }
+        }
+    }
+
+    /**
+     * This function is used to load type edit information
+     * @param number $id : Optional : This is type id
+     */
+    function editPriceView($id = NULL) {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            if ($id == null) {
+                redirect('admin/vehicle/pricelist');
+            }
+            $data['resultInfo'] = $this->k_master_price_model->getDetails($id);
+            $data['priceListArray'] = $this->k_master_price_per_time_model->getPriceListByPriceId($id);
+            
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Edit Price';
+            $data['title'] = "Price";
+
+            $data['sub_title'] = "Edit";
+
+            $this->loadViews("admin/vehicle/price/edit", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to edit the type information
+     */
+    function editPrice() {
+        if ($this->isAdmin() == TRUE) {
+            $this->loadThis();
+        } else {
+            $this->load->library('form_validation');
+
+            $id = $this->input->post('id');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+            
+
+            if ($this->form_validation->run() == FALSE) {
+
+                redirect("admin/vehicle/edit/price/$id");
+            } else {
+                $name = ucwords(strtolower($this->input->post('name')));
+                $more_than_minutes = $this->input->post('more_than_minutes');
+                $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
+                $status = $this->input->post('status');
+                $fromMinutesArray = $this->input->post('from_minutes');
+                $toMinutesArray = $this->input->post('to_minutes');
+                $amountArray =  $this->input->post('amount');
+                
+               
+                $updateInfo = array(
+                    'name' => $name,
+                    'more_than_minutes' => $more_than_minutes,
+                    'more_than_minutes_per_hour_amount' => $more_than_minutes_per_hour_amount,
+                    'status' => $status,
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s')
+                );
+                
+                
+                for($i=0; $i<count($fromMinutesArray);$i++) {
+                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
+                                          'to_minutes' => $toMinutesArray[$i],
+                                          'amount' => $amountArray[$i],
+                                          'price_id' => $id,
+                                          'status' => 1,
+                                            'deleted' => 2,
+                                            'created_by' => $this->vendorId,
+                                            'created_time' => date('Y-m-d H:i:s')
+                        
+                            );
+                }
+                
+                
+                
+                $deleteArray = array('deleted' => 1); 
+                $this->k_master_price_per_time_model->deletingPricesExistingByPriceId($deleteArray,$id);
+                $this->k_master_price_per_time_model->insertMultiplePricesByPriceId($finalArray);
+
+                
+                
+                $result = $this->k_master_price_model->update($updateInfo, $id);
+
+                if ($result == true) {
+                    $this->session->set_flashdata('success', 'Price updated successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Price updation failed');
+                }
+
+                redirect("admin/vehicle/edit/price/$id");
+            }
+        }
+    }
+
+    /**
+     * This function is used to delete the the record using id
+     * @return boolean $result : TRUE / FALSE
+     */
+    function deletePrice() {
+
+        if ($this->isAdmin() == TRUE) {
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $data = array('deleted' => 1, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_price_model->delete($id, $data);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
+    
+    
+    
+    
+    
     
     function pageNotFound() {
         $this->global['pageTitle'] = 'Pms : 404 - Page Not Found';
