@@ -22,7 +22,8 @@ class Vehicle extends BaseController {
                                     'k_master_device_registry_model',
                                     'k_master_vehicle_gate_employee_model',
                                     'k_master_price_model',
-                                    'k_master_price_per_time_model'
+                                    'k_master_price_per_time_model',
+                                    'k_master_user_shift_model'
                                 )
                             );
         $this->isLoggedIn();
@@ -88,7 +89,7 @@ class Vehicle extends BaseController {
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Type';
             $data['title'] = "Vehicle Type";
-              $data['priceListArray'] = $this->k_master_price_model->getPriceList();
+            $data['priceListArray'] = $this->k_master_price_model->getPriceList();
             
         
             $data['sub_title'] = "Add";
@@ -117,12 +118,13 @@ class Vehicle extends BaseController {
                 $fromMinutesArray = $this->input->post('from_minutes');
                 $toMinutesArray = $this->input->post('to_minutes');
                 $amountArray =  $this->input->post('amount');
-               
+                $price_id = $this->input->post('price_id');
                
                 
                 $insertData = array(
                     'name' => $name,
                     'number_of_wheels' => $number_of_wheels,
+                    'price_id' => $price_id,
                     'status' => 1,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
@@ -132,22 +134,22 @@ class Vehicle extends BaseController {
                 $vehicle_type_id = $this->k_master_vehicle_type_model->insert($insertData);
                 
                 
-                for($i=0; $i<count($fromMinutesArray);$i++) {
-                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
-                                          'to_minutes' => $toMinutesArray[$i],
-                                          'amount' => $amountArray[$i],
-                                          'vehicle_type_id' => $vehicle_type_id,
-                                          'status' => 1,
-                                            'deleted' => 2,
-                                            'created_by' => $this->vendorId,
-                                            'created_time' => date('Y-m-d H:i:s')
-                        
-                            );
-                }
-       
-
-                
-                $this->k_master_price_model->insertMultiplePricesByVehicleTypeId($finalArray);
+//                for($i=0; $i<count($fromMinutesArray);$i++) {
+//                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
+//                                          'to_minutes' => $toMinutesArray[$i],
+//                                          'amount' => $amountArray[$i],
+//                                          'vehicle_type_id' => $vehicle_type_id,
+//                                          'status' => 1,
+//                                            'deleted' => 2,
+//                                            'created_by' => $this->vendorId,
+//                                            'created_time' => date('Y-m-d H:i:s')
+//                        
+//                            );
+//                }
+//       
+//
+//                
+//                $this->k_master_price_model->insertMultiplePricesByVehicleTypeId($finalArray);
 
 
                 if ($vehicle_type_id > 0) {
@@ -178,7 +180,11 @@ class Vehicle extends BaseController {
             }
             $data['resultInfo'] = $this->k_master_vehicle_type_model->getDetails($id);
             $data['priceListArray'] = $this->k_master_price_model->getPriceList();
+            $data['priceDetails'] = $this->k_master_price_model->getDetails($data['resultInfo']->price_id);
             
+        
+            $data['pricePerTimeArray'] =  $this->k_master_price_per_time_model->getPricePerTimesByPriceId($data['resultInfo']->price_id);
+
         
             $this->global['pageTitle'] = PROJECT_NAME . ' : Edit vehicle type';
             $data['title'] = "Vehicle type";
@@ -202,6 +208,7 @@ class Vehicle extends BaseController {
 
             $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
             $this->form_validation->set_rules('number_of_wheels', 'Number of wheels', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('price_id', 'Price', 'trim|required|max_length[128]');
             
 
             if ($this->form_validation->run() == FALSE) {
@@ -210,8 +217,7 @@ class Vehicle extends BaseController {
             } else {
                 $name = ucwords(strtolower($this->input->post('name')));
                 $number_of_wheels = $this->input->post('number_of_wheels');
-                $more_than_minutes = $this->input->post('more_than_minutes');
-                $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
+                $price_id = $this->input->post('price_id');
                 $status = $this->input->post('status');
                 $fromMinutesArray = $this->input->post('from_minutes');
                 $toMinutesArray = $this->input->post('to_minutes');
@@ -220,37 +226,36 @@ class Vehicle extends BaseController {
                 $updateInfo = array(
                     'name' => $name,
                     'number_of_wheels' => $number_of_wheels,
-                    'more_than_minutes' => $more_than_minutes,
-                    'more_than_minutes_per_hour_amount' => $more_than_minutes_per_hour_amount,
+                    'price_id' => $price_id,
                     'status' => $status,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s')
                 );
                 
                 
-                for($i=0; $i<count($fromMinutesArray);$i++) {
-                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
-                                          'to_minutes' => $toMinutesArray[$i],
-                                          'amount' => $amountArray[$i],
-                                          'vehicle_type_id' => $id,
-                                          'status' => 1,
-                                            'deleted' => 2,
-                                            'created_by' => $this->vendorId,
-                                            'created_time' => date('Y-m-d H:i:s')
-                        
-                            );
-                }
-                
-                
-                $this->load->model('k_master_price_model');
-                $deleteArray = array('deleted' => 1); 
-                $this->k_master_price_model->deletingPricesExistingByVehicleTypeID($deleteArray,$id);
-                $this->k_master_price_model->insertMultiplePricesByVehicleTypeId($finalArray);
+//                for($i=0; $i<count($fromMinutesArray);$i++) {
+//                    $finalArray[] = array('from_minutes' => $fromMinutesArray[$i], 
+//                                          'to_minutes' => $toMinutesArray[$i],
+//                                          'amount' => $amountArray[$i],
+//                                          'vehicle_type_id' => $id,
+//                                          'status' => 1,
+//                                            'deleted' => 2,
+//                                            'created_by' => $this->vendorId,
+//                                            'created_time' => date('Y-m-d H:i:s')
+//                        
+//                            );
+//                }
+//                
+//                
+//                $this->load->model('k_master_price_model');
+//                $deleteArray = array('deleted' => 1); 
+//                $this->k_master_price_model->deletingPricesExistingByVehicleTypeID($deleteArray,$id);
+//                $this->k_master_price_model->insertMultiplePricesByVehicleTypeId($finalArray);
 
                 
                 
                 $result = $this->k_master_vehicle_type_model->update($updateInfo, $id);
-
+          
                 if ($result == true) {
                     $this->session->set_flashdata('success', 'Company updated successfully');
                 } else {
@@ -334,6 +339,7 @@ class Vehicle extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Vehicle Gate';
             $data['userListArray'] = $this->user_model->getUserList();
             $data['deviceRegistryListArray'] = $this->k_master_device_registry_model->getDeviceRegistryList();
+            $data['shiftListArray'] = $this->k_master_user_shift_model->getShiftList();
             
                $this->global['assets'] = array('cssTopArray'     => array(
                                                                 base_url() . 'assets/plugins/timepicker/bootstrap-timepicker',
@@ -374,8 +380,7 @@ class Vehicle extends BaseController {
                 $name = ucwords($this->input->post('name'));
                 $type = $this->input->post('type');
                 $user_id_Array = $this->input->post('user_id');
-                $from_time_Array = $this->input->post('from_time');
-                $to_time_Array = $this->input->post('to_time');
+                $shift_id_Array = $this->input->post('shift_id');
                 $device_registry_id_Array = $this->input->post('device_registry_id');
                 
                 $insertData = array(
@@ -395,9 +400,9 @@ class Vehicle extends BaseController {
                 
                        for($i=0; $i<count($user_id_Array);$i++) {
                     $finalArray[] = array('user_id' => $user_id_Array[$i], 
-                                          'from_time' => $from_time_Array[$i], 
-                                          'to_time' => $to_time_Array[$i],
-                                          'device_registry_id' => $device_registry_id_Array[$i],
+                                          // 'device_registry_id' => $device_registry_id_Array[$i],
+                                          'device_registry_id' => 1,
+                                          'shift_id' => $shift_id_Array[$i],
                                           'vehicle_gate_id' => $vehicle_gate_id,
                                           'status' => 1,
                                             'deleted' => 2,
@@ -410,7 +415,6 @@ class Vehicle extends BaseController {
 
                 $this->load->model('k_master_price_model');
                 $this->k_master_vehicle_gate_employee_model->insertEmployeesAtGate($finalArray);
-                
                 if ($vehicle_gate_id > 0) {
                     $this->session->set_flashdata('success', 'New vehicle gate created successfully');
                 } else {
@@ -444,6 +448,7 @@ class Vehicle extends BaseController {
             $data['userListAtGateArray'] = $this->k_master_vehicle_gate_employee_model->getUserListbyGateID($id);
             
             $data['userListArray'] = $this->user_model->getUserList();
+            $data['shiftListArray'] = $this->k_master_user_shift_model->getShiftList();
             $data['deviceRegistryListArray'] = $this->k_master_device_registry_model->getDeviceRegistryList();
             
                $this->global['assets'] = array('cssTopArray'     => array(
@@ -494,9 +499,9 @@ class Vehicle extends BaseController {
                 $name = ucwords($this->input->post('name'));
                 $type = $this->input->post('type');
                 $status = $this->input->post('status');
-                 $user_id_Array = $this->input->post('user_id');
-                $from_time_Array = $this->input->post('from_time');
-                $to_time_Array = $this->input->post('to_time');
+                
+                $user_id_Array = $this->input->post('user_id');
+                $shift_id_Array = $this->input->post('shift_id');
                 $device_registry_id_Array = $this->input->post('device_registry_id');
                 
                 
@@ -511,9 +516,9 @@ class Vehicle extends BaseController {
              
                        for($i=0; $i<count($user_id_Array);$i++) {
                     $finalArray[] = array('user_id' => $user_id_Array[$i], 
-                                          'from_time' => $from_time_Array[$i], 
-                                          'to_time' => $to_time_Array[$i],
-                                          'device_registry_id' => $device_registry_id_Array[$i],
+
+                                            'device_registry_id' => $device_registry_id_Array[$i],
+                                          'shift_id'  => $shift_id_Array[$i],
                                           'vehicle_gate_id' => $id,
                                           'status' => 1,
                                             'deleted' => 2,
@@ -896,7 +901,17 @@ class Vehicle extends BaseController {
         }
     }
     
-    
+    function getPricePerTimeList(){
+        $priceId = $this->input->post('priceId');
+        $priceDetails = $this->k_master_price_model->getDetails($priceId);
+        
+        $pricePerTime =  $this->k_master_price_per_time_model->getPricePerTimesByPriceId($priceId);
+        $finalArray = array( 'priceDetails' => $priceDetails, 'pricePerTime' => $pricePerTime );
+
+        echo json_encode($finalArray);
+        exit;
+        
+    }
     
     
     

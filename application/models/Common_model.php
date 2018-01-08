@@ -12,9 +12,9 @@ if (!defined('BASEPATH'))
 class Common_model extends CI_Model {
 
     //Set the table Name
-    private $table_name;
-    private $deleted;
-    private $status;
+    var $table_name;
+    var $deleted;
+    var $status;
     public function setTableName($tablename) {
         $this->table_name = $tablename;
     }
@@ -22,8 +22,15 @@ class Common_model extends CI_Model {
         
         $this->db->select('*');
         $this->db->from($this->table_name);
-        $this->db->where(array("$this->status=>1,$this->deleted=>2"));
+          $this->db->where(
+                 array(
+                     $this->status => 1,
+                     $this->deleted => 2
+                 )
+        );
+        
         $query = $this->db->get();
+     
         $result = $query->result();
 
         return $result;

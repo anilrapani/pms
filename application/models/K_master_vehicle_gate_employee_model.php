@@ -8,8 +8,7 @@ class K_master_vehicle_gate_employee_model extends Common_Model {
     var $vehicle_gate_id = 'vehicle_gate_id';
     var $user_id = 'user_id';
     var $device_registry_id = 'device_registry_id';
-    var $from_time = 'from_time';
-    var $to_time = 'to_time';
+    var $shift_id = 'shift_id';
     var $status = 'status';
     var $deleted = 'deleted';
     var $created_by = 'created_by';

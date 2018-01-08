@@ -154,19 +154,27 @@
                                         </select>
                         
                     </div>
-                                        <div class="form-group">
-                        <label class="sr-only" for="field-name">Select Shift</label>
-                        
-                               <select class="form-control required" id="device_registry_id" name="device_registry_id[]">
-                                            <option value='0' <?php if($userListAtGate->device_registry_id == 0) echo "selected=selected"; ?> >Select Shift</option>
-                                            <option value="">First Shift  : 10:00 - 18:00</option>
-                                            <option value="">Second Shift : 18:00 - 02:00</option>
-                                            <option value="">Third Shift  : 02:00 - 10:00</option>
-                                      
+                      <div class="form-group">
+                        <label class="sr-only" for="field-value">Select Shift</label>
+                                 <select class="form-control required" id="shift_id" name="shift_id[]">
+                                            <option value='0' >All Shifts</option>
+                                            <?php
+                                            
+                                            if(!empty($shiftListArray))
+                                            {
+                                                foreach ($shiftListArray as $shift)
+                                                {
+                                                    ?>
+                                                    
+                                                    <option value="<?php echo $shift->id; ?>" <?php if($userListAtGate->shift_id == $shift->id) echo "selected=selected"; ?> ><?php echo $shift->name.' : '.$shift->start_time.' - '.$shift->end_time; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
                                         </select>
                         
-                        
-                      </div>
+                    </div>
+                                       
                     
 <!--                     <div class="form-group">
                         <label class="sr-only" for="field-name">Field Name</label>
@@ -201,7 +209,7 @@
                         
                       </div>-->
                     <button class="btn btn-danger" data-role="remove">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="glyphicon glyphicon-minus"></span>
                     </button>
                     <button class="btn btn-primary" data-role="add">
                         <span class="glyphicon glyphicon-plus"></span>

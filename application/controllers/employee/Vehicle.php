@@ -16,7 +16,7 @@ class Vehicle extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('k_master_vehicle_company_model','k_parking_model','k_master_vehicle_type_model','k_master_price_model'));
+        $this->load->model(array('k_master_vehicle_company_model','k_parking_model','k_master_vehicle_type_model','k_master_price_model','k_master_price_per_time_model'));
         $this->isLoggedIn();
     }
 
@@ -254,12 +254,13 @@ class Vehicle extends BaseController {
                     $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
                     if(isset($vehicleTypeDetails->number_of_wheels)){
                     $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                    $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+                    $data['vehicleTypePrices'] = $vehicleTypePrices;
+                    $data['masterPriceDetails'] = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+        
                     }
 
-                     $vehicleTypePrices = $this->k_master_price_model->getPriceListByVehicleType($entryDetails->vehicle_type_id);
-
-
-                            $data['vehicleTypePrices'] = $vehicleTypePrices;
+                    
                 }
                 
                 
@@ -276,6 +277,7 @@ class Vehicle extends BaseController {
                 }
                 
                 $data['masterPriceListArray'] = $this->k_master_price_model->get();
+              
                 $data['entryDetails'] = $entryDetails;
             
             }
@@ -486,13 +488,11 @@ class Vehicle extends BaseController {
                         if(isset($vehicleTypeDetails->number_of_wheels)){
                         $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
                         }
-                        
-                        
-                        
-                        
-                        
-                        $vehicleTypePrices = $this->k_master_price_model->getPriceListByVehicleType($entryDetails->vehicle_type_id);
-            
+                    
+                    $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+                    $data['vehicleTypePrices'] = $vehicleTypePrices;
+                    $data['masterPriceDetails'] = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+        
                         
                         $data['vehicleTypePrices'] = $vehicleTypePrices;
                         
@@ -558,8 +558,11 @@ class Vehicle extends BaseController {
                         
                         
                         
-                        $vehicleTypePrices = $this->k_master_price_model->getPriceListByVehicleType($entryDetails->vehicle_type_id);
-            
+                        
+              $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+                    $data['vehicleTypePrices'] = $vehicleTypePrices;
+                    $data['masterPriceDetails'] = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+        
                         
                         $data['vehicleTypePrices'] = $vehicleTypePrices;
                         
@@ -621,10 +624,17 @@ class Vehicle extends BaseController {
             
             if(isset($entryDetails->vehicle_type_id)){
                 
+                $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+                $resultMaximumToMinutesByPriceId = $this->k_master_price_per_time_model->getMaximumToMinutesByPriceId($vehicleTypeDetails->price_id);
                 
-                $vehicleTypePrices = $this->k_master_price_model->getPriceListByVehicleType($entryDetails->vehicle_type_id);
+                $maximumToMinutesByPriceId = $resultMaximumToMinutesByPriceId->maxToMinutes;
+                
+                $priceDetails = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+        
                 if(isset($entryDetails->entry_time)){
                     $total_number_of_seconds = strtotime(date('Y-m-d H:i:s')) - strtotime($entryDetails->entry_time);
+                    
                 }
             }
 //            echo date('Y-m-d H:i:s').'<br>';
@@ -634,7 +644,19 @@ class Vehicle extends BaseController {
 //            // echo $entryDetails->id.'<br>';
 //            echo $total_number_of_seconds."<br>";
 //            echo gmdate("H:i:s", $total_number_of_seconds);
-//            
+//          $
+            $amount = 0;
+            
+            //if total number of minutes cross this max minutes write logic here to get final amount
+            
+            $total_number_of_minutes = ceil($total_number_of_seconds/60);
+            if($total_number_of_minutes > $maximumToMinutesByPriceId){
+                // $total_number_of_hours = gmdate("G", $total_number_of_seconds);
+                $total_number_of_hours = floor($total_number_of_seconds/3600);
+                
+                $amount = $priceDetails->more_than_minutes_per_hour_amount*$total_number_of_hours;
+            }{ 
+            
             foreach ($vehicleTypePrices as $key => $value) {
               //  echo $value->from_minutes.'--'.$value->to_minutes."<br>";
                     if($total_number_of_seconds > ($value->from_minutes*60) && $total_number_of_seconds <= ($value->to_minutes*60)){
@@ -642,8 +664,8 @@ class Vehicle extends BaseController {
                         break;
                     }
             }
-            
-            
+            }
+       
                 $config['allowed_types']        = 'gif|jpg|png';
 //                $config['max_size']             = 2000;
 //                $config['max_width']            = 1024;

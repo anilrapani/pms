@@ -86,7 +86,7 @@
 
                                 </div>
                             </div>
-                            <div class="row">
+<!--                            <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <div class="radio">
@@ -115,19 +115,19 @@
                                 </div>
 
 
-                            </div>
+                            </div>-->
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="pricelist">Price List</label>
+                                        <label for="pricelist">Price List   </label>
 
-                                        <select class="form-control required" id="status" name="pricelist">
+                                        <select class="form-control required" id="pricePerTimeListByPriceId" name="price_id">
                                             <option value="" >Select Price</option>
                                             <?php
                                             if (!empty($priceListArray)) {
                                                 foreach ($priceListArray as $key => $value) {
                                                     ?>
-                                                    <option value="<?php echo $key; ?>" ><?php echo $value->name; ?></option>
+                                                    <option value="<?php echo $value->id; ?>" ><?php echo $value->name; ?></option>
                                                     <?php
                                                 }
                                             }
@@ -135,13 +135,13 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">                                
+<!--                                <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="name">&nbsp;</label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128">
                                     </div>
 
-                                </div>
+                                </div>-->
                             </div>
 
                             <div class="row">
@@ -150,28 +150,16 @@
                                         <!-- /.box-header -->
                                         <div class="box-body table-responsive no-padding">
                                             <table class="table table-hover">
-                                                <tbody><tr>
+                                                <tbody id="pricePerTimeList">
+                                                    <tr>
                                                         <th>From Time</th>
                                                         <th>To Time</th>
                                                         <th>Amount</th>
                                                     </tr>
-                                                    <tr>
-                                                        <td>0 M</td>
-                                                        <td>15 M</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15 M</td>
-                                                        <td>30 M</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>30 M</td>
-                                                        <td>60 M</td>
-                                                        <td>20</td>
-                                                    </tr>
+                                                 
 
-                                                </tbody></table>
+                                                </tbody>
+                                            </table>
 
                                         </div><!-- /.box-body -->
 
@@ -223,9 +211,38 @@
         );
     });
     var largestID = $("#allthesets div:last input:first").attr("name")
-    $.ajax({
-        url: <?php echo base_url() . 'admin/vehicle/getPricePerTimeList/' ?>1;
+    
+    $('#pricePerTimeListByPriceId').change(getPricePerTimeList);
+
+    function getPricePerTimeList(){
+        pricePerTimeListByPriceId = $('#pricePerTimeListByPriceId').val();
+        content = '';
+        console.log('t1');
+        
+         $.ajax({
+        type: 'POST', 
+    url: '<?php echo base_url() . 'admin/vehicle/getPricePerTimeList'; ?>', 
+    data: { priceId : pricePerTimeListByPriceId },
+    dataType: 'json',
+    success: function (data) { 
+        
+        content += "<tr><th>From Time</th><th>To Time</th><th>Amount</th></tr>";
+        
+        $.each(data.pricePerTime, function(index, element) {
+            content += "<tr><td>"+element.from_minutes+"</td>"+"<td>"+element.to_minutes+"</td>"+"<td>"+element.amount+"</td></tr>";
+   
+        });
+   
+        if( data.priceDetails !== null)
+            content += "<tr><td colspan=2 >Beyond this per hour</td>"+"<td>"+data.priceDetails.more_than_minutes_per_hour_amount+"</td></tr>";
+        
+        $("#pricePerTimeList").html(content);
+        
+    }
     });
+    }
+    
+   
 
 
 </script>

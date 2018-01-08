@@ -9,7 +9,7 @@ class K_master_price_per_time_model extends Common_Model {
     var $from_minutes = 'from_minutes';
     var $to_minutes = 'to_minutes';
     var $amount = 'amount';
-    var $vehicle_type_id = 'price_id';
+    var $price_id = 'price_id';
     var $status = 'status';
     var $deleted = 'deleted';
     
@@ -73,7 +73,7 @@ class K_master_price_per_time_model extends Common_Model {
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->from_minutes,$this->to_minutes,$this->vehicle_type_id, $this->amount");
+        $this->db->select("$this->id,$this->from_minutes,$this->to_minutes,$this->price_id, $this->amount");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
@@ -109,13 +109,13 @@ class K_master_price_per_time_model extends Common_Model {
         return $this->db->affected_rows();
     }
     
-    function getPriceListByPriceId($vehicleTypeId){
+    function getPriceListByPriceId($priceId){
         $this->db->select("$this->id,$this->from_minutes,$this->to_minutes,$this->amount");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
                      $this->deleted => 2,
-                    $this->vehicle_type_id=> $vehicleTypeId
+                    $this->price_id=> $priceId
                  )
         );
         $query = $this->db->get();
@@ -130,7 +130,7 @@ class K_master_price_per_time_model extends Common_Model {
     }
     
     function deletingPricesExistingByPriceId($data,$id){
-        $this->db->where($this->vehicle_type_id, $id);
+        $this->db->where($this->price_id, $id);
         $this->db->update($this->table_name, $data);
        
     }
@@ -150,6 +150,37 @@ class K_master_price_per_time_model extends Common_Model {
         );
         $query = $this->db->get();
         return $query->row();
+    }
+    
+    function getPricePerTimesByPriceId($priceId){
+                
+            $this->db->select("*");
+        $this->db->from($this->table_name);
+          $this->db->where(
+                 array(
+                     $this->status => 1,
+                     $this->deleted => 2,
+                     $this->price_id => $priceId
+                 )
+        );
+        $query = $this->db->get();
+        return $query->result(); 
+    }
+    
+    
+      function getMaximumToMinutesByPriceId($priceId){
+                
+            $this->db->select("max(to_minutes) as maxToMinutes");
+        $this->db->from($this->table_name);
+          $this->db->where(
+                 array(
+                     $this->status => 1,
+                     $this->deleted => 2,
+                     $this->price_id => $priceId
+                 )
+        );
+        $query = $this->db->get();
+        return $query->row(); 
     }
 
     

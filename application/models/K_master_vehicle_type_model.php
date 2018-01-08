@@ -7,6 +7,7 @@ class K_master_vehicle_type_model extends Common_Model {
     var $id = 'id';
     var $name = 'name';
     var $number_of_wheels = 'number_of_wheels';
+    var $price_id = 'price_id';
     var $status = 'status';
     var $deleted = 'deleted';
     
@@ -66,7 +67,7 @@ class K_master_vehicle_type_model extends Common_Model {
      * @return object $result : This is result
      */
     function getDetails($id) {
-        $this->db->select("$this->id,$this->name,$this->number_of_wheels,$this->status");
+        $this->db->select("$this->id,$this->name,$this->number_of_wheels,$this->status,$this->price_id");
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(

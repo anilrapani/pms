@@ -44,6 +44,7 @@ class K_master_user_shift_model extends Common_Model {
             $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
             $this->db->where($likeCriteria);
         }
+        $this->db->where($this->status,1);
         $this->db->where($this->deleted,2);
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
@@ -100,6 +101,20 @@ class K_master_user_shift_model extends Common_Model {
         $this->db->where($this->id, $id);
         $this->db->update($this->table_name, $data);
         return $this->db->affected_rows();
+    }
+    
+    
+    function getShiftList(){
+        $this->db->select("*");
+        $this->db->from("$this->table_name");
+         $this->db->where(
+                 array(
+                     $this->status => 1,
+                     $this->deleted => 2
+                 )
+        );
+        $query = $this->db->get();
+        return $query->result();
     }
 
 }

@@ -69,6 +69,7 @@ class K_master_price_model extends Common_Model {
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
+                     $this->status => 1,
                      $this->deleted => 2,
                     $this->id => $id
                  )

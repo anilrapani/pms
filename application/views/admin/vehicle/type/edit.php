@@ -87,32 +87,14 @@
 
                                 </div>
                             </div>
-                            
+<!--                            
                                <div class="row">
-                               <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="form-control required" id="status" name="status">
-                                            <?php
-                                            $status_array = json_decode(STATUS_ARRAY,true);
-                                            if(!empty($status_array))
-                                            {
-                                                foreach ($status_array as $key => $value)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $key; ?>" <?php if($key == $resultInfo->status) {echo "selected=selected";} ?> ><?php echo $value; ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
+                  
                               
-                            </div>
+                            </div>-->
                             
                             
-                                   <div class="row">
+<!--                                   <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <div class="radio">
@@ -141,7 +123,7 @@
                                 </div>
 
 
-                            </div>
+                            </div>-->
                             
                          
 <div class="row">
@@ -150,7 +132,8 @@
                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="price_id">Price List</label>
-                                        <select class="form-control required" id="price_id" name="price_id">
+                                        <select class="form-control required" id="pricePerTimeListByPriceId" name="price_id">
+                                                         <option value="" >Select Price</option>
                                             <?php
                                             
                                             if(!empty($priceListArray && count($priceListArray) > 0))
@@ -158,7 +141,27 @@
                                                 foreach ($priceListArray as $value)
                                                 {
                                                     ?>
-                                                    <option value="<?php echo $value->id; ?>" ><?php echo $value->name; ?></option>
+                                                    <option value="<?php echo $value->id; ?>" <?php if($value->id == $resultInfo->price_id) {echo "selected=selected";} ?> ><?php echo $value->name; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control required" id="status" name="status">
+                               
+                                            <?php
+                                            $status_array = json_decode(STATUS_ARRAY,true);
+                                            if(!empty($status_array))
+                                            {
+                                                foreach ($status_array as $key => $value)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $key; ?>" <?php if($key == $resultInfo->status) {echo "selected=selected";} ?> ><?php echo $value; ?></option>
                                                     <?php
                                                 }
                                             }
@@ -167,13 +170,13 @@
                                     </div>
                                 </div>
                               
-                              <div class="col-md-6">                                
+<!--                              <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="name">&nbsp;</label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128">
                                     </div>
 
-                                </div>
+                                </div>-->
     
         
     </div>  <!-- /div.row -->
@@ -184,28 +187,40 @@
                                         <!-- /.box-header -->
                                         <div class="box-body table-responsive no-padding">
                                             <table class="table table-hover">
-                                                <tbody><tr>
+                                                <tbody id="pricePerTimeList">
+                                                    
+                                                    <tr>
                                                         <th>From Time</th>
                                                         <th>To Time</th>
                                                         <th>Amount</th>
                                                     </tr>
-                                                    <tr>
-                                                        <td>0 M</td>
-                                                        <td>15 M</td>
-                                                        <td>10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>15 M</td>
-                                                        <td>30 M</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>30 M</td>
-                                                        <td>60 M</td>
-                                                        <td>20</td>
-                                                    </tr>
-
-                                                </tbody></table>
+                                                     <?php
+                                            
+                                            if(!empty($pricePerTimeArray && count($pricePerTimeArray) > 0))
+                                            {
+                                                foreach ($pricePerTimeArray as $value)
+                                                {
+                                                    echo "<tr>
+                                                        <td>$value->from_minutes M</td>
+                                                        <td>$value->to_minutes M</td>
+                                                        <td>$value->amount</td>
+                                                    </tr>";
+                                                    ?>
+                                                    
+                                                    
+                                                    <?php
+                                                }
+                                            }
+                                            echo "<tr>
+                                                        <td colspan=2>Beyond this per hour</td>
+                                                        <td>$priceDetails->more_than_minutes_per_hour_amount</td>
+                                                        
+                                                    </tr>";
+                                            ?>
+                                                    
+                                                    
+                                                </tbody>
+                                            </table>
 
                                         </div><!-- /.box-body -->
 
@@ -256,6 +271,38 @@
         }
     );
 });
+
+
+ $('#pricePerTimeListByPriceId').change(getPricePerTimeList);
+
+    function getPricePerTimeList(){
+        pricePerTimeListByPriceId = $('#pricePerTimeListByPriceId').val();
+        content = '';
+        console.log('t1');
+        
+         $.ajax({
+        type: 'POST', 
+    url: '<?php echo base_url() . 'admin/vehicle/getPricePerTimeList'; ?>', 
+    data: { priceId : pricePerTimeListByPriceId },
+    dataType: 'json',
+    success: function (data) { 
+        
+        content += "<tr><th>From Time</th><th>To Time</th><th>Amount</th></tr>";
+        
+        $.each(data.pricePerTime, function(index, element) {
+            content += "<tr><td>"+element.from_minutes+"</td>"+"<td>"+element.to_minutes+"</td>"+"<td>"+element.amount+"</td></tr>";
+   
+        });
+   
+        if( data.priceDetails !== null)
+            content += "<tr><td colspan=2 >Beyond this per hour</td>"+"<td>"+data.priceDetails.more_than_minutes_per_hour_amount+"</td></tr>";
+        
+        $("#pricePerTimeList").html(content);
+        
+    }
+    });
+    }
+    
 
 </script>
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

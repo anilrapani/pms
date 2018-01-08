@@ -309,7 +309,8 @@
                                     <?php
                                   }
                                     ?>
-
+                                        <h4>Beyond this per hour : Rs. <?php echo $masterPriceDetails->more_than_minutes_per_hour_amount; ?></h4>
+                                        
                                     <h3>No Horn </h3>
                                     <h3>Speed Limit : <span>10Km/Hr</span></h3>
                                     <h3>Kastech India Pvt. Ltd. </h3>
