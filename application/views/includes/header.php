@@ -129,7 +129,13 @@
                             <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/employee/company/list" >
                               <i class="fa fa-ticket"></i>
-                              <span>Employee Companies</span>
+                              <span>Employee Company</span>
+                            </a>
+                          </li>
+                            <li class="treeview">
+                            <a href="<?php echo base_url(); ?>employee/vehicle/company/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Vendor Companies</span>
                             </a>
                           </li>
                           <li class="treeview">
@@ -167,6 +173,7 @@
                               <span>Vehicle Types and Prices</span>
                             </a>
                           </li>
+                   
 <!--                            <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/employee/deviceregistry/list" >
                               <i class="fa fa-ticket"></i>
@@ -190,10 +197,10 @@
               </ul>
             </li>
             
-            
+          
             
                <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'report' ))?'active':''; ?> ">
-              <a href="#"><i class="fa fa-database"></i><span>Report</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><i class="fa fa-database"></i><span>Cash Management</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
             
                          <li class="treeview">
@@ -227,12 +234,28 @@
                          
                       </ul>    
                </li>
+               
+               <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'report' ))?'active':''; ?> ">
+              <a href="#"><i class="fa fa-database"></i><span>Report</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+            
+                            <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/entry/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Daily Entry Report</span>
+                            </a>
+                          </li>
+                         
+                      </ul>    
+               </li>
+               
                             <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/parking/list" >
                               <i class="fa fa-ticket"></i>
                               <span>All Exited List</span>
                             </a>
                           </li>
+                                 
 <!--                                    <li class="treeview">
                             <a href="<?php echo base_url(); ?>admin/vehicle/report" >
                               <i class="fa fa-ticket"></i>
@@ -304,7 +327,7 @@
                           </li>
                           
                           
-            <?php if($role == ROLE_ADMIN){ ?>
+            <?php /*if($role == ROLE_ADMIN){ ?>
             <li class="treeview">
               <a href="<?php echo base_url(); ?>userListing">
                 <i class="fa fa-users"></i>
@@ -313,7 +336,7 @@
             </li>
          
             <?php
-            }
+            } */
             }
             ?>
           

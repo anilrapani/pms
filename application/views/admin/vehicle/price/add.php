@@ -104,6 +104,15 @@
                     </button>
                 </div>  <!-- /div.form-inline -->
             </div>  <!-- /div[data-role="dynamic-fields"] -->
+            <div class="form-inline" style="padding-top: 8px;">
+                    <div class="form-group">
+                        <label for="status">Beyond this per hour
+                        </label> <input type="text" class="form-control required" name="more_than_minutes_per_hour_amount" value="">
+
+                        
+                    </div>
+            </div>
+            
         </div>  <!-- /div.col-md-12 -->
     </div>  <!-- /div.row -->
 

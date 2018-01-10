@@ -502,7 +502,7 @@ class Vehicle extends BaseController {
                 
                 $user_id_Array = $this->input->post('user_id');
                 $shift_id_Array = $this->input->post('shift_id');
-                $device_registry_id_Array = $this->input->post('device_registry_id');
+            //    $device_registry_id_Array = $this->input->post('device_registry_id');
                 
                 
                 $updateInfo = array(
@@ -517,7 +517,7 @@ class Vehicle extends BaseController {
                        for($i=0; $i<count($user_id_Array);$i++) {
                     $finalArray[] = array('user_id' => $user_id_Array[$i], 
 
-                                            'device_registry_id' => $device_registry_id_Array[$i],
+                                      //      'device_registry_id' => $device_registry_id_Array[$i],
                                           'shift_id'  => $shift_id_Array[$i],
                                           'vehicle_gate_id' => $id,
                                           'status' => 1,
@@ -735,7 +735,7 @@ class Vehicle extends BaseController {
                 $this->addPriceView();
             } else {
                $name = ucwords(strtolower($this->input->post('name')));
-               $more_than_minutes = $this->input->post('more_than_minutes');
+           //    $more_than_minutes = $this->input->post('more_than_minutes');
                $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
                $fromMinutesArray = $this->input->post('from_minutes');
                $toMinutesArray = $this->input->post('to_minutes');
@@ -743,7 +743,7 @@ class Vehicle extends BaseController {
                 
                 $insertData = array(
                     'name' => $name,
-                    'more_than_minutes' => $more_than_minutes,
+                 //   'more_than_minutes' => $more_than_minutes,
                     'more_than_minutes_per_hour_amount' => $more_than_minutes_per_hour_amount,
                     'status' => 1,
                     'deleted' => 2,
@@ -829,7 +829,7 @@ class Vehicle extends BaseController {
                 redirect("admin/vehicle/edit/price/$id");
             } else {
                 $name = ucwords(strtolower($this->input->post('name')));
-                $more_than_minutes = $this->input->post('more_than_minutes');
+               //  $more_than_minutes = $this->input->post('more_than_minutes');
                 $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
                 $status = $this->input->post('status');
                 $fromMinutesArray = $this->input->post('from_minutes');
@@ -839,7 +839,7 @@ class Vehicle extends BaseController {
                
                 $updateInfo = array(
                     'name' => $name,
-                    'more_than_minutes' => $more_than_minutes,
+                   //  'more_than_minutes' => $more_than_minutes,
                     'more_than_minutes_per_hour_amount' => $more_than_minutes_per_hour_amount,
                     'status' => $status,
                     'updated_by' => $this->vendorId,

@@ -89,7 +89,7 @@
 
                             </div>
                             
-                            <div class="row">
+<!--                            <div class="row">
                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="status">Status</label>
@@ -110,7 +110,7 @@
                                     </div>
                                 </div>
                               
-                            </div>
+                            </div>-->
                             
 
                               <input type="hidden" value="<?php echo $companyInfo->id; ?>" name="id" id="id" />    

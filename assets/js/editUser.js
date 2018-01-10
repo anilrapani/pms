@@ -16,14 +16,20 @@ $(document).ready(function(){
 			email : { required : true, email : true, remote : { url : baseURL + "checkEmailExists", type :"post", data : { userId : function(){ return $("#userId").val(); } } } },
 			cpassword : {equalTo: "#password"},
 			mobile : { required : true, digits : true },
-			role : { required : true, selected : true}
+			role : { required : true, selected : true},
+                        shift_id : { required : true, selected : true },
+                        user_company_id : { required : true, selected : true },
+                        government_proof_type_id : { required : true, selected : true }
 		},
 		messages:{
 			fname :{ required : "This field is required" },
 			email : { required : "This field is required", email : "Please enter valid email address", remote : "Email already taken" },
 			cpassword : {equalTo: "Please enter same password" },
 			mobile : { required : "This field is required", digits : "Please enter numbers only" },
-			role : { required : "This field is required", selected : "Please select atleast one option" }			
+			role : { required : "This field is required", selected : "Please select atleast one option" },
+                        shift_id : { required : "This field is required", selected : "Please select atleast one option" },
+                        user_company_id : { required : "This field is required", selected : "Please select atleast one option" },
+                        government_proof_type_id : { required : "This field is required", selected : "Please select atleast one option" }
 		}
 	});
 });

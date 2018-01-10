@@ -25,7 +25,7 @@ class User_model extends Common_Model
                             OR  BaseTbl.mobile  LIKE '%".$searchText."%')";
             $this->db->where($likeCriteria);
         }
-        $this->db->where(array('BaseTbl.deleted'=>2, 'BaseTbl.role_id !=' => 1));
+        $this->db->where(array('BaseTbl.deleted'=>2, 'BaseTbl.role_id !=' => 1,'BaseTbl.id !=' => 2));
         $query = $this->db->get();
         
         return count($query->result());
@@ -48,7 +48,7 @@ class User_model extends Common_Model
                             OR  BaseTbl.name  LIKE '%".$searchText."%')";
             $this->db->where($likeCriteria);
         }
-        $this->db->where(array('BaseTbl.deleted'=>2, 'BaseTbl.role_id !=' => 1));
+        $this->db->where(array('BaseTbl.deleted'=>2, 'BaseTbl.role_id !=' => 1,'BaseTbl.id !=' => 2));
         $this->db->limit($page, $segment);
         $query = $this->db->get();
    

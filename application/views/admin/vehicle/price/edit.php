@@ -171,7 +171,7 @@
                     <div class="form-group">
                         <label for="status">Beyond this per hour
                         </label> <input type="text" class="form-control required" name="more_than_minutes_per_hour_amount" value="<?php echo $resultInfo->more_than_minutes_per_hour_amount; ?>">
-                        <input type="hidden" name="more_than_minutes" value="<?php echo $value->to_minutes; ?>">
+<!--                        <input type="hidden" name="more_than_minutes" value="<?php echo $value->to_minutes; ?>">-->
                         
                     </div>
             </div>

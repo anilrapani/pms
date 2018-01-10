@@ -141,3 +141,7 @@ $route['admin/vehicle/price/list'] = "admin/vehicle/priceList";
 $route['admin/vehicle/price/list/(:num)'] = "admin/vehicle/priceList/$1";
 $route['admin/vehicle/add/price'] = "admin/vehicle/addPriceView";
 $route['admin/vehicle/edit/price/(:any)'] = "admin/vehicle/editPriceView/$1";
+
+
+$route['admin/reports/entry/list'] = "admin/reports/entryList";
+$route['admin/reports/entry/list/(:num)'] = "admin/reports/entryList/$1";

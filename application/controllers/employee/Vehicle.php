@@ -57,8 +57,8 @@ class Vehicle extends BaseController {
 
             $data['records'] = $this->k_master_vehicle_company_model->getList($data);
 
-            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Company List';
-            $data['title'] = 'Vehicle Company';
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vendor Company List';
+            $data['title'] = 'Vendor Company';
             $data['sub_title'] = 'List';
 
             $this->loadViews("employee/vehicle/company/list", $this->global, $data, NULL);
@@ -76,7 +76,7 @@ class Vehicle extends BaseController {
 
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Company';
-            $data['title'] = "Vehicle Company";
+            $data['title'] = "Vendor Company";
 
             $data['sub_title'] = "Add";
             $this->loadViews("employee/vehicle/company/add", $this->global, $data, NULL);
@@ -126,7 +126,7 @@ class Vehicle extends BaseController {
                 }
 
                 $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Company';
-                $data['title'] = "Vehicle Company";
+                $data['title'] = "Vendor Company";
 
                 $data['sub_title'] = "Add";
                 $this->loadViews("employee/vehicle/company/add", $this->global, $data, NULL);
@@ -149,7 +149,7 @@ class Vehicle extends BaseController {
             $data['companyInfo'] = $this->k_master_vehicle_company_model->getDetails($companyId);
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Edit Company';
-            $data['title'] = "Vehicle Company";
+            $data['title'] = "Vendor Company";
 
             $data['sub_title'] = "Edit";
 

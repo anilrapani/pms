@@ -6,7 +6,7 @@ class K_parking_model extends Common_Model {
     var $table_name = 'k_parking';
     var $id = 'id';
     var $vehicle_type_id = 'vehicle_type_id';
-    var $vehicle_number = '';
+    var $vehicle_number = 'vehicle_number';
     var $vehicle_company_id = 'vehicle_company_id';
     var $vehicle_company = 'vehicle_company';
     var $driver_name = 'driver_name';
@@ -85,6 +85,87 @@ class K_parking_model extends Common_Model {
         }
     }
 
+    
+      /**
+     * This function is used to get the employee company list and total company count
+     * @param array $inputData : This is array with searchText, page, segment
+     * @return array $result : This is result
+     */
+    function getEntryList($inputData) {
+        if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
+            $this->db->select("BaseTbl.$this->id");
+        } else {
+            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->entry_time, BaseTbl.$this->vehicle_number, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
+            // $this->db->select("");
+        }
+        $this->db->from("$this->table_name as BaseTbl");
+        $this->db->join('k_master_vehicle_type as vehicle_type', "vehicle_type.id = BaseTbl.$this->vehicle_type_id",'left');
+        $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id_entry",'left');
+        
+        
+        if (!empty($inputData['entryDate'])) {
+            $this->db->where("DATE(BaseTbl.$this->entry_time)", $inputData['entryDate']);
+        }
+        if (!empty($inputData['vehicle_type_id'])) {
+            $this->db->where("BaseTbl.$this->vehicle_type_id", $inputData['vehicle_type_id']);
+        }
+        
+        
+        $this->db->where(
+                 array(
+                     "BaseTbl.$this->status" => 1,
+                     "BaseTbl.$this->deleted" => 2,
+                     "BaseTbl.$this->exit_time" =>'0000-00-00 00:00:00',
+                 )
+        );
+       
+        if ($inputData['totalCount'] == false && $inputData['download'] == false) {
+            $this->db->limit($inputData['page'], $inputData['offset']);
+        }
+        $query = $this->db->get();
+        $result = $query->result();
+
+        if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
+            $result['count'] = count($result);
+            return $result;
+        } else {
+            return $result;
+        }
+    }
+    
+    
+    function getEntryListByVehicleType($inputData) {
+        
+        $this->db->select("vehicle_type.name as vehicle_type_name, count(BaseTbl.$this->id) as type_count");
+        $this->db->from("$this->table_name as BaseTbl");
+        $this->db->join('k_master_vehicle_type as vehicle_type', "vehicle_type.id = BaseTbl.$this->vehicle_type_id",'left');
+        
+        if (!empty($inputData['entryDate'])) {
+            $this->db->where("DATE(BaseTbl.$this->entry_time)", $inputData['entryDate']);
+        }
+             if (!empty($inputData['vehicle_type_id'])) {
+            $this->db->where("BaseTbl.$this->vehicle_type_id", $inputData['vehicle_type_id']);
+        }
+        
+        
+        $this->db->where(
+                 array(
+                     "BaseTbl.$this->status" => 1,
+                     "BaseTbl.$this->deleted" => 2,
+                     "BaseTbl.$this->exit_time" =>'0000-00-00 00:00:00',
+                 )
+        );
+        $this->db->group_by("BaseTbl.$this->vehicle_type_id");
+        $query = $this->db->get();
+        $result = $query->result();
+          
+        
+            return $result;
+        
+    }
+    
+    
+    
     /**
      * This function is used to get the user company's information
      * @param array $id : This is user company's updated information

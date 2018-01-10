@@ -190,7 +190,7 @@ class Employee extends BaseController {
                     'email' => $email,
                     'phone' => $phone,
                     'address' => $address,
-                    'status' => $status,
+                    'status' => 1,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s')
                 );

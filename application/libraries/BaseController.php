@@ -126,6 +126,7 @@ class BaseController extends CI_Controller {
 		$config ['base_url'] = base_url () . $link;
 		$config ['total_rows'] = $count;
 		$config ['uri_segment'] = $segment_const;
+                $config ['suffix'] = '?'.http_build_query($_REQUEST, '', "&");
 		$config ['per_page'] = $perPage;
 		$config ['num_links'] = 5;
 		$config ['full_tag_open'] = '<nav><ul class="pagination">';

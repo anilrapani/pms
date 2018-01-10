@@ -260,7 +260,9 @@
                                 <form role="form" id="addEntry" action="<?php echo base_url() ?>employee/vehicle/generateexitreciept" method="post" enctype="multipart/form-data" novalidate="novalidate">
                                 <div class="box-footer" style="float:right;" >
                                                                     <input type="hidden" id="entryId" name="entryId" value="<?php echo $entryDetails->id; ?>" />
+                                                                    <?php if($isNotExited == true) { ?>
                                         <input type="submit" class="btn btn-primary"  value="Submit">
+                                                                    <?php } ?>
                                         <?php if ($isNewEntry == false) { ?><input type="reset" class="btn btn-primary float-right" value="Print"><?php } ?>
                                 </div>
                                 </form>

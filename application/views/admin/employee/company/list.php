@@ -7,17 +7,17 @@
       </h1>
     </section>
     <section class="content">
-        <div class="row">
+<!--        <div class="row">
             <div class="col-xs-12 text-right">
                 <div class="form-group">
                     <a class="btn btn-primary" href="<?php echo base_url(); ?>admin/employee/add/company"><i class="fa fa-plus"></i> Add New</a>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="row">
             <div class="col-xs-12">
               <div class="box">
-                <div class="box-header">
+<!--                <div class="box-header">
                     <h3 class="box-title"><?php echo $sub_title; ?></h3>
                     <div class="box-tools">
                         <form action="<?php echo base_url() ?>admin/employee/company/list" method="POST" id="searchList">
@@ -29,7 +29,7 @@
                             </div>
                         </form>
                     </div>
-                </div><!-- /.box-header -->
+                </div> /.box-header -->
                 <div class="box-body table-responsive no-padding">
                   <table class="table table-hover">
                     <tr>
@@ -50,7 +50,7 @@
                       <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
                       <td class="text-center">
                           <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/employee/edit/company/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
-                          <a class="btn btn-sm btn-danger deleteCompany" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>
+<!--                          <a class="btn btn-sm btn-danger deleteCompany" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>-->
                       </td>
                     </tr>
                     <?php

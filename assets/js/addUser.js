@@ -20,7 +20,10 @@ $(document).ready(function(){
 			password : { required : true },
 			cpassword : {required : true, equalTo: "#password"},
 			mobile : { required : true, digits : true },
-			role : { required : true, selected : true}
+			role : { required : true, selected : true},
+                        shift_id : { required : true, selected : true },
+                        user_company_id : { required : true, selected : true },
+                        government_proof_type_id : { required : true, selected : true }
 		},
 		messages:{
 			fname :{ required : "This field is required" },
@@ -28,7 +31,10 @@ $(document).ready(function(){
 			password : { required : "This field is required" },
 			cpassword : {required : "This field is required", equalTo: "Please enter same password" },
 			mobile : { required : "This field is required", digits : "Please enter numbers only" },
-			role : { required : "This field is required", selected : "Please select atleast one option" }			
+			role : { required : "This field is required", selected : "Please select atleast one option" },			
+                        shift_id : { required : "This field is required", selected : "Please select atleast one option" },
+                        user_company_id : { required : "This field is required", selected : "Please select atleast one option" },
+                        government_proof_type_id : { required : "This field is required", selected : "Please select atleast one option" }
 		}
 	});
 });

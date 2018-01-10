@@ -42,20 +42,6 @@
         var y= $('a[href="'+windowURL+'"]');
             y.addClass('active');
             y.parent().addClass('active');
-            
-            $('.datepicker').datepicker({
-    format: 'mm/dd/yyyy'
-});
-   $("#reservationtime").daterangepicker({
-
-        format: "dd MM yyyy - hh:ii"
-    });
-    
-      //Timepicker
-    $('.timepicker').timepicker({
-      showInputs: false
-    });
-            
     </script>
     
   </body>

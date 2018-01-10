@@ -161,7 +161,7 @@
                                         </select>
                                     </div>
                                 </div>    
-<!--                                  <div class="col-md-6">
+                                  <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="shift_id">Employee Shift</label>
                                         <select class="form-control required" id="shift_id" name="shift_id">
@@ -171,15 +171,15 @@
                                             {
                                                 foreach ($employeeShifts as $rl)
                                                 {
-                                                    ?>
-                                                    <option value="<?php echo $rl->id ?>"><?php echo $rl->name ?></option>
+                                           ?>
+                                                    <option value="<?php echo $rl->id ?>"  ><?php echo $rl->name.' : '.$rl->start_time.' - '.$rl->end_time ?></option>
                                                     <?php
                                                 }
                                             }
                                             ?>
                                         </select>
                                     </div>
-                                </div>   -->
+                                </div>   
                               
                             </div>
                         </div><!-- /.box-body -->
