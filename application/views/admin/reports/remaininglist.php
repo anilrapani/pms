@@ -8,7 +8,7 @@
     </section>
     <section class="content">
         <div class="row ">
-            <form role="form" action="<?php echo base_url() ?>admin/reports/entry/list" method="get" role="form">
+            <form role="form" action="<?php echo base_url() ?>admin/reports/remaining/list" method="get" role="form">
                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="vehicle_type_id">Vehicle Type</label>

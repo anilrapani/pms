@@ -8,7 +8,7 @@
     </section>
     <section class="content">
         <div class="row ">
-            <form role="form" action="<?php echo base_url() ?>admin/reports/entry/list" method="get" role="form">
+            <form role="form" action="<?php echo base_url() ?>admin/reports/exit/list" method="get" role="form">
                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="vehicle_type_id">Vehicle Type</label>
@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <label for="role">Date</label>
                         <div class="input-group date" data-provide="datepicker">
-                            <input type="text" class="form-control" name="entryDate" value="<?php echo $entryDate; ?>">
+                            <input type="text" class="form-control" name="exitDate" value="<?php echo $exitDate; ?>">
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </div>
@@ -83,11 +83,17 @@
                       <th>Entry Date & Time</th>
                       <th>Vehicle No.</th>
                       <th>Vehicle Type</th>
+                      <th>Exit Date & Time</th>
+                      <th>Parking Hours</th>
+                      <th>Amount</th>
                       <th>Company Name</th>
                       <th>Gate Name</th>
                       <th class="text-center">Actions</th>
                     </tr>
                     <?php
+//                    echo "<pre>";
+//                    var_dump($records);
+//                    exit;
                     if(!empty($records))
                     {
                         foreach($records as $record)
@@ -99,6 +105,9 @@
                       <td><?php echo $record->entry_time; ?></td>
                       <td><?php echo $record->vehicle_number; ?></td>
                       <td><?php echo $record->vehicle_type_name; ?></td>
+                      <td><?php echo $record->exit_time; ?></td>
+                      <td><?php echo $record->parked_hours; ?></td>
+                      <td><?php echo $record->total_amount; ?></td>
                       <td><?php echo $record->vehicle_company; ?></td>
                       <td><?php echo $record->gate_entry_name; ?></td>
                       
@@ -132,26 +141,35 @@
                                                 <tbody id="pricePerTimeList">
                                                     
                                                     <tr>
+                                                        <th></th>
                                                         <th>Vehicle Type </th>
                                                         <th>No Of Vehicles</th>
+                                                        <th>Amount</th>
                                                     </tr>
                                                     
                                                     <?php 
                                                     $totalVehiclesCount = 0;
-                                                    foreach ($entryListSummaryByVehicleType as $key => $value) {
+                                                    $totalAmount = 0;
+                                                    foreach ($exitListSummaryByVehicleType as $key => $value) {
                                                                             ?>
                                                      <tr>
+                                                         <td></td>
                                                         <td><?php echo $value->vehicle_type_name; ?></td>
                                                         <td><?php echo $value->type_count; ?></td>
+                                                        <td><?php echo $value->amount; ?></td>
                                                         
                                                     </tr>                                                    
                                                     <?php
+                                                    $totalAmount = $totalAmount+$value->amount;
                                                     $totalVehiclesCount = $totalVehiclesCount+$value->type_count;
+                                                    
                                                                         }?>
                                                     
                                                     <tr>
-                                                        <th>Total Vehicles Count </th>
+                                                        <th>Total</th>
+                                                        <th></th>
                                                         <th><?php echo $totalVehiclesCount; ?></th>
+                                                        <th><?php echo $totalAmount; ?></th>
                                                     </tr>
                                                                                                     
                                                     

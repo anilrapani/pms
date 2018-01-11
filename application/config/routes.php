@@ -145,3 +145,13 @@ $route['admin/vehicle/edit/price/(:any)'] = "admin/vehicle/editPriceView/$1";
 
 $route['admin/reports/entry/list'] = "admin/reports/entryList";
 $route['admin/reports/entry/list/(:num)'] = "admin/reports/entryList/$1";
+
+$route['admin/reports/exit/list'] = "admin/reports/exitList";
+$route['admin/reports/exit/list/(:num)'] = "admin/reports/exitList/$1";
+
+
+$route['admin/reports/remaining/list'] = "admin/reports/remainingList";
+$route['admin/reports/remaining/list/(:num)'] = "admin/reports/remainingList/$1";
+
+$route['admin/reports/monthly/list'] = "admin/reports/monthlyList";
+$route['admin/reports/monthly/list/(:num)'] = "admin/reports/monthlyList/$1";

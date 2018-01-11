@@ -236,7 +236,7 @@
                </li>
                
                <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'report' ))?'active':''; ?> ">
-              <a href="#"><i class="fa fa-database"></i><span>Report</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <a href="#"><i class="fa fa-database"></i><span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
               <ul class="treeview-menu">
             
                             <li class="treeview">
@@ -245,7 +245,25 @@
                               <span>Daily Entry Report</span>
                             </a>
                           </li>
-                         
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/exit/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Daily Exit Report</span>
+                            </a>
+                          </li>
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/remaining/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Remaining Vehicles Report</span>
+                            </a>
+                          </li>
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/monthly/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Monthly Report</span>
+                            </a>
+                          </li>
+                          
                       </ul>    
                </li>
                
