@@ -99,4 +99,5 @@ define('CUSTOMER_PAID_BY_CASH_OR_CARD_ARRAY',              json_encode(array(1=>
 define('REPORT_PAID_TO_ADMIN',                             json_encode(array(1=>'Generated',2=>'Updated',3=>'Submitted')));
 define('MONTHS_FOR_REPORT_ARRAY',                          json_encode(array(1=>'January',2=>'February',3=>'March',4=>'April',5=>'May',6=>'June',7=>'July',8=>'August',9=>'September',10=>'October',11=>'November',12=>'December')));
 define('YEARS_FOR_REPORT_ARRAY',                           json_encode(array('from_year'=>2017,'to_year'=>2050)));
+define('REPORT_TYPE_ARRAY',                                json_encode(array(1=>"Daily",2=>"From Date")));
 define('EXT',                              '');

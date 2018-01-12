@@ -158,3 +158,16 @@ $route['admin/reports/monthly/list/(:num)'] = "admin/reports/monthlyList/$1";
 
 $route['admin/reports/shift/list'] = "admin/reports/shiftList";
 $route['admin/reports/shift/list/(:num)'] = "admin/reports/shiftList/$1";
+
+$route['admin/reports/tariffsummary/list'] = "admin/reports/tariffSummaryList";
+$route['admin/reports/tariffsummary/list/(:num)'] = "admin/reports/tariffSummaryList/$1";
+
+$route['admin/reports/supervisorsummary/list'] = "admin/reports/supervisorSummaryList";
+$route['admin/reports/supervisorsummary/list/(:num)'] = "admin/reports/supervisorSummaryList/$1";
+
+$route['admin/reports/timebased/list'] = "admin/reports/timebasedList";
+$route['admin/reports/timebased/list/(:num)'] = "admin/reports/timebasedList/$1";
+
+
+$route['admin/reports/companywise/list'] = "admin/reports/companywiseList";
+$route['admin/reports/companywise/list/(:num)'] = "admin/reports/companywiseList/$1";

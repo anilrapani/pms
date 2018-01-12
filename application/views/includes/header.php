@@ -269,6 +269,32 @@
                               <span>Shift Report</span>
                             </a>
                           </li>
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/tariffsummary/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Summary-Tariff Report</span>
+                            </a>
+                          </li>
+                          
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/supervisorsummary/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Summary Supervisor Report</span>
+                            </a>
+                          </li>
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/timebased/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Time Based Report</span>
+                            </a>
+                          </li>
+                          
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/companywise/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Company wise Report</span>
+                            </a>
+                          </li>
                           
                       </ul>    
                </li>
