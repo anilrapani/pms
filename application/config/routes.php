@@ -155,3 +155,6 @@ $route['admin/reports/remaining/list/(:num)'] = "admin/reports/remainingList/$1"
 
 $route['admin/reports/monthly/list'] = "admin/reports/monthlyList";
 $route['admin/reports/monthly/list/(:num)'] = "admin/reports/monthlyList/$1";
+
+$route['admin/reports/shift/list'] = "admin/reports/shiftList";
+$route['admin/reports/shift/list/(:num)'] = "admin/reports/shiftList/$1";

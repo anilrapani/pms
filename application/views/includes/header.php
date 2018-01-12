@@ -263,6 +263,12 @@
                               <span>Monthly Report</span>
                             </a>
                           </li>
+                          <li class="treeview">
+                            <a href="<?php echo base_url(); ?>admin/reports/shift/list" >
+                              <i class="fa fa-ticket"></i>
+                              <span>Shift Report</span>
+                            </a>
+                          </li>
                           
                       </ul>    
                </li>

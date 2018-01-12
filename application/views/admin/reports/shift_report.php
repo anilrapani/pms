@@ -8,21 +8,21 @@
     </section>
     <section class="content">
         <div class="row ">
-            <form role="form" action="<?php echo base_url() ?>admin/reports/monthly/list" method="get" role="form">
+            <form role="form" action="<?php echo base_url() ?>admin/reports/shift/list" method="get" role="form">
                 
                      <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="status">Year Selection</label>
-                                        <select class="form-control required" id="year" name="year">
-                                            <option value="">Select Year</option>
+                                        <label for="status">Select Shift</label>
+                                        <select class="form-control required" id="shift_id" name="shift_id">
+                                            <option value="">Select Shift</option>
                                             <?php
-                                            $years_for_report_array = json_decode(YEARS_FOR_REPORT_ARRAY,true);
-                                            if(!empty($years_for_report_array))
+                                            if(!empty($shiftListArray))
                                             {
-                                                for($each_year=$years_for_report_array['from_year'];$each_year<=$years_for_report_array['to_year'];$each_year++)
+                                                foreach($shiftListArray as $value)
                                                 {
                                                     ?>
-                                                    <option value="<?php echo $each_year; ?>" <?php if($year == $each_year) { echo "selected=selected";} ?> ><?php echo $each_year; ?></option>
+                                          
+                                                <option value="<?php echo $value->id; ?>" <?php if($value->id == $shift_id) { echo "selected=selected";} ?> ><?php echo $value->start_time.'-'.$value->end_time; ?></option>
                                                     <?php
                                                 }
                                             }
@@ -31,26 +31,20 @@
                                     </div>
                                 </div>
                 
-                 <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="status">Month Selection</label>
-                                        <select class="form-control required" id="month" name="month">
-                                                <option value="">Select Month</option>
-                                            <?php
-                                            $months_for_report_array = json_decode(MONTHS_FOR_REPORT_ARRAY,true);
-                                            if(!empty($months_for_report_array))
-                                            {
-                                                foreach ($months_for_report_array as $key => $value)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $key; ?>" <?php if($key == $month) {echo "selected=selected";} ?> ><?php echo $value; ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
+                     <div class="col-xs-2">
+
+                    <div class="form-group">
+                        <label for="role">Date</label>
+                        <div class="input-group date" data-provide="datepicker">
+                            <input type="text" class="form-control" name="exitDate" value="<?php echo $exitDate; ?>">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
                 
                 
                 
@@ -93,10 +87,9 @@
                   <table class="table table-hover">
                     <tr>
                       <th>Vehicle Type</th>
-                      <th>Vehicle Type Id</th>
-                      <th>Exit Date</th>
+                      <th>Gate Name</th>
                       <th>Total Vehicles Exited</th>
-                      <th>Total Amount</th>
+                      <th>Amount Collected</th>
                     </tr>
                     <?php
                     if(!empty($records))
@@ -107,16 +100,11 @@
                     ?>
                     <tr>
                       <td><?php echo $record->vehicle_type_name; ?></td>
-                      <th><?php echo $record->vehicle_type_id; ?></th>
-                      <td><?php echo $record->each_date; ?></td>
+                      <td><?php echo $record->gate_name; ?></td>
+                      
                       <td><?php echo $record->total_vehicles_exited; ?></td>
                       <td><?php echo $record->total_amount; ?></td>
-                      
-                      
-                
-                      
-                      
-                
+                    
                     </tr>
                     <?php
                         }

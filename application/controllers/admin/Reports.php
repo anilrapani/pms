@@ -19,7 +19,7 @@ class Reports extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('k_parking_model','k_master_vehicle_type_model'));
+        $this->load->model(array('k_parking_model','k_master_vehicle_type_model','k_master_user_shift_model'));
         $this->isLoggedIn();
     }
        
@@ -590,32 +590,40 @@ class Reports extends BaseController {
         }
     }
     
-    function shiftReport() {
+    function shiftList() {
 
         if ($this->isAdmin() == TRUE) {
             $this->loadThis();
         } else {
             
-            $year = $this->input->get("year");
-            $month = $this->input->get("month");
+            $shift_id = $this->input->get("shift_id");
+            $exitDate = $this->input->get("exitDate");
             $download = $this->input->get("download");
             
             $data['totalCount'] = false;
             $data['download'] = $download;
-            $data['year'] = $year;
-            $data['month'] = $month;
+            if($shift_id){
+                $shift_details = $this->k_master_user_shift_model->getDetails($shift_id);
+                $data['start_time'] = $shift_details->start_time;
+                $data['end_time'] = $shift_details->end_time;
+            }
+            
+            $data['exitDate'] = $exitDate;
+            $data['shift_id'] = $shift_id;
+            
+            
             
             if($download == true){
                $monthlySummaryByVehicleType = $this->k_parking_model->getShiftSummaryByVehicleTypeList($data);   
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
-                $sheet->setCellValue('B1', 'Year :'.$year);
-                $sheet->setCellValue('C1', 'Month :'.$month);
+                $sheet->setCellValue('B1', 'Shift :'.$data['start_time'].'-'.$data['end_time']);
+                $sheet->setCellValue('C1', 'Exit Date :'.$data['exitDate']);
                 $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
                 
                 
                 $sheet->setCellValue('A3', 'Vehicle Type');
-                $sheet->setCellValue('B3', 'Exit Date');
+                $sheet->setCellValue('B3', 'Gate Name');
                 $sheet->setCellValue('C3', 'Total Vehicles Exited');
                 $sheet->setCellValue('D3', 'Total Amount');
                 $count = 4;  
@@ -624,7 +632,7 @@ class Reports extends BaseController {
                 
                foreach ($monthlySummaryByVehicleType as $value) {
                     $sheet->setCellValue('A' . $count, $value->vehicle_type_name);
-                    $sheet->setCellValue('B' . $count, $value->each_date);
+                    $sheet->setCellValue('B' . $count, $value->gate_name);
                     $sheet->setCellValue('C' . $count, $value->total_vehicles_exited);
                     $final_total_vehicles_exited = $final_total_vehicles_exited+$value->total_vehicles_exited;
                     $sheet->setCellValue('D' . $count, $value->total_amount);
@@ -661,7 +669,8 @@ class Reports extends BaseController {
 
             $this->load->model('k_parking_model');
             $result = $this->k_parking_model->getShiftSummaryByVehicleTypeList($data);
-
+//            echo $this->db->last_query();
+//            exit;
             $count = $result['count'];
             $data['totalCount'] = false;
             $segment = 5;
@@ -680,7 +689,7 @@ class Reports extends BaseController {
             $data['final_total_amount'] = $final_total_amount;
             
                
-            $returns = $this->paginationCompress("admin/reports/monthly/list", $count, 100, $segment);
+            $returns = $this->paginationCompress("admin/reports/shift/list", $count, 100, $segment);
 
             $data['page'] = $returns['page'];
             $data['offset'] = $returns['offset'];
@@ -705,7 +714,9 @@ class Reports extends BaseController {
                 )
             );
             
-            $this->loadViews("admin/reports/monthly_report", $this->global, $data, NULL);
+            $data['shiftListArray'] = $this->k_master_user_shift_model->getShiftList();
+            
+            $this->loadViews("admin/reports/shift_report", $this->global, $data, NULL);
         }
     }
     

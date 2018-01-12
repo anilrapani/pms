@@ -543,20 +543,21 @@ class K_parking_model extends Common_Model {
     
     function getShiftSummaryByVehicleTypeList($inputData) {
         
-        $this->db->select("vehicle_type.name as vehicle_type_name, vehicle_type.id as vehicle_type_id, DATE(BaseTbl.$this->exit_time) as each_date, count(BaseTbl.$this->id) as total_vehicles_exited, sum(BaseTbl.$this->total_amount) as total_amount");
+        $this->db->select("vehicle_type.name as vehicle_type_name, gate.name as gate_name, vehicle_type.id as vehicle_type_id, DATE(BaseTbl.$this->exit_time) as each_date, count(BaseTbl.$this->id) as total_vehicles_exited, sum(BaseTbl.$this->total_amount) as total_amount");
             // $this->db->select("");
         
         $this->db->from("$this->table_name as BaseTbl");
         $this->db->join('k_master_vehicle_type as vehicle_type', "vehicle_type.id = BaseTbl.$this->vehicle_type_id",'left');
         $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id_exit",'left');
         
-        if (!empty($inputData['month'])) {
-            $this->db->where("month(BaseTbl.$this->exit_time)", $inputData['month']);
+        
+        if (!empty($inputData['start_time']) && !empty($inputData['exitDate'])) {
+            $this->db->where("BaseTbl.$this->entry_time >", $inputData['exitDate'].' '.$inputData['start_time']);
+        }
+        if (!empty($inputData['end_time']) && !empty($inputData['exitDate'])) {
+            $this->db->where("BaseTbl.$this->exit_time <", $inputData['exitDate'].' '.$inputData['end_time']);
         }
         
-        if (!empty($inputData['year'])) {
-            $this->db->where("year(BaseTbl.$this->exit_time)", $inputData['year']);
-        }
         
         $this->db->where(
                  array(
