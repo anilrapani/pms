@@ -45,15 +45,11 @@ class K_master_vehicle_company_model extends Common_Model {
             $likeCriteria = "(" . $this->name . "  LIKE '%" . $inputData['searchText'] . "%')";
             $this->db->where($likeCriteria);
         }
-        $this->db->where(
-                 array(
-                     $this->deleted => 2
-                 )
-        );
         $this->db->where(array($this->deleted => 2));
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
+        $this->db->order_by("$this->id", "desc");
         $query = $this->db->get();
         $result = $query->result();
 

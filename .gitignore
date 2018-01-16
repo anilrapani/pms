@@ -29,3 +29,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+/application/third_party/composer_php_dependencies/nbproject/private/
+/application/third_party/composer_php_dependencies/vendor/

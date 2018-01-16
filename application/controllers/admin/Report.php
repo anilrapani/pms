@@ -20,43 +20,47 @@ class Report extends BaseController {
         $this->isLoggedIn();
     }
     function reportchart(){
-        $this->global['pageTitle'] = PROJECT_NAME . ' : Report Chart';
-        $data = array();
-        $this->load->model(array('k_parking_model','k_report_model'));
-        $data['group_by'] = array('gate_id');
-        $data['paid_to_admin'] = array(1,2);
-        $data['allTerminalAmount'] = $this->k_report_model->getReportSummaryData($data);
-        
-        $inputData['fromDateTime'] = date('Y-m-00 00:00:00');        
-        $data['amount']['currentMonthTotalAmount'] = $this->k_report_model->getReportSummaryData($inputData);
-        $data['amount']['currentMonthTotalAmount'] = isset($data['amount']['currentMonthTotalAmount'][0]->total_amount)?$data['amount']['currentMonthTotalAmount'][0]->total_amount:0;
-        $inputData['paid_to_admin'] = array(1,2);
-        $data['amount']['currentMonthPendingAmount'] = $this->k_report_model->getReportSummaryData($inputData);
-        $data['amount']['currentMonthPendingAmount'] = isset($data['amount']['currentMonthPendingAmount'][0]->total_amount)?$data['amount']['currentMonthPendingAmount'][0]->total_amount:0;
-        $inputData['paid_to_admin'] = array(3);
-        $data['amount']['currentMonthAdminCollected'] = $this->k_report_model->getReportSummaryData($inputData);
-        $data['amount']['currentMonthAdminCollected'] = isset($data['amount']['currentMonthAdminCollected'][0]->total_amount)?$data['amount']['currentMonthAdminCollected'][0]->total_amount:0;
-        $data['amount']['currentMonth'] = date('F');
-        
-/* Old code for chart
-        $inputData = array('start_date_time' => date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime(date('Y-m-00 00:00:00')))));
-        $data['amount']['totalAmount'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
-        $inputData = array('paid_to_admin' => 1,'start_date_time' => date('Y-m-00 00:00:00'));
-        $data['amount']['totalAmountCollected'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
-        $inputData = array('paid_to_admin' => 2,'start_date_time' => date('Y-m-00 00:00:00'));
-        $data['amount']['totalAmountPending'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
-        $data['amount']['currentMonth'] = date('F');
-*/
+        if(!array_key_exists(38,$this->role_privileges)){
+            $this->loadThis();
+        } else {
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Report Chart';
+            $data = array();
+            $this->load->model(array('k_parking_model','k_report_model'));
+            $data['group_by'] = array('gate_id');
+            $data['paid_to_admin'] = array(1,2);
+            $data['allTerminalAmount'] = $this->k_report_model->getReportSummaryData($data);
+
+            $inputData['fromDateTime'] = date('Y-m-00 00:00:00');        
+            $data['amount']['currentMonthTotalAmount'] = $this->k_report_model->getReportSummaryData($inputData);
+            $data['amount']['currentMonthTotalAmount'] = isset($data['amount']['currentMonthTotalAmount'][0]->total_amount)?$data['amount']['currentMonthTotalAmount'][0]->total_amount:0;
+            $inputData['paid_to_admin'] = array(1,2);
+            $data['amount']['currentMonthPendingAmount'] = $this->k_report_model->getReportSummaryData($inputData);
+            $data['amount']['currentMonthPendingAmount'] = isset($data['amount']['currentMonthPendingAmount'][0]->total_amount)?$data['amount']['currentMonthPendingAmount'][0]->total_amount:0;
+            $inputData['paid_to_admin'] = array(3);
+            $data['amount']['currentMonthAdminCollected'] = $this->k_report_model->getReportSummaryData($inputData);
+            $data['amount']['currentMonthAdminCollected'] = isset($data['amount']['currentMonthAdminCollected'][0]->total_amount)?$data['amount']['currentMonthAdminCollected'][0]->total_amount:0;
+            $data['amount']['currentMonth'] = date('F');
+
+    /* Old code for chart
+            $inputData = array('start_date_time' => date('Y-m-d H:i:s',strtotime('-330 minutes',strtotime(date('Y-m-00 00:00:00')))));
+            $data['amount']['totalAmount'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
+            $inputData = array('paid_to_admin' => 1,'start_date_time' => date('Y-m-00 00:00:00'));
+            $data['amount']['totalAmountCollected'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
+            $inputData = array('paid_to_admin' => 2,'start_date_time' => date('Y-m-00 00:00:00'));
+            $data['amount']['totalAmountPending'] = $this->k_parking_model->getTotalAmountFromDate($inputData)->total_amount;
+            $data['amount']['currentMonth'] = date('F');
+    */
 
 
-        $this->global['assets'] = array(
-                                        'cssTopArray'     => array(),
-                                        'cssBottomArray'  => array(),
-                                        'jsTopArray'      => array(base_url() . 'assets/plugins/chartjs/Chart'),
-                                        'jsBottomArray'   => array()
-                                        );
-        
-        $this->loadViews("admin/report/reportchart", $this->global, $data, NULL);
+            $this->global['assets'] = array(
+                                            'cssTopArray'     => array(),
+                                            'cssBottomArray'  => array(),
+                                            'jsTopArray'      => array(base_url() . 'assets/plugins/chartjs/Chart'),
+                                            'jsBottomArray'   => array()
+                                            );
+
+            $this->loadViews("admin/report/reportchart", $this->global, $data, NULL);
+        } 
     }
     
     
@@ -65,7 +69,9 @@ class Report extends BaseController {
         $this->loadViews("admin/report/amountcollection", $this->global, NULL, NULL);
     }
     function summary(){
-         
+        if(!array_key_exists(39,$this->role_privileges)){
+            $this->loadThis();
+        } else {  
         $this->load->model(array('k_parking_model','k_report_model','user_model','k_master_vehicle_gate_model'));
         $data['gate_id'] = $data['user_id'] = '';
         $gate_id = $this->input->get('gate_id');
@@ -182,9 +188,10 @@ class Report extends BaseController {
                               
                     );
         $this->loadViews("admin/report/summary", $this->global, $data, NULL);
+        }
     }
     function approveEmployeeReport(){
-         if($this->isAdmin() == TRUE)
+         if(!array_key_exists(41,$this->role_privileges))
         {
             $this->loadThis();
         }
@@ -224,7 +231,12 @@ class Report extends BaseController {
      */
     function collectedList() {
             
-        
+        if(!array_key_exists(41,$this->role_privileges))
+        {
+            $this->loadThis();
+        }
+        else
+        {    
         $this->global['pageTitle'] = PROJECT_NAME . ' : Report';
         $data['title'] = 'Collected Report';
         
@@ -258,7 +270,7 @@ class Report extends BaseController {
             $data['sub_title'] = 'List';
 
             $this->loadViews("admin/report/collectedlist", $this->global, $data, NULL);
-        
+        }
     }
     
     

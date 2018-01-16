@@ -50,6 +50,7 @@ class User_model extends Common_Model
         }
         $this->db->where(array('BaseTbl.deleted'=>2, 'BaseTbl.role_id !=' => 1,'BaseTbl.id !=' => 2));
         $this->db->limit($page, $segment);
+        $this->db->order_by("BaseTbl.id", "desc");
         $query = $this->db->get();
    
         $result = $query->result();        

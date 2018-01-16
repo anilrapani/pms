@@ -18,7 +18,7 @@ class Login_model extends Common_Model
      */
     function loginMe($email, $password)
     {
-        $this->db->select('BaseTbl.id as user_id, BaseTbl.password, BaseTbl.name as user_name, BaseTbl.status as user_status, BaseTbl.role_id, Roles.name as role_name, Usercompany.name as company_name');
+        $this->db->select('BaseTbl.id as user_id, BaseTbl.password, BaseTbl.name as user_name, BaseTbl.status as user_status, BaseTbl.role_id, Roles.name as role_name, Roles.privileges as role_privileges, Usercompany.name as company_name');
         $this->db->from('k_user as BaseTbl');
         $this->db->join('k_user_role as Roles','Roles.id = BaseTbl.role_id');
         $this->db->join('k_master_user_company as Usercompany','Usercompany.id = BaseTbl.user_company_id');

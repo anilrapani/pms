@@ -71,19 +71,14 @@
                     <form role="form" action="<?php echo base_url() ?>admin/vehicle/editprice" method="post" id="editPrice" role="form">
                         <div class="box-body">
                               <div class="row">
-                                <div class="col-md-6">                                
+                                <div class="col-md-4">                                
                                     <div class="form-group">
                                         <label for="name">Name</label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $resultInfo->name; ?>">
                                     </div>
 
                                 </div>
-                          
-                            </div>
-                            
-                            
-                            <div class="row">
-                               <div class="col-md-6">
+                                   <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <select class="form-control required" id="status" name="status">
@@ -102,8 +97,9 @@
                                         </select>
                                     </div>
                                 </div>
-                              
+                          
                             </div>
+                         
                             
                               <div class="row">
         <div class="col-md-12 pricesMain" >

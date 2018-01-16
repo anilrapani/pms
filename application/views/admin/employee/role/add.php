@@ -50,7 +50,7 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
 
-                    <form role="form" id="addGovtProofType" action="<?php echo base_url() ?>admin/employee/addGovtProofType" method="post" role="form">
+                    <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/employee/addRole" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
@@ -61,28 +61,27 @@
 
                                 </div>
                                 
-                               <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="form-control required" id="status" name="status">
-                                            <?php
-                                            $status_array = json_decode(STATUS_ARRAY,true);
-                                            if(!empty($status_array))
-                                            {
-                                                foreach ($status_array as $key => $value)
-                                                {
-                                                    ?>
-                                                    <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                              
-                            
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">    
+                                    <div class="form-group">
+                                        <?php 
+                                        $role_privileges_array = json_decode(ROLE_PRIVILEGES_ARRAY,true);
+                                            
+                                        foreach ($role_privileges_array as $key => $value) {
+                                    ?>  
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="privilege[<?php echo $key; ?>]">
+                                                <?php echo "$value"; ?>
+                                            </label>
+                                        </div>    
+                                <?php }?>
+                                    </div>  
+                                    
+                                </div>
+                            </div>
+                            
                             
 
 
@@ -102,3 +101,10 @@
 
 </div>
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>
+<script type="text/javascript">
+//    $(function () {
+//        $('input[type="checkbox"].minimal').iCheck({
+//          checkboxClass: 'icheckbox_minimal-blue'
+//        });
+//    });
+</script>    

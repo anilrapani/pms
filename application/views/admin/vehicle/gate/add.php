@@ -102,6 +102,29 @@
                                    
                                 
                             </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="status">Status</label>
+                                                                    <select class="form-control required" id="status" name="status">
+                                                                        <?php
+                                                                        $status_array = json_decode(STATUS_ARRAY,true);
+                                                                        if(!empty($status_array))
+                                                                        {
+                                                                            foreach ($status_array as $key => $value)
+                                                                            {
+                                                                                ?>
+                                                                                <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
+                                                                                <?php
+                                                                            }
+                                                                        }
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                            </div>
+                            
                             <div class="row">
         <div class="col-md-12">
             <div data-role="dynamic-fields">

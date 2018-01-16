@@ -20,7 +20,9 @@ class Employee extends BaseController {
                                     'k_master_government_proof_type_model',
                                     'k_master_user_shift_model',
                                     'k_master_device_registry_model',
-                                    'user_model'    )
+                                    'user_model',
+                                    'k_user_role_model'
+                                )
                            );
         $this->isLoggedIn();
     }
@@ -41,7 +43,7 @@ class Employee extends BaseController {
      */
     function companyList() {
         
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(33,$this->role_privileges)){    
             $this->loadThis();
         } else {
 
@@ -74,7 +76,7 @@ class Employee extends BaseController {
      * This function is used to load the add new form
      */
     function addCompanyView() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(33,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data = array();
@@ -92,7 +94,7 @@ class Employee extends BaseController {
      * This function is used to load the add new form
      */
     function addCompany() {
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if(!array_key_exists(33,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -141,7 +143,7 @@ class Employee extends BaseController {
      * @param number $companyId : Optional : This is company id
      */
     function editCompanyView($companyId = NULL) {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(33,$this->role_privileges)){
             $this->loadThis();
         } else {
             if ($companyId == null) {
@@ -163,7 +165,7 @@ class Employee extends BaseController {
      * This function is used to edit the company information
      */
     function editCompany() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(33,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -214,7 +216,7 @@ class Employee extends BaseController {
      */
     function deleteCompany() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(33,$this->role_privileges)){
             echo(json_encode(array('status' => 'access')));
         } else {
             $id = $this->input->post('id');
@@ -235,7 +237,7 @@ class Employee extends BaseController {
      */
     function govtProofTypeList() {
        
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(34,$this->role_privileges)){
             $this->loadThis();
         } else {
 
@@ -268,7 +270,7 @@ class Employee extends BaseController {
      * This function is used to load the add new form
      */
     function addGovtProofTypeView() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(34,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data = array();
@@ -286,7 +288,7 @@ class Employee extends BaseController {
      * This function is used to load the add new form
      */
     function addGovtProofType() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(34,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -297,10 +299,11 @@ class Employee extends BaseController {
                 $this->addGovtProofTypeView();
             } else {
                 $name = ucwords(strtolower($this->input->post('name')));
+                $status = $this->input->post('status');
                 
                 $inputData = array(
                     'name' => $name,
-                    'status' => 1,
+                    'status' => $status,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
                     'created_time' => date('Y-m-d H:i:s')
@@ -328,7 +331,7 @@ class Employee extends BaseController {
      * @param number $govtprooftypeId : Optional : This is govt proof type id
      */
     function editGovtProofTypeView($govtprooftypeId = NULL) {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(34,$this->role_privileges)){
             $this->loadThis();
         } else {
             if ($govtprooftypeId == null) {
@@ -350,7 +353,7 @@ class Employee extends BaseController {
      * This function is used to edit the Govt proof type information
      */
     function editGovtProofType() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(34,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -393,7 +396,7 @@ class Employee extends BaseController {
      */
     function deleteGovtProofType() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(34,$this->role_privileges)){
             echo(json_encode(array('status' => 'access')));
         } else {
             $id = $this->input->post('id');
@@ -413,7 +416,7 @@ class Employee extends BaseController {
      */
     function shiftList() {
        
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(1,$this->role_privileges)){
             $this->loadThis();
         } else {
 
@@ -446,7 +449,7 @@ class Employee extends BaseController {
      * This function is used to load the add new form
      */
     function addShiftView() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(1,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data = array();
@@ -470,7 +473,7 @@ class Employee extends BaseController {
      * This function is used to load the add new form
      */
     function addShift() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(1,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -482,11 +485,13 @@ class Employee extends BaseController {
                 $name = ucwords(strtolower($this->input->post('name')));
                 $start_time = $this->input->post('start_time');
                 $end_time = $this->input->post('end_time');
+                $status = $this->input->post('status');
+                
                 $inputData = array(
                     'name' => $name,
                     'start_time' => $start_time,
                     'end_time' => $end_time,
-                    'status' => 1,
+                    'status' => $status,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
                     'created_time' => date('Y-m-d H:i:s')
@@ -517,7 +522,7 @@ class Employee extends BaseController {
      * @param number $id : Optional : This is shift id
      */
     function editShiftView($id = NULL) {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(1,$this->role_privileges)){
             $this->loadThis();
         } else {
             if ($id == null) {
@@ -539,7 +544,7 @@ class Employee extends BaseController {
      * This function is used to edit the Govt proof type information
      */
     function editShift() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(1,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -587,7 +592,7 @@ class Employee extends BaseController {
      */
     function deleteShift() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(1,$this->role_privileges)){
             echo(json_encode(array('status' => 'access')));
         } else {
             $id = $this->input->post('id');
@@ -675,13 +680,14 @@ class Employee extends BaseController {
                 $name = ucwords($this->input->post('name'));
                 $ipaddress = $this->input->post('ipaddress');
                 $user_id = $this->input->post('user_id');
+                $status = $this->input->post('status');
                 
                 
                 $insertData = array(
                     'name' => $name,
                     'ipaddress' => $ipaddress,
                     'user_id' => $user_id,
-                    'status' => 1,
+                    'status' => $status,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
                     'created_time' => date('Y-m-d H:i:s')
@@ -795,6 +801,196 @@ class Employee extends BaseController {
             }
         }
     }
+    
+ 
+    
+    
+     /**
+     * This function is used to load the company list
+     */
+    function roleList() {
+        if(!array_key_exists(8,$this->role_privileges)){
+            $this->loadThis();
+        } else {
+
+            $searchText = $this->input->post('searchText');
+            $data['searchText'] = $searchText;
+
+            $data['totalCount'] = true;
+            $data['searchText'] = $searchText;
+
+            $result = $this->k_user_role_model->getlist($data);
+            $count = $result['count'];
+            $data['totalCount'] = false;
+            $segment = 5;
+            $returns = $this->paginationCompress("admin/employee/role/list/", $count, PER_PAGE_RECORDS, $segment);
+
+            $data['page'] = $returns['page'];
+            $data['offset'] = $returns['offset'];
+
+            $data['records'] = $this->k_user_role_model->getList($data);
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Role Listing';
+            $data['title'] = 'Role';
+            $data['sub_title'] = 'List';
+
+            $this->loadViews("admin/employee/role/list", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addRoleView() {
+        if(!array_key_exists(8,$this->role_privileges)){
+            $this->loadThis();
+        } else {
+            $data = array();
+
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Role';
+            $data['title'] = "Role";
+
+            $data['sub_title'] = "Add";
+            $this->loadViews("admin/employee/role/add", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addRole() {
+        if(!array_key_exists(8,$this->role_privileges)){
+            $this->loadThis();
+        } else {
+            
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+            
+            if ($this->form_validation->run() == FALSE) {
+                $this->addRoleView();
+            } else {
+      
+                $name = ucwords(strtolower($this->input->post('name')));
+                $privileges = $this->input->post('privilege');
+                
+               $privileges = serialize($privileges);
+                
+                $userRoleInfo = array(
+                    'name' => $name,
+                    'privileges' => $privileges,
+                    'status' => 1,
+                    'deleted' => 2,
+                    'created_by' => $this->vendorId,
+                    'created_time' => date('Y-m-d H:i:s')
+                );
+
+                $result = $this->k_user_role_model->insert($userRoleInfo);
+
+                if ($result > 0) {
+                    $this->session->set_flashdata('success', 'New Role created successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Role creation failed');
+                }
+
+                $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Role';
+                $data['title'] = "Employee Role";
+
+                $data['sub_title'] = "Add";
+                $this->loadViews("admin/employee/role/add", $this->global, $data, NULL);
+            }
+        }
+    }
+
+    /**
+     * This function is used to load role edit information
+     * @param number $roleId : Optional : This is role id
+     */
+    function editRoleView($roleId = NULL) {
+        if(!array_key_exists(8,$this->role_privileges)){
+            $this->loadThis();
+        } else {
+            if ($roleId == null) {
+                redirect('admin/employee/rolelist');
+            }
+
+            $data['roleInfo'] = $this->k_user_role_model->getDetails($roleId);
+
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Edit Role';
+            $data['title'] = "Role";
+
+            $data['sub_title'] = "Edit";
+
+            $this->loadViews("admin/employee/role/edit", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to edit the role information
+     */
+    function editRole() {
+        if(!array_key_exists(8,$this->role_privileges)){
+            $this->loadThis();
+        } else {
+            $this->load->library('form_validation');
+
+            $roleId = $this->input->post('id');
+
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
+            
+            if ($this->form_validation->run() == FALSE) {
+
+                redirect("admin/employee/edit/role/$roleId");
+            } else {
+                $name = ucwords(strtolower($this->input->post('name')));
+              //  $status = $this->input->post('status');
+                      $privileges = $this->input->post('privilege');
+                
+               $privileges = serialize($privileges);
+                $userRoleInfo = array(
+                    'name' => $name,
+                    'privileges' => $privileges,
+                   // 'status' => $status,
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s')
+                );
+
+                $result = $this->k_user_role_model->update($userRoleInfo, $roleId);
+
+                if ($result == true) {
+                    $this->session->set_flashdata('success', 'Role updated successfully');
+                } else {
+                    $this->session->set_flashdata('error', 'Role updation failed');
+                }
+
+                redirect("admin/employee/edit/role/$roleId");
+            }
+        }
+    }
+
+    /**
+     * This function is used to delete the role using id
+     * @return boolean $result : TRUE / FALSE
+     */
+    function deleteRole() {
+        if(!array_key_exists(8,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $data = array('deleted' => 1, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_user_role_model->delete($id, $data);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
+    
+    
+    
+    
     
     
     

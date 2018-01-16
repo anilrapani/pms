@@ -46,7 +46,7 @@ class K_master_price_model extends Common_Model {
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
-        
+        $this->db->order_by("$this->id", "desc");
         $query = $this->db->get();
         $result = $query->result();
 
@@ -69,7 +69,6 @@ class K_master_price_model extends Common_Model {
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
-                     $this->status => 1,
                      $this->deleted => 2,
                     $this->id => $id
                  )
@@ -111,6 +110,7 @@ class K_master_price_model extends Common_Model {
                      $this->deleted => 2
                  )
         );
+        $this->db->order_by("$this->id", "desc");
         $query = $this->db->get();
         return $query->result();
     }

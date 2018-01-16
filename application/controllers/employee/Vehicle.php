@@ -36,7 +36,8 @@ class Vehicle extends BaseController {
      */
     function companyList() {
         
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3 ) {
+        if (!array_key_exists(19,$this->role_privileges))
+        {        
             $this->loadThis();
         } else {
 
@@ -69,7 +70,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addCompanyView() {
-        if ($this->isAdmin() == TRUE) {
+        if (!array_key_exists(19,$this->role_privileges)) {
             $this->loadThis();
         } else {
             $data = array();
@@ -87,7 +88,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addCompany() {
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if (!array_key_exists(19,$this->role_privileges)) {
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -102,6 +103,7 @@ class Vehicle extends BaseController {
                 $email = strtolower($this->input->post('email'));
                 $phone = $this->input->post('phone');
                 $address = $this->input->post('address');
+                $status = $this->input->post('status');
                 
                 
                 
@@ -110,8 +112,7 @@ class Vehicle extends BaseController {
                     'email' => $email,
                     'phone' => $phone,
                     'address' => $address,
-                    
-                    'status' => 1,
+                    'status' => $status,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
                     'created_time' => date('Y-m-d H:i:s')
@@ -139,7 +140,7 @@ class Vehicle extends BaseController {
      * @param number $companyId : Optional : This is company id
      */
     function editCompanyView($companyId = NULL) {
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if (!array_key_exists(19,$this->role_privileges)) {
             $this->loadThis();
         } else {
             if ($companyId == null) {
@@ -161,7 +162,7 @@ class Vehicle extends BaseController {
      * This function is used to edit the company information
      */
     function editCompany() {
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3 ) {
+        if (!array_key_exists(19,$this->role_privileges)) {
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -212,7 +213,7 @@ class Vehicle extends BaseController {
      */
     function deleteCompany() {
 
-        if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3 ) {
+        if (!array_key_exists(19,$this->role_privileges)) {
             echo(json_encode(array('status' => 'access')));
         } else {
             $id = $this->input->post('id');
@@ -234,8 +235,8 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addEntryView($entryId = 0) {
-    
-        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
+        if (!array_key_exists(23,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'entry') {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
             $this->loadThis();
         } else {
             $data = array();
@@ -297,7 +298,9 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addEntry() {
-        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
+        if (!array_key_exists(23,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'entry') {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
+        
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -432,7 +435,8 @@ class Vehicle extends BaseController {
     
     
     function exitDetailsView(){
-        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
             
@@ -454,7 +458,8 @@ class Vehicle extends BaseController {
     }
     
     function exitDetails(){
-        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
             
@@ -535,7 +540,8 @@ class Vehicle extends BaseController {
     
     function exitDetailsByBarcode($barcode){
         
-        if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
             $data = array();
@@ -593,7 +599,8 @@ class Vehicle extends BaseController {
     }
     
     function generateExitReciept(){
-           if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
             $data = array();

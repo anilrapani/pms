@@ -47,7 +47,7 @@ class K_master_government_proof_type_model extends Common_Model {
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
-        
+        $this->db->order_by("$this->id", "desc");
         $query = $this->db->get();
         $result = $query->result();
 

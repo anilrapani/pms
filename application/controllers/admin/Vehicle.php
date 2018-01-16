@@ -47,7 +47,7 @@ class Vehicle extends BaseController {
      */
     function typeList() {
         
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(36,$this->role_privileges)){
             $this->loadThis();
         } else {
 
@@ -81,7 +81,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addTypeView() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(36,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data = array();
@@ -101,7 +101,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addType() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(36,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -119,13 +119,14 @@ class Vehicle extends BaseController {
                 $toMinutesArray = $this->input->post('to_minutes');
                 $amountArray =  $this->input->post('amount');
                 $price_id = $this->input->post('price_id');
+                $status = $this->input->post('status');
                
                 
                 $insertData = array(
                     'name' => $name,
                     'number_of_wheels' => $number_of_wheels,
                     'price_id' => $price_id,
-                    'status' => 1,
+                    'status' => $status,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
                     'created_time' => date('Y-m-d H:i:s')
@@ -172,7 +173,7 @@ class Vehicle extends BaseController {
      * @param number $id : Optional : This is type id
      */
     function editTypeView($id = NULL) {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(36,$this->role_privileges)){
             $this->loadThis();
         } else {
             if ($id == null) {
@@ -199,7 +200,7 @@ class Vehicle extends BaseController {
      * This function is used to edit the type information
      */
     function editType() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(36,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -273,7 +274,7 @@ class Vehicle extends BaseController {
      */
     function deleteType() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(36,$this->role_privileges)){
             echo(json_encode(array('status' => 'access')));
         } else {
             $id = $this->input->post('id');
@@ -298,8 +299,7 @@ class Vehicle extends BaseController {
      * This function is used to load the company list
      */
     function gateList() {
-        
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(37,$this->role_privileges)){
             $this->loadThis();
         } else {
 
@@ -332,7 +332,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addGateView() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(37,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data = array();
@@ -366,7 +366,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addgate() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(37,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -382,11 +382,12 @@ class Vehicle extends BaseController {
                 $user_id_Array = $this->input->post('user_id');
                 $shift_id_Array = $this->input->post('shift_id');
                 $device_registry_id_Array = $this->input->post('device_registry_id');
+                $status = $this->input->post('status');
                 
                 $insertData = array(
                     'name' => $name,
                     'type' => $type,
-                    'status' => 1,
+                    'status' => $status,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
                     'created_time' => date('Y-m-d H:i:s')
@@ -437,7 +438,8 @@ class Vehicle extends BaseController {
      * @param number $id : Optional : This is gate id
      */
     function editGateView($id = NULL) {
-        if ($this->isAdmin() == TRUE) {
+        
+        if(!array_key_exists(37,$this->role_privileges)){
             $this->loadThis();
         } else {
             if ($id == null) {
@@ -479,7 +481,8 @@ class Vehicle extends BaseController {
      * This function is used to edit the gate information
      */
     function editGate() {
-        if ($this->isAdmin() == TRUE) {
+        
+        if(!array_key_exists(37,$this->role_privileges)){
             $this->loadThis();
         } else {
            
@@ -555,7 +558,7 @@ class Vehicle extends BaseController {
      */
     function deleteGate() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(37,$this->role_privileges)){
             echo(json_encode(array('status' => 'access')));
         } else {
             $id = $this->input->post('id');
@@ -584,7 +587,7 @@ class Vehicle extends BaseController {
      */
     function parkingList() {
         
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(42,$this->role_privileges)){
             $this->loadThis();
         } else {
             
@@ -673,7 +676,7 @@ class Vehicle extends BaseController {
      */
     function priceList() {
         
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(35,$this->role_privileges)){
             $this->loadThis();
         } else {
 
@@ -706,7 +709,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addPriceView() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(35,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data = array();
@@ -724,7 +727,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addPrice() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(35,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -740,12 +743,13 @@ class Vehicle extends BaseController {
                $fromMinutesArray = $this->input->post('from_minutes');
                $toMinutesArray = $this->input->post('to_minutes');
                $amountArray =  $this->input->post('amount');
+               $status =  $this->input->post('status');
                 
                 $insertData = array(
                     'name' => $name,
                  //   'more_than_minutes' => $more_than_minutes,
                     'more_than_minutes_per_hour_amount' => $more_than_minutes_per_hour_amount,
-                    'status' => 1,
+                    'status' => $status,
                     'deleted' => 2,
                     'created_by' => $this->vendorId,
                     'created_time' => date('Y-m-d H:i:s')
@@ -792,7 +796,7 @@ class Vehicle extends BaseController {
      * @param number $id : Optional : This is type id
      */
     function editPriceView($id = NULL) {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(35,$this->role_privileges)){
             $this->loadThis();
         } else {
             if ($id == null) {
@@ -814,7 +818,7 @@ class Vehicle extends BaseController {
      * This function is used to edit the type information
      */
     function editPrice() {
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(35,$this->role_privileges)){
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -887,7 +891,7 @@ class Vehicle extends BaseController {
      */
     function deletePrice() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(35,$this->role_privileges)){
             echo(json_encode(array('status' => 'access')));
         } else {
             $id = $this->input->post('id');

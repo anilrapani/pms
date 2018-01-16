@@ -28,8 +28,7 @@ class Reports extends BaseController {
      * This function is used to load the company list
      */
     function entryList() {
-
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(7,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data['entryDate'] = '';
@@ -173,7 +172,7 @@ class Reports extends BaseController {
      */
     function exitList() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(9,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data['exitDate'] = '';
@@ -331,7 +330,7 @@ class Reports extends BaseController {
     
     function remainingList() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(10,$this->role_privileges)){
             $this->loadThis();
         } else {
             $data['entryDate'] = '';
@@ -473,7 +472,7 @@ class Reports extends BaseController {
     
     function monthlyList() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(11,$this->role_privileges)){
             $this->loadThis();
         } else {
             
@@ -591,8 +590,7 @@ class Reports extends BaseController {
     }
     
     function shiftList() {
-
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(6,$this->role_privileges)){
             $this->loadThis();
         } else {
             
@@ -723,7 +721,7 @@ class Reports extends BaseController {
     
     function tariffSummaryList() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(14,$this->role_privileges)){
             $this->loadThis();
         } else {
             
@@ -872,7 +870,7 @@ class Reports extends BaseController {
     
     function supervisorSummaryList() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(27,$this->role_privileges)){
             $this->loadThis();
         } else {
             
@@ -1011,7 +1009,7 @@ class Reports extends BaseController {
     
     function timebasedList() {
 
-        if ($this->isAdmin() == TRUE) {
+        if(!array_key_exists(13,$this->role_privileges)){
             $this->loadThis();
         } else {
             
@@ -1177,8 +1175,8 @@ class Reports extends BaseController {
     }
     
     function companywiseList() {
-
-        if ($this->isAdmin() == TRUE) {
+        
+        if(!array_key_exists(20,$this->role_privileges)){
             $this->loadThis();
         } else {
             

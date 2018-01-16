@@ -82,17 +82,23 @@ class Login extends CI_Controller
             {
                 foreach ($result as $res)
                 {
-                    $sessionArray = array('userId'=>$res->user_id,                    
+                    
+                  $sessionArray = array('userId'=>$res->user_id,                    
                                             'role'=>$res->role_id,
                                             'roleText'=>$res->role_name,
+                                            'role_privileges'=>$res->role_privileges,
                                             'name'=>$res->user_name,
                                             'login_user_company_name'=>$res->company_name,
                                             'isLoggedIn' => TRUE
                                     );
+                  
+                  
                                     
                   $userStatus = $res->user_status;
                     
                 }
+                
+                
                 
                 
                 
@@ -111,7 +117,9 @@ class Login extends CI_Controller
                         );
 
                         $gate_access = $this->k_master_vehicle_gate_model->checkForUserAccess($inputArray);
-  
+//                        echo count($gate_access);
+//                        echo $this->db->last_query();
+//                        exit;
                         if(count($gate_access) > 0){
                             
                         }else{

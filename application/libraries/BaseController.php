@@ -46,6 +46,7 @@ class BaseController extends CI_Controller {
 			$this->name = $this->session->userdata ( 'name' );
                         $this->global['login_user_company_name'] = $this->session->userdata ( 'login_user_company_name' );
 			$this->roleText = $this->session->userdata ( 'roleText' );
+                        $this->role_privileges = unserialize($this->session->userdata ( 'role_privileges' ));
                         $this->global['gateDetails'] = $this->session->userdata ( 'gateDetails' );
 			
 			$this->global ['name'] = $this->name;
@@ -53,6 +54,8 @@ class BaseController extends CI_Controller {
 
 			$this->global ['role'] = $this->role;
 			$this->global ['role_text'] = $this->roleText;
+                        
+                        $this->global ['role_privileges'] = $this->role_privileges;
 		}
 	}
 	

@@ -37,7 +37,7 @@ class User extends BaseController
      */
     function userListing()
     {
-        if($this->isAdmin() == TRUE)
+        if(!array_key_exists(24,$this->role_privileges))
         {
             $this->loadThis();
         }
@@ -66,7 +66,7 @@ class User extends BaseController
      */
     function addNew()
     {
-        if($this->isAdmin() == TRUE)
+        if(!array_key_exists(24,$this->role_privileges))
         {
             $this->loadThis();
         }
@@ -109,7 +109,7 @@ class User extends BaseController
      */
     function addNewUser()
     {
-        if($this->isAdmin() == TRUE)
+        if(!array_key_exists(24,$this->role_privileges))
         {
             $this->loadThis();
         }
@@ -139,6 +139,7 @@ class User extends BaseController
                 $government_id_number = $this->input->post('government_id_number');
                 $user_company_id = $this->input->post('user_company_id');
                 $shift_id = $this->input->post('shift_id');
+                $status = $this->input->post('status');
                 
                 
                 $userInfo = array('email'=>$email, 
@@ -150,6 +151,7 @@ class User extends BaseController
                                   'government_id_number'   => $government_id_number,
                                   'user_company_id'    => $user_company_id,
                                   'shift_id'   => $shift_id,
+                                  'status' => $status,
                                   'created_by'=>$this->vendorId,
                                   'created_time'=>date('Y-m-d H:i:s')
                     );
@@ -178,8 +180,7 @@ class User extends BaseController
      */
     function editOld($userId = NULL)
     {
-        if($this->isAdmin() == TRUE || $userId == 1)
-        {
+        if(!array_key_exists(24,$this->role_privileges)){
             $this->loadThis();
         }
         else
@@ -208,7 +209,7 @@ class User extends BaseController
      */
     function editUser()
     {
-        if($this->isAdmin() == TRUE)
+        if(!array_key_exists(24,$this->role_privileges))
         {
             $this->loadThis();
         }
@@ -287,7 +288,7 @@ class User extends BaseController
     function deleteUser()
     {
  
-        if($this->isAdmin() == TRUE)
+        if(!array_key_exists(24,$this->role_privileges))
         {
             echo(json_encode(array('status'=>'access')));
         
@@ -309,9 +310,13 @@ class User extends BaseController
      */
     function loadChangePass()
     {
-        $this->global['pageTitle'] = PROJECT_NAME. ' : Change Password';
-        
-        $this->loadViews("changePassword", $this->global, NULL, NULL);
+        if(!array_key_exists(22,$this->role_privileges)){
+            $this->loadThis();
+        }else{
+            $this->global['pageTitle'] = PROJECT_NAME. ' : Change Password';
+
+            $this->loadViews("changePassword", $this->global, NULL, NULL);
+        }
     }
     
     
@@ -320,6 +325,10 @@ class User extends BaseController
      */
     function changePassword()
     {
+        if(!array_key_exists(22,$this->role_privileges)){
+            $this->loadThis();
+        }else{
+        
         $this->load->library('form_validation');
         
         $this->form_validation->set_rules('oldPassword','Old password','required|max_length[20]');
@@ -354,6 +363,7 @@ class User extends BaseController
                 
                 redirect('loadChangePass');
             }
+        }
         }
     }
 

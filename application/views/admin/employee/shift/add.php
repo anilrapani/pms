@@ -60,14 +60,32 @@
                                     </div>
 
                                 </div>
-                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control required" id="status" name="status">
+                                            <?php
+                                            $status_array = json_decode(STATUS_ARRAY,true);
+                                            if(!empty($status_array))
+                                            {
+                                                foreach ($status_array as $key => $value)
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $key; ?>" ><?php echo $value; ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 bootstrap-timepicker">                                
                                     <div class="form-group">
-                                        <label for="start time">Start Time</label>
+                                        <label for="start time">Start Time (HH:MM:SS)</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control required timepicker" id="start_time" name="start_time" >
+                                            <input type="text" class="form-control required timepicker" id="start_time" name="start_time"  placeholder="HH:MM:SS" >
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
@@ -77,9 +95,9 @@
                                 </div>
                                 <div class="col-md-6 bootstrap-timepicker">                                
                                     <div class="form-group">
-                                        <label for="end time">End Time</label>
+                                        <label for="end time">End Time (HH:MM:SS)</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control required timepicker" id="end_time" name="end_time" >
+                                            <input type="text" class="form-control required timepicker" id="end_time" name="end_time" placeholder="HH:MM:SS" >
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
@@ -108,10 +126,10 @@
 
 </div>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('.timepicker').timepicker({
-        });
-    });
+//    $(document).ready(function () {
+//        $('.timepicker').timepicker({
+//        });
+//    });
 </script>
     
 <script src="<?php echo base_url(); ?>assets/js/admin/common.js" type="text/javascript"></script>

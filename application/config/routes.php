@@ -168,6 +168,10 @@ $route['admin/reports/supervisorsummary/list/(:num)'] = "admin/reports/superviso
 $route['admin/reports/timebased/list'] = "admin/reports/timebasedList";
 $route['admin/reports/timebased/list/(:num)'] = "admin/reports/timebasedList/$1";
 
-
 $route['admin/reports/companywise/list'] = "admin/reports/companywiseList";
 $route['admin/reports/companywise/list/(:num)'] = "admin/reports/companywiseList/$1";
+
+$route['admin/employee/role/list'] = "admin/employee/roleList";
+$route['admin/employee/role/list/(:num)'] = "admin/employee/roleList/$1";
+$route['admin/employee/add/role'] = "admin/employee/addRoleView";
+$route['admin/employee/edit/role/(:any)'] = "admin/employee/editRoleView/$1";

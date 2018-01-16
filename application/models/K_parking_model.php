@@ -66,11 +66,7 @@ class K_parking_model extends Common_Model {
             $this->db->group_end();
           
         }
-        $this->db->where(
-                 array(
-                     $this->deleted => 2
-                 )
-        );
+     
         $this->db->where(array($this->deleted => 2));
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
@@ -292,6 +288,7 @@ class K_parking_model extends Common_Model {
         if ($inputData['totalCount'] == false && $inputData['download'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
+        $this->db->order_by("id", "desc");
         $query = $this->db->get();
         $result = $query->result();
 

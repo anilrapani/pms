@@ -49,7 +49,7 @@ class K_master_device_registry_model extends Common_Model {
         if ($inputData['totalCount'] == false) {
             $this->db->limit($inputData['page'], $inputData['offset']);
         }
-        $this->db->order_by("id", "desc");
+        $this->db->order_by("$this->id", "desc");
         $query = $this->db->get();
         $result = $query->result();
 
@@ -113,6 +113,7 @@ class K_master_device_registry_model extends Common_Model {
                      $this->deleted => 2,
                     )
         );
+        $this->db->order_by("$this->name", "asc");
         $query = $this->db->get();
         return $query->result();
 
