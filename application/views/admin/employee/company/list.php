@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+        <?php echo $title; ?>
         <small> </small>
       </h1>
     </section>
@@ -35,7 +35,7 @@
                     <tr>
                       <th>Id</th>
                       <th>Name</th>
-                      <th>Status</th>
+<!--                      <th>Status</th>-->
                       <th class="text-center">Actions</th>
                     </tr>
                     <?php
@@ -47,7 +47,7 @@
                     <tr>
                       <td><?php echo $record->id ?></td>
                       <td><?php echo $record->name ?></td>
-                      <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
+<!--                      <td><input type="checkbox" name="status" class="statusCheckbox" <?php echo ($record->status == 1)?"checked":""; ?>  value="<?php echo $record->id; ?>" /></td>-->
                       <td class="text-center">
                           <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/employee/edit/company/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
 <!--                          <a class="btn btn-sm btn-danger deleteCompany" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>-->
@@ -70,5 +70,7 @@
 </div>
 <script type="text/javascript">
     deleteUrl = "admin/employee/deleteCompany";
+    updateStatusUrl = "admin/employee/updateEmployeeCompanyStatus";
 </script>
+<!--<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/admin/common_list.js" charset="utf-8"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/admin/common.js" charset="utf-8"></script>

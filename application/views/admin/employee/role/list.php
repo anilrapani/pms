@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+         <?php echo $title; ?>
         <small> </small>
       </h1>
     </section>
@@ -35,7 +35,7 @@
                     <tr>
                       <th>Id</th>
                       <th>Name</th>
-                      <th>Status</th>
+<!--                      <th>Status</th>-->
                       <th class="text-center">Actions</th>
                     </tr>
                     <?php
@@ -47,7 +47,7 @@
                     <tr>
                       <td><?php echo $record->id ?></td>
                       <td><?php echo $record->name ?></td>
-                      <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
+<!--                      <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>-->
                       <td class="text-center">
                           <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/employee/edit/role/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
 <!--                          <a class="btn btn-sm btn-danger deleteCompany" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>-->

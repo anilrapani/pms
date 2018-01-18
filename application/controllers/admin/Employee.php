@@ -67,8 +67,13 @@ class Employee extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Company Listing';
             $data['title'] = 'Employee Company';
             $data['sub_title'] = 'List';
-
-            $this->loadViews("admin/employee/company/list", $this->global, $data, NULL);
+            $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(),
+                              'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
+                              
+                    );
+            $this->loadViews("admin/employee/company/list", $this->global, $data, $this->global);
         }
     }
 
@@ -101,6 +106,7 @@ class Employee extends BaseController {
 
             $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[128]');
             $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
+            
 
             if ($this->form_validation->run() == FALSE) {
                 $this->addCompanyView();
@@ -176,7 +182,6 @@ class Employee extends BaseController {
             $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
             
 
-
             if ($this->form_validation->run() == FALSE) {
 
                 redirect("admin/employee/edit/company/$companyId");
@@ -230,6 +235,22 @@ class Employee extends BaseController {
         }
     }
     
+        function updateEmployeeCompanyStatus() {
+
+        if(!array_key_exists(33,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_user_company_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
     
     
     /**
@@ -259,10 +280,15 @@ class Employee extends BaseController {
             $data['records'] = $this->k_master_government_proof_type_model->getList($data);
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Government proof type list';
-            $data['title'] = 'Employee Government Proof Type';
+            $data['title'] = 'Government Proof Type';
             $data['sub_title'] = 'List';
-
-            $this->loadViews("admin/employee/govtprooftype/list", $this->global, $data, NULL);
+            $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(),
+                              'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
+                              
+            );
+            $this->loadViews("admin/employee/govtprooftype/list", $this->global, $data, $this->global);
         }
     }
 
@@ -277,7 +303,7 @@ class Employee extends BaseController {
 
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Government Proof Type';
-            $data['title'] = "Employee Government Proof Type";
+            $data['title'] = "Government Proof Type";
 
             $data['sub_title'] = "Add";
             $this->loadViews("admin/employee/govtprooftype/add", $this->global, $data, NULL);
@@ -318,7 +344,7 @@ class Employee extends BaseController {
                 }
 
                 $this->global['pageTitle'] = PROJECT_NAME . ' : Add New Government Proof Type';
-                $data['title'] = "Employee Government Proof Type";
+                $data['title'] = "Government Proof Type";
 
                 $data['sub_title'] = "Add";
                 $this->loadViews("admin/employee/govtprooftype/add", $this->global, $data, NULL);
@@ -341,7 +367,7 @@ class Employee extends BaseController {
             $data['resultInfo'] = $this->k_master_government_proof_type_model->getDetails($govtprooftypeId);
 
             $this->global['pageTitle'] = PROJECT_NAME . ' : Edit Government Proof Type';
-            $data['title'] = "Employee Government Proof Type";
+            $data['title'] = "Government Proof Type";
 
             $data['sub_title'] = "Edit";
 
@@ -410,7 +436,22 @@ class Employee extends BaseController {
         }
     }
 
-    
+     function updateGovtProofTypeStatus() {
+
+        if(!array_key_exists(34,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_government_proof_type_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
     /**
      * This function is used to load the Shift list
      */
@@ -440,8 +481,13 @@ class Employee extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Employee Shift list';
             $data['title'] = 'Employee Shift';
             $data['sub_title'] = 'List';
-
-            $this->loadViews("admin/employee/shift/list", $this->global, $data, NULL);
+            $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(),
+                              'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
+                              
+                    );
+            $this->loadViews("admin/employee/shift/list", $this->global, $data, $this->global);
         }
     }
 
@@ -598,6 +644,23 @@ class Employee extends BaseController {
             $id = $this->input->post('id');
             $data = array('deleted' => 1, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
             $result = $this->k_master_user_shift_model->delete($id, $data);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
+    
+    function updateShiftStatus() {
+
+        if(!array_key_exists(1,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_user_shift_model->update($data, $id);
             if ($result > 0) {
                 echo(json_encode(array('status' => TRUE)));
             } else {

@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+         <?php echo $title; ?>
       </h1>
     </section>
     
@@ -56,7 +56,7 @@
                               <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $resultInfo->name; ?>">
                                     </div>
 
@@ -86,7 +86,7 @@
                             <div class="row">
                                 <div class="col-md-6 bootstrap-timepicker">                                
                                     <div class="form-group">
-                                        <label for="start time">Start Time</label>
+                                        <label for="start time">Start Time (HH:MM:SS)<span class="color-red">*</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control required timepicker" id="start_time" name="start_time" placeholder="00:00:00" value="<?php echo $resultInfo->start_time; ?>" >
                                             <div class="input-group-addon">
@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="col-md-6 bootstrap-timepicker">                                
                                     <div class="form-group">
-                                        <label for="end time">End Time</label>
+                                        <label for="end time">End Time (HH:MM:SS)<span class="color-red">*</span></label>
                                         <div class="input-group">
                                             <input type="text" class="form-control required timepicker" id="end_time" name="end_time" placeholder="00:00:00" value="<?php echo $resultInfo->end_time; ?>" >
                                             <div class="input-group-addon">

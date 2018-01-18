@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-users"></i> <?php echo $title; ?>
+             <?php echo $title; ?>
             <small></small>
         </h1>
     </section>
@@ -50,12 +50,12 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
 
-                    <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/employee/addRole" method="post" role="form">
+                    <form role="form" id="addRole" action="<?php echo base_url() ?>admin/employee/addRole" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128">
                                     </div>
 

@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+        <?php echo $title; ?>
       </h1>
     </section>
     
@@ -56,7 +56,7 @@
                               <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $resultInfo->name; ?>">
                                     </div>
 

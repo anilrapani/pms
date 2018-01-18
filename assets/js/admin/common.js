@@ -8,72 +8,62 @@
 
 $(document).ready(function(){
 	
-	var companyForm = $("#addCompany,#editCompany");
-	
+	var companyForm = $("#addCompany,#editCompany,#addGovtProofType,#editGovtProofType,#addShift,#editShift,#addPrice,#editPrice,#addRole,#editRole,#addType,#editType,#addGate,#editGate");
+	 
+        $.validator.addMethod("alphanumericChars", function(value, element) {
+                return this.optional(element) || /^[a-z0-9\ \-\&]+$/i.test(value);
+         }, "Field should contain only letters and numbers");
+    
+        $.validator.addMethod("price", function(value, element) {
+                return this.optional(element) || /^[0-9\ \.]+$/i.test(value);
+         }, "Field should contain numbers and dot");
+         
 	companyForm.validate({
 		
 		rules:{
-			name :{ required : true },
-                        phone :{ required : true },
-                        email :{ required : true,email : true }
+			name :{ required : true, alphanumericChars: true },
+                        phone :{ required : true, number: true, minlength: 10, maxlength: 12 },
+                        email :{ required : true,email : true },
+                        address:{required : true},
+                        start_time:{required : true},
+                        end_time:{required : true},
+                        more_than_minutes_per_hour_amount :{ required : true, price: true},
+                        number_of_wheels :{required : true, number: true}
+                        
 			
 		},
 		messages:{
-			name :{ required : "This field is required" },
-                        phone :{ required : "This field is required" },
-                        email :{ required : "This field is required" }
+			// name :{ required : "This field is required" },
+                        // phone :{ required : "This field is required" },
+                        // email :{ required : "This field is required" }
 		}
 	});
         
-        var govtProofTypeForm = $("#addGovtProofType,#editGovtProofType");
-	
-	govtProofTypeForm.validate({
-		
-		rules:{
-			name :{ required : true }
-			
-		},
-		messages:{
-			name :{ required : "This field is required" }
-		}
-	});
+
+        $(document).on("click", ".deleteConfirmation", function () {
+            var recordId = $(this).data('id');
+            $("#deleteRecord").attr("data-id", recordId); 
+            $('#responseMessage').css("color", "#333"); $('#responseMessage').text("Are you sure you want to delete?");
+        });
         
-        
-         var shiftForm = $("#addShift,#editShift");
-	
-	shiftForm.validate({
-		
-		rules:{
-			name :{ required : true }
-			
-		},
-		messages:{
-			name :{ required : "This field is required" }
-		}
-	});
-        
-        
-         jQuery(document).on("click", ".deleteCompany,.deleteShift,.deleteGovtProofType,.deleteType,.deleteDeviceRegistry", function(){
-		var id = $(this).data("id"),
+         jQuery(document).on("click", ".deleteRecord", function(){      
+                    var id = $("#deleteRecord").attr("data-id"),
 			hitURL = baseURL + deleteUrl,
-			currentRow = $(this);
-		
-		var confirmation = confirm("Are you sure to delete this Record ?");
-		
-		if(confirmation)
-		{
-			jQuery.ajax({
+			currentRow = $('.currentRow [data-id=' + id + ']');
+                        
+            		jQuery.ajax({
 			type : "POST",
 			dataType : "json",
 			url : hitURL,
 			data : { id : id } 
 			}).done(function(data){
-				currentRow.parents('tr').remove();
-				if(data.status = true) { alert("Successfully deleted"); }
-				else if(data.status = false) { alert("Deletion failed"); }
-				else { alert("Access denied..!"); }
+				if(data.status == true) {   currentRow.parents('tr').remove(); $('#modal-default').modal('toggle'); }
+				else if(data.status == false) { $('#responseMessage').css("color", "#d73925"); $('#responseMessage').text("Deletion Failed!"); }
+				else { $('#responseMessage').css("color", "#d73925"); $('#responseMessage').text("Access denied!");  }
 			});
-		}
+		
 	});
         
+        
 });
+

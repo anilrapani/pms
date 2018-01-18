@@ -19,7 +19,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-users"></i> <?php echo $title; ?>
+             <?php echo $title; ?>
             <small></small>
         </h1>
     </section>
@@ -67,12 +67,12 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
 
-                    <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/vehicle/addPrice" method="post" role="form">
+                    <form role="form" id="addPrice" action="<?php echo base_url() ?>admin/vehicle/addPrice" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-4">                                
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128">
                                     </div>
 
@@ -125,8 +125,8 @@
             </div>  <!-- /div[data-role="dynamic-fields"] -->
             <div class="form-inline" style="padding-top: 8px;">
                     <div class="form-group">
-                        <label for="status">Beyond this per hour
-                        </label> <input type="text" class="form-control required" name="more_than_minutes_per_hour_amount" value="">
+                        <label for="status">Beyond this per hour price<span class="color-red">*</span>
+                        </label> <input type="text" class="form-control required" id="more_than_minutes_per_hour_amount" name="more_than_minutes_per_hour_amount" value="">
 
                         
                     </div>

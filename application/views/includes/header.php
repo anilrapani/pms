@@ -124,7 +124,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(33, $role_privileges)) { ?>
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/employee/company/list" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Employee Company</span>
                                         </a>
                                     </li>
@@ -132,7 +132,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(19, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>employee/vehicle/company/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Vendor Companies</span>
                                             </a>
                                         </li>
@@ -140,7 +140,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(34, $role_privileges)) { ?>
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/employee/govtprooftype/list" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Govt Proof Types</span>
                                         </a>
                                     </li>
@@ -148,7 +148,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(1, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/employee/shift/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Shifts</span>
                                             </a>
                                         </li>
@@ -156,7 +156,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(35, $role_privileges)) { ?>
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/vehicle/price/list" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Prices</span>
                                         </a>
                                     </li>
@@ -164,7 +164,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(8, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/employee/role/list">
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Roles</span>
                                             </a>
                                         </li>
@@ -176,12 +176,12 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
 <?php } ?>
 <?php if (count(array_intersect(array(24,36,37,38), array_keys($role_privileges))) > 0) { ?>
                             <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'employee' || $this->uri->segment(2) == 'vehicle' )) ? 'active' : ''; ?> ">
-                                <a href="#"><i class="fa fa-database"></i><span>Administrative Tasks</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                <a href="#"><i class="fa fa-users"></i><span>Administrative Tasks</span> <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
                                  <?php if (array_key_exists(36, $role_privileges)) { ?>   
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/vehicle/type/list" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Vehicle Types and Prices</span>
                                         </a>
                                     </li>
@@ -197,7 +197,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                   <?php if (array_key_exists(37, $role_privileges)) { ?>   
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/vehicle/gate/list" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Gates and Employee</span>
                                         </a>
                                     </li>
@@ -205,7 +205,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(24, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>userListing">
-                                                <i class="fa fa-users"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Users</span>
                                             </a>
                                         </li>
@@ -218,12 +218,12 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
 <?php if (count(array_intersect(array(38,39,41), array_keys($role_privileges))) > 0) { ?>
 
                             <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'report' )) ? 'active' : ''; ?> ">
-                                <a href="#"><i class="fa fa-database"></i><span>Cash Management</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                <a href="#"><i class="fa fa-money"></i><span>Cash Management</span> <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
                                   <?php if (array_key_exists(38, $role_privileges)) { ?>  
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/report/reportchart" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Report Chart</span>
                                         </a>
                                     </li>
@@ -238,7 +238,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(39, $role_privileges)) { ?>  
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/report/summary" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Report Summary</span>
                                         </a>
                                     </li>
@@ -246,7 +246,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                     <?php if (array_key_exists(41, $role_privileges)) { ?>  
                                     <li class="treeview">
                                         <a href="<?php echo base_url(); ?>admin/report/collected/list" >
-                                            <i class="fa fa-ticket"></i>
+                                            <i class="fa fa-circle-o"></i>
                                             <span>Collected list</span>
                                         </a>
                                     </li>
@@ -257,12 +257,12 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                             
 <?php if (count(array_intersect(array(7,9,10,11,6,14,27,13,20,42), array_keys($role_privileges))) > 0) { ?>                            
                             <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'report' )) ? 'active' : ''; ?> ">
-                                <a href="#"><i class="fa fa-database"></i><span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
+                                <a href="#"><i class="fa fa-list"></i><span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
                                 <ul class="treeview-menu">
     <?php if (array_key_exists(7, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/entry/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Daily Entry Report</span>
                                             </a>
                                         </li>
@@ -270,7 +270,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(9, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/exit/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Daily Exit Report</span>
                                             </a>
                                         </li>
@@ -278,7 +278,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(10, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/remaining/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Remaining Vehicles Report</span>
                                             </a>
                                         </li>
@@ -286,7 +286,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(11, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/monthly/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Monthly Report</span>
                                             </a>
                                         </li>
@@ -294,7 +294,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(6, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/shift/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Shift Report</span>
                                             </a>
                                         </li>
@@ -302,7 +302,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(14, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/tariffsummary/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Summary-Tariff Report</span>
                                             </a>
                                         </li>
@@ -310,7 +310,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(27, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/supervisorsummary/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Summary Supervisor Report</span>
                                             </a>
                                         </li>
@@ -318,7 +318,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(13, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/timebased/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Time Based Report</span>
                                             </a>
                                         </li>
@@ -326,7 +326,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(20, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/companywise/list" >
-                                                <i class="fa fa-ticket"></i>
+                                                <i class="fa fa-circle-o"></i>
                                                 <span>Company wise Report</span>
                                             </a>
                                         </li>
@@ -335,7 +335,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php if (array_key_exists(42, $role_privileges)) { ?>
                             <li class="treeview">
                                 <a href="<?php echo base_url(); ?>admin/vehicle/parking/list" >
-                                    <i class="fa fa-ticket"></i>
+                                    <i class="fa fa-circle-o"></i>
                                     <span>All Exited List</span>
                                 </a>
                             </li>
@@ -372,7 +372,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
      <?php if (array_key_exists(43, $role_privileges)) { ?>
                                 <li class="treeview">
                                 <a href="<?php echo base_url(); ?>employee/report/current/list" >
-                                    <i class="fa fa-ticket"></i>
+                                    <i class="fa fa-circle-o"></i>
                                     <span>My Current Report</span>
                                 </a>
                             </li>
@@ -380,7 +380,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
      <?php if (array_key_exists(44, $role_privileges)) { ?>
                             <li class="treeview">
                                 <a href="<?php echo base_url(); ?>employee/report/submitted/list" >
-                                    <i class="fa fa-ticket"></i>
+                                    <i class="fa fa-circle-o"></i>
                                     <span>My Submitted Report</span>
                                 </a>
                             </li>

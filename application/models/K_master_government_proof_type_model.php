@@ -14,18 +14,7 @@ class K_master_government_proof_type_model extends Common_Model {
         parent::__construct();
         $this->setTableName($this->table_name);
     }
-    /**
-     * This function is used to insert Govt proof type's information
-     * @param array $inputData : This is user's new Govt proof type information
-     * @return int $inserted_id : This is inserted Id
-     */
-    function insert($inputData) {
-        $this->db->trans_start();
-        $this->db->insert($this->table_name, $inputData);
-        $insert_id = $this->db->insert_id();
-        $this->db->trans_complete();
-        return $insert_id;
-    }
+
 
     /**
      * This function is used to get the employee Govt proof type list and total Govt proof type count
@@ -71,36 +60,14 @@ class K_master_government_proof_type_model extends Common_Model {
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
-                     $this->deleted => 2,
-                    $this->id => $id
+                     $this->id => $id
                  )
         );
         $query = $this->db->get();
         return $query->row();
     }
 
-    /**
-     * This function is used to update the user Govt proof type's information
-     * @param array $data : This is user Govt proof type's updated information
-     * @param number $id : This is govtprooftypeid id
-     * @return boolean $result : TRUE / FALSE
-     */
-    function update($data, $id) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return TRUE;
-    }
+    
 
-    /**
-     * This function is used to delete the Govt proof type information
-     * @param number $id : This is Govt proof type id
-     * @param array $data : This is Govt proof type data
-     * @return boolean $result : TRUE / FALSE
-     */
-    function delete($id, $data) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return $this->db->affected_rows();
-    }
 
 }

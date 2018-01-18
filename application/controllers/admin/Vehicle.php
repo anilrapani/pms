@@ -72,8 +72,13 @@ class Vehicle extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Type List';
             $data['title'] = 'Vehicle Type';
             $data['sub_title'] = 'List';
+            $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                         'cssBottomArray'  => array(),
+                         'jsTopArray'      => array(),
+                         'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
 
-            $this->loadViews("admin/vehicle/type/list", $this->global, $data, NULL);
+            );
+            $this->loadViews("admin/vehicle/type/list", $this->global, $data, $this->global);
         }
     }
 
@@ -289,7 +294,22 @@ class Vehicle extends BaseController {
     }
     
     
-    
+    function updateTypeStatus() {
+
+        if(!array_key_exists(36,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_vehicle_type_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
     
     
     
@@ -323,8 +343,13 @@ class Vehicle extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Gate List';
             $data['title'] = 'Vehicle Gate';
             $data['sub_title'] = 'List';
+            $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                         'cssBottomArray'  => array(),
+                         'jsTopArray'      => array(),
+                         'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
 
-            $this->loadViews("admin/vehicle/gate/list", $this->global, $data, NULL);
+            );
+            $this->loadViews("admin/vehicle/gate/list", $this->global, $data, $this->global);
         }
     }
 
@@ -575,7 +600,22 @@ class Vehicle extends BaseController {
     
     
     
-    
+    function updateGateStatus() {
+
+        if(!array_key_exists(1,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_vehicle_gate_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
     
     
     
@@ -700,8 +740,14 @@ class Vehicle extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Price List';
             $data['title'] = 'Price';
             $data['sub_title'] = 'List';
+              $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(),
+                              'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
+                              
+                    );
 
-            $this->loadViews("admin/vehicle/price/list", $this->global, $data, NULL);
+            $this->loadViews("admin/vehicle/price/list", $this->global, $data, $this->global);
         }
     }
 
@@ -904,6 +950,22 @@ class Vehicle extends BaseController {
             }
         }
     }
+      function updatePriceStatus() {
+
+        if(!array_key_exists(35,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_price_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
     
     function getPricePerTimeList(){
         $priceId = $this->input->post('priceId');
@@ -917,7 +979,7 @@ class Vehicle extends BaseController {
         
     }
     
-    
+  
     
     
     function pageNotFound() {

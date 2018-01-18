@@ -18,19 +18,7 @@ class K_master_vehicle_gate_model extends Common_Model {
         parent::__construct();
         $this->setTableName($this->table_name);
     }
-    /**
-     * This function is used to insert Vehicle's information
-     * @param array $inputData : This is user's new vehicle terminal information
-     * @return int $inserted_id : This is inserted Id
-     */
-    function insert($inputData) {
-        $this->db->trans_start();
-        $this->db->insert($this->table_name, $inputData);
-        $insert_id = $this->db->insert_id();
-        $this->db->trans_complete();
-        return $insert_id;
-    }
-
+    
     /**
      * This function is used to get the vehicle terminal list and count
      * @param array $inputData : This is array with searchText, page, segment
@@ -75,7 +63,6 @@ class K_master_vehicle_gate_model extends Common_Model {
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
-                     $this->deleted => 2,
                     $this->id => $id
                  )
         );
@@ -83,30 +70,7 @@ class K_master_vehicle_gate_model extends Common_Model {
         return $query->row();
     }
 
-    /**
-     * This function is used to update the user vehicle terminal's information
-     * @param array $data : This is vehicle terminal's updated information
-     * @param number $id : This is vehicle terminal id
-     * @return boolean $result : TRUE / FALSE
-     */
-    function update($data, $id) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return TRUE;
-    }
-
-    /**
-     * This function is used to delete the Vehicle terminal information
-     * @param number $id : This is Vehicle terminal id
-     * @param array $data : This is vehicle terminal data
-     * @return boolean $result : TRUE / FALSE
-     */
-    function delete($id, $data) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return $this->db->affected_rows();
-    }
-    
+   
     function getGatesList(){
               $this->db->select("*");
         $this->db->from("$this->table_name");

@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+         <?php echo $title; ?>
       </h1>
     </section>
     
@@ -56,7 +56,7 @@
                               <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $companyInfo->name; ?>">
                                     </div>
 
@@ -64,7 +64,7 @@
                                 <div class="col-md-6">                                
 
                                     <div class="form-group">
-                                        <label for="email">Email</label>
+                                        <label for="email">Email<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="email" name="email" maxlength="150" value="<?php echo $companyInfo->email; ?>" >
                                     </div>
 
@@ -73,16 +73,15 @@
                             <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="text" class="form-control required" id="phone" name="phone" maxlength="10" value="<?php echo $companyInfo->phone; ?>">
+                                        <label for="phone">Phone<span class="color-red">*</span></label>
+                                        <input type="text" class="form-control required" id="phone" name="phone" value="<?php echo $companyInfo->phone; ?>">
                                     </div>
 
                                 </div>
                                 <div class="col-md-6">                                
-
                                     <div class="form-group">
-                                        <label for="address">Address</label>
-                                        <textarea class="form-control" name="address" ><?php echo $companyInfo->address; ?></textarea>
+                                        <label for="address">Address<span class="color-red">*</span></label>
+                                        <textarea class="form-control" name="address" id="address"><?php echo $companyInfo->address; ?></textarea>
 
                                     </div>
                                 </div>

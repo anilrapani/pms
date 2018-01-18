@@ -15,18 +15,7 @@ class K_master_user_shift_model extends Common_Model {
         parent::__construct();
         $this->setTableName($this->table_name);
     }
-    /**
-     * This function is used to insert employee Shift's information
-     * @param array $inputData : This is employee shift information
-     * @return int $inserted_id : This is inserted Id
-     */
-    function insert($inputData) {
-        $this->db->trans_start();
-        $this->db->insert($this->table_name, $inputData);
-        $insert_id = $this->db->insert_id();
-        $this->db->trans_complete();
-        return $insert_id;
-    }
+ 
 
     /**
      * This function is used to get the employee shift list and total Shift count
@@ -71,38 +60,14 @@ class K_master_user_shift_model extends Common_Model {
         $this->db->from("$this->table_name");
          $this->db->where(
                  array(
-                     $this->deleted => 2,
-                    $this->id => $id
+                   $this->id => $id
                  )
         );
         $query = $this->db->get();
         return $query->row();
     }
 
-    /**
-     * This function is used to update the employee shift information
-     * @param array $data : This is employee shift's updated information
-     * @param number $id : This is shift id
-     * @return boolean $result : TRUE / FALSE
-     */
-    function update($data, $id) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return TRUE;
-    }
-
-    /**
-     * This function is used to delete the shift information
-     * @param number $id : This is shift id
-     * @param array $data : This is shift data
-     * @return boolean $result : TRUE / FALSE
-     */
-    function delete($id, $data) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return $this->db->affected_rows();
-    }
-    
+ 
     
     function getShiftList(){
         $this->db->select("*");

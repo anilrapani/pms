@@ -57,7 +57,13 @@ class User extends BaseController
             $data['userRecords'] = $this->user_model->userListing($searchText, $returns["page"], $returns["offset"]);
             $data['offset'] = $returns["offset"];
             $this->global['pageTitle'] = PROJECT_NAME. ' : Employee Listing';
-            $this->loadViews("users", $this->global, $data, NULL);
+                 $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(),
+                              'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
+                              
+                    );
+            $this->loadViews("users", $this->global, $data, $this->global);
         }
     }
 
@@ -287,7 +293,7 @@ class User extends BaseController
      */
     function deleteUser()
     {
- 
+        
         if(!array_key_exists(24,$this->role_privileges))
         {
             echo(json_encode(array('status'=>'access')));
@@ -295,7 +301,7 @@ class User extends BaseController
         }
         else
         {
-            $userId = $this->input->post('userId');
+            $userId = $this->input->post('id');
             $userInfo = array('deleted'=>1,'updated_by'=>$this->vendorId, 'updated_time'=>date('Y-m-d H:i:s'));
            
             $result = $this->user_model->deleteUser($userId, $userInfo);
@@ -304,7 +310,22 @@ class User extends BaseController
             else { echo(json_encode(array('status'=>FALSE))); }
         }
     }
-    
+    function updateUserStatus() {
+
+        if(!array_key_exists(24,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->user_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
     /**
      * This function is used to load the change password screen
      */

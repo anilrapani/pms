@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-users"></i> <?php echo $title; ?>
+            <?php echo $title; ?>
             <small></small>
         </h1>
     </section>
@@ -73,7 +73,7 @@
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="phone">Phone</label>
-                                        <input type="text" class="form-control required" id="phone" name="phone" maxlength="10">
+                                        <input type="text" class="form-control required" id="phone" name="phone" >
                                     </div>
 
                                 </div>

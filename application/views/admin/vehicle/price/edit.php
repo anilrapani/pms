@@ -19,7 +19,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+         <?php echo $title; ?>
       </h1>
     </section>
     
@@ -73,7 +73,7 @@
                               <div class="row">
                                 <div class="col-md-4">                                
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $resultInfo->name; ?>">
                                     </div>
 
@@ -165,7 +165,7 @@
             </div>  <!-- /div[data-role="dynamic-fields"] -->
             <div class="form-inline" style="padding-top: 8px;">
                     <div class="form-group">
-                        <label for="status">Beyond this per hour
+                        <label for="status">Beyond this per hour price<span class="color-red">*</span>
                         </label> <input type="text" class="form-control required" name="more_than_minutes_per_hour_amount" value="<?php echo $resultInfo->more_than_minutes_per_hour_amount; ?>">
 <!--                        <input type="hidden" name="more_than_minutes" value="<?php echo $value->to_minutes; ?>">-->
                         

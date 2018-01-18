@@ -35,7 +35,7 @@ if(!empty($userInfo))
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> User Management
+         User Management
         <small>Add / Edit User</small>
       </h1>
     </section>
@@ -55,12 +55,12 @@ if(!empty($userInfo))
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" action="<?php echo base_url() ?>editUser" method="post" id="editUser" role="form">
+                    <form role="form" action="<?php echo base_url() ?>editUser" method="post" id="user" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="fname">Full Name</label>
+                                        <label for="fname">Full Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control" id="fname" placeholder="Full Name" name="fname" value="<?php echo $name; ?>" maxlength="128">
                                         <input type="hidden" value="<?php echo $userId; ?>" name="userId" id="userId" />    
                                     </div>
@@ -68,7 +68,7 @@ if(!empty($userInfo))
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="email">Email address</label>
+                                        <label for="email">Email address<span class="color-red">*</span></label>
                                         <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" value="<?php echo $email; ?>" maxlength="128">
                                     </div>
                                 </div>
@@ -76,13 +76,13 @@ if(!empty($userInfo))
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="password">Password</label>
+                                        <label for="password">Password<span class="color-red">*</span></label>
                                         <input type="password" class="form-control" id="password" placeholder="Password" name="password" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="cpassword">Confirm Password</label>
+                                        <label for="cpassword">Confirm Password<span class="color-red">*</span></label>
                                         <input type="password" class="form-control" id="cpassword" placeholder="Confirm Password" name="cpassword" maxlength="10">
                                     </div>
                                 </div>
@@ -90,13 +90,13 @@ if(!empty($userInfo))
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="mobile">Mobile Number</label>
+                                        <label for="mobile">Mobile Number<span class="color-red">*</span></label>
                                         <input type="text" class="form-control" id="mobile" placeholder="Mobile Number" name="mobile" value="<?php echo $mobile; ?>" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="role">Role</label>
+                                        <label for="role">Role<span class="color-red">*</span></label>
                                         <select class="form-control" id="role" name="role">
                                             <option value="0">Select Role</option>
                                             <?php
@@ -118,7 +118,7 @@ if(!empty($userInfo))
                             <div class="row">
                                   <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="government_proof_type_id">Govt Proof Type</label>
+                                        <label for="government_proof_type_id">Govt Proof Type<span class="color-red">*</span></label>
                                         <select class="form-control required" id="government_proof_type_id" name="government_proof_type_id">
                                             <option value="0">Select Govt Proof Type</option>
                                             <?php
@@ -137,7 +137,7 @@ if(!empty($userInfo))
                                 </div>    
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="government_id_number">Government Id Number</label>
+                                        <label for="government_id_number">Government Id Number<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required digits" id="government_id_number" name="government_id_number" maxlength="10" value="<?php echo $government_id_number; ?>">
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@ if(!empty($userInfo))
                              <div class="row">
                                   <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="user_company_id">Employee Company</label>
+                                        <label for="user_company_id">Employee Company<span class="color-red">*</span></label>
                                         <select class="form-control required" id="user_company_id" name="user_company_id">
                                             <option value="0">Select Employee Company</option>
                                             <?php
@@ -192,7 +192,7 @@ if(!empty($userInfo))
                                     <div class="col-md-6">
                                       
                                     <div class="form-group">
-                                        <label for="shift_id">Employee Shift</label>
+                                        <label for="shift_id">Employee Shift<span class="color-red">*</span></label>
                                         <select class="form-control required" id="shift_id" name="shift_id">
                                             <option value="0">Select Employee Shift</option>
                                             <?php
@@ -252,4 +252,4 @@ if(!empty($userInfo))
     </section>
 </div>
 
-<script src="<?php echo base_url(); ?>assets/js/editUser.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/js/admin/user.js" type="text/javascript"></script>

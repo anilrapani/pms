@@ -16,19 +16,7 @@ class K_master_vehicle_company_model extends Common_Model {
         parent::__construct();
         $this->setTableName($this->table_name);
     }
-    /**
-     * This function is used to insert company's information
-     * @param array $inputData : This is user's new company information
-     * @return int $inserted_id : This is inserted Id
-     */
-    function insert($inputData) {
-        $this->db->trans_start();
-        $this->db->insert($this->table_name, $inputData);
-        $insert_id = $this->db->insert_id();
-        $this->db->trans_complete();
-        return $insert_id;
-    }
-
+ 
     /**
      * This function is used to get the employee company list and total company count
      * @param array $inputData : This is array with searchText, page, segment
@@ -80,28 +68,5 @@ class K_master_vehicle_company_model extends Common_Model {
         return $query->row();
     }
 
-    /**
-     * This function is used to update the user company's information
-     * @param array $data : This is user company's updated information
-     * @param number $id : This is discipline id
-     * @return boolean $result : TRUE / FALSE
-     */
-    function update($data, $id) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return TRUE;
-    }
-
-    /**
-     * This function is used to delete the company information
-     * @param number $id : This is company id
-     * @param array $data : This is company data
-     * @return boolean $result : TRUE / FALSE
-     */
-    function delete($id, $data) {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table_name, $data);
-        return $this->db->affected_rows();
-    }
-
+  
 }

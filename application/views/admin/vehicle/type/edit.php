@@ -19,7 +19,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+         <?php echo $title; ?>
       </h1>
     </section>
     
@@ -68,12 +68,12 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
                     
-                    <form role="form" action="<?php echo base_url() ?>admin/vehicle/edittype" method="post" id="editCompany" role="form">
+                    <form role="form" action="<?php echo base_url() ?>admin/vehicle/edittype" method="post" id="editType" role="form">
                         <div class="box-body">
                               <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="description">Description</label>
+                                        <label for="description">Description<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128" value="<?php echo $resultInfo->name; ?>">
                                     </div>
 
@@ -81,7 +81,7 @@
                                 <div class="col-md-6">                                
 
                                     <div class="form-group">
-                                        <label for="number_of_wheels">Number of wheels</label>
+                                        <label for="number_of_wheels">Number of wheels<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="number_of_wheels" name="number_of_wheels" maxlength="150" value="<?php echo $resultInfo->number_of_wheels; ?>" >
                                     </div>
 
@@ -131,7 +131,7 @@
     
                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="price_id">Price List</label>
+                                        <label for="price_id">Price List<span class="color-red">*</span></label>
                                         <select class="form-control required" id="pricePerTimeListByPriceId" name="price_id">
                                                          <option value="" >Select Price</option>
                                             <?php

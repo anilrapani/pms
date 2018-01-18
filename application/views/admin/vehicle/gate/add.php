@@ -20,7 +20,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            <i class="fa fa-users"></i> <?php echo $title; ?>
+             <?php echo $title; ?>
             <small></small>
         </h1>
     </section>
@@ -68,12 +68,12 @@
                     </div><!-- /.box-header -->
                     <!-- form start -->
 
-                    <form role="form" id="addCompany" action="<?php echo base_url() ?>admin/vehicle/addGate" method="post" role="form">
+                    <form role="form" id="addGate" action="<?php echo base_url() ?>admin/vehicle/addGate" method="post" role="form">
                         <div class="box-body">
                             <div class="row">
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="name">Name</label>
+                                        <label for="name">Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required" id="name" name="name" maxlength="128">
                                     </div>
 
@@ -81,7 +81,7 @@
                                 
                              <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="type">Type</label>
+                                        <label for="type">Type<span class="color-red">*</span></label>
                                         <select class="form-control required" id="type" name="type">
                                             <option value='' >Select Type</option>
                                             <?php

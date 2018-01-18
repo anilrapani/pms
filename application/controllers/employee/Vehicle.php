@@ -61,7 +61,12 @@ class Vehicle extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Vendor Company List';
             $data['title'] = 'Vendor Company';
             $data['sub_title'] = 'List';
-
+                 $this->global['assets'] = array('cssTopArray'     => array(base_url() . 'assets/plugins/iCheck/all'),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(),
+                              'jsBottomArray'   => array(base_url() . 'assets/plugins/iCheck/icheck')
+                              
+                    );
             $this->loadViews("employee/vehicle/company/list", $this->global, $data, NULL);
         }
     }
@@ -227,7 +232,22 @@ class Vehicle extends BaseController {
         }
     }
     
+    function updateVehicleCompanyStatus() {
 
+        if(!array_key_exists(19,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $status = $this->input->post('status');
+            $data = array('status' => $status, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_master_vehicle_company_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    }
     
 
     
@@ -554,8 +574,15 @@ class Vehicle extends BaseController {
                     $data['sub_title'] = "Exit Details";
                     $data['barcode'] = $barcode;
                     $entryDetails = $this->k_parking_model->getDetailsByBarcode($barcode);
+                   
                     if(isset($entryDetails->vehicle_type_id)){
                         $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                        $entryDetails->vehicle_type_id;
+//                         echo "<pre>";
+//                         echo $this->db->last_query();
+//                         exit;
+//                    var_dump($vehicleTypeDetails);
+//                    exit;
                         if(isset($vehicleTypeDetails->number_of_wheels)){
                         $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
                         }
@@ -566,9 +593,11 @@ class Vehicle extends BaseController {
                         
                         
               $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+              
                     $data['vehicleTypePrices'] = $vehicleTypePrices;
                     $data['masterPriceDetails'] = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
-        
+                    
+                    
                         
                         $data['vehicleTypePrices'] = $vehicleTypePrices;
                         
@@ -622,6 +651,7 @@ class Vehicle extends BaseController {
             } else {
                 $entryId = $this->input->post('entryId');
                 $customer_paid_by_cash_or_card = $this->input->post('customer_paid_by_cash_or_card');
+                $image_vehicle_number_plate_exit = '';
             }
             
             $data['entryId'] = $entryId;
@@ -672,7 +702,7 @@ class Vehicle extends BaseController {
                     }
             }
             }
-       
+                
                 $config['allowed_types']        = 'gif|jpg|png';
 //                $config['max_size']             = 2000;
 //                $config['max_width']            = 1024;
@@ -694,8 +724,6 @@ class Vehicle extends BaseController {
                 {
                         $upload_data_image_vehicle_number_plate_exit = array('upload_data' => $this->number_plate_upload->data());
                         $image_vehicle_number_plate_exit = $upload_data_image_vehicle_number_plate_exit['upload_data']['file_name'];
-                        
-                    
                 }
             
             

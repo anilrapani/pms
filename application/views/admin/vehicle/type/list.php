@@ -2,7 +2,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-users"></i> <?php echo $title; ?>
+         <?php echo $title; ?>
         <small> </small>
       </h1>
     </section>
@@ -44,13 +44,13 @@
                         foreach($records as $record)
                         {
                     ?>
-                    <tr>
+                    <tr class="currentRow">
                       <td><?php echo $record->id ?></td>
                       <td><?php echo $record->name ?></td>
-                      <td><?php echo ($record->status == 1)?"Active":"Inactive"; ?></td>
+                      <td><input type="checkbox" name="status" class="statusCheckbox" <?php echo ($record->status == 1)?"checked":""; ?>  value="<?php echo $record->id; ?>" /></td>
                       <td class="text-center">
                           <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/vehicle/edit/type/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
-                          <a class="btn btn-sm btn-danger deleteType" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>
+                          <a class="btn btn-sm btn-danger deleteConfirmation" href="#" data-toggle="modal" data-target="#modal-default" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>
                       </td>
                     </tr>
                     <?php
@@ -68,7 +68,29 @@
         </div>
     </section>
 </div>
+<div class="modal fade" id="modal-default">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Confirmation</h4>
+              </div>
+              <div class="modal-body">
+                <p id="responseMessage" ></p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary deleteRecord" id="deleteRecord" data-id="" >Delete</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
 <script type="text/javascript">
     deleteUrl = "admin/vehicle/deleteType";
+    updateStatusUrl = "admin/vehicle/updateTypeStatus";
 </script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/admin/common_list.js" charset="utf-8"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/admin/common.js" charset="utf-8"></script>
