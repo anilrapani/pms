@@ -123,6 +123,7 @@
                     </button>
                 </div>  <!-- /div.form-inline -->
             </div>  <!-- /div[data-role="dynamic-fields"] -->
+        <?php if($this->config->item('enable_more_than_minutes_per_hour_amount')) { ?>
             <div class="form-inline" style="padding-top: 8px;">
                     <div class="form-group">
                         <label for="status">Beyond this per hour price<span class="color-red">*</span>
@@ -131,6 +132,7 @@
                         
                     </div>
             </div>
+        <?php } ?>    
             
         </div>  <!-- /div.col-md-12 -->
     </div>  <!-- /div.row -->

@@ -335,11 +335,11 @@ class Vehicle extends BaseController {
                 $data =array();
                 
                 $vehicle_type_id = $this->input->post('vehicle_type_id');
-                $vehicle_company = ucwords($this->input->post('vehicle_company'));
-                $vehicle_number = strtoupper($this->input->post('vehicle_number'));
-                $driving_license_number = strtoupper($this->input->post('driving_license_number'));
-                $driver_name = ucwords($this->input->post('driver_name'));
-                $rc = strtoupper($this->input->post('rc'));
+                $vehicle_company = ucwords(trim($this->input->post('vehicle_company')));
+                $vehicle_number = strtoupper(trim($this->input->post('vehicle_number')));
+                $driving_license_number = strtoupper(trim($this->input->post('driving_license_number')));
+                $driver_name = ucwords(trim($this->input->post('driver_name')));
+                $rc = strtoupper(trim($this->input->post('rc')));
                 $image_vehicle_number_plate = $image_driving_license_number = '';
                 
                 
@@ -674,33 +674,28 @@ class Vehicle extends BaseController {
                     
                 }
             }
-//            echo date('Y-m-d H:i:s').'<br>';
-//            echo strtotime(date('Y-m-d H:i:s')).'<br>';
-//            echo $entryDetails->entry_time.'<br>';
-//            echo strtotime($entryDetails->entry_time).'<br>';
-//            // echo $entryDetails->id.'<br>';
-//            echo $total_number_of_seconds."<br>";
-//            echo gmdate("H:i:s", $total_number_of_seconds);
-//          $
+
             $amount = 0;
             
             //if total number of minutes cross this max minutes write logic here to get final amount
             
             $total_number_of_minutes = ceil($total_number_of_seconds/60);
-            if($total_number_of_minutes > $maximumToMinutesByPriceId){
-                // $total_number_of_hours = gmdate("G", $total_number_of_seconds);
-                $total_number_of_hours = floor($total_number_of_seconds/3600);
-                
-                $amount = $priceDetails->more_than_minutes_per_hour_amount*$total_number_of_hours;
-            }{ 
             
+            if($total_number_of_minutes > $maximumToMinutesByPriceId){
+                if($this->config->item('enable_more_than_minutes_per_hour_amount')) {
+                    $total_number_of_hours = ceil($total_number_of_seconds/3600);
+                    $amount = $priceDetails->more_than_minutes_per_hour_amount*$total_number_of_hours;
+                }else{
+                    $amount = round($total_number_of_minutes/$maximumToMinutesByPriceId)*$resultMaximumToMinutesByPriceId->amount; 
+                }
+            }{ 
             foreach ($vehicleTypePrices as $key => $value) {
               //  echo $value->from_minutes.'--'.$value->to_minutes."<br>";
                     if($total_number_of_seconds > ($value->from_minutes*60) && $total_number_of_seconds <= ($value->to_minutes*60)){
                         $amount = $value->amount;
                         break;
                     }
-            }
+                }
             }
                 
                 $config['allowed_types']        = 'gif|jpg|png';

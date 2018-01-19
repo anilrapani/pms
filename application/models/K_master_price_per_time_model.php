@@ -136,16 +136,21 @@ class K_master_price_per_time_model extends Common_Model {
     
       function getMaximumToMinutesByPriceId($priceId){
                 
-            $this->db->select("max(to_minutes) as maxToMinutes");
+            $this->db->select("to_minutes as maxToMinutes, amount");
         $this->db->from($this->table_name);
+        // $this->db->where('UPDATE_DATE = (SELECT MAX(UPDATE_DATE) FROM PERFORMANCE)',     NULL, FALSE);
           $this->db->where(
                  array(
                      $this->status => 1,
                      $this->deleted => 2,
-                     $this->price_id => $priceId
+                     $this->price_id => $priceId,
                  )
         );
+          $this->db->where("$this->to_minutes = (SELECT MAX(to_minutes) FROM $this->table_name where $this->status = 1 and $this->deleted = 2 and $this->price_id = $priceId)");
+          
         $query = $this->db->get();
+        echo $this->db->last_query();
+      //  exit;
         return $query->row(); 
     }
 

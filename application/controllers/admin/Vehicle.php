@@ -786,6 +786,9 @@ class Vehicle extends BaseController {
                $name = ucwords(strtolower($this->input->post('name')));
            //    $more_than_minutes = $this->input->post('more_than_minutes');
                $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
+               if(!$this->config->item('enable_more_than_minutes_per_hour_amount')) { 
+                    $more_than_minutes_per_hour_amount = 0;
+               }
                $fromMinutesArray = $this->input->post('from_minutes');
                $toMinutesArray = $this->input->post('to_minutes');
                $amountArray =  $this->input->post('amount');
@@ -880,7 +883,10 @@ class Vehicle extends BaseController {
             } else {
                 $name = ucwords(strtolower($this->input->post('name')));
                //  $more_than_minutes = $this->input->post('more_than_minutes');
-                $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
+                $more_than_minutes_per_hour_amount = '';
+                if(!$this->config->item('disable_more_than_minutes_per_hour_amount')) {
+                    $more_than_minutes_per_hour_amount =  $this->input->post('more_than_minutes_per_hour_amount');
+                }
                 $status = $this->input->post('status');
                 $fromMinutesArray = $this->input->post('from_minutes');
                 $toMinutesArray = $this->input->post('to_minutes');

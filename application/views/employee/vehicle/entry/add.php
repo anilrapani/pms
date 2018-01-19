@@ -73,17 +73,62 @@
             <?php if($isNewEntry == false) {?>
                 <div class="col-md-6">
                 <!-- general form elements -->
-
+                
 
 
                 <div class="box box-primary ">
                     <div class="box-header">
-                        <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php if($isNewEntry == false) {?><input type="submit" class="btn btn-primary float-right" style="float:right;"value="Print"><?php } ?>
+                        <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php if($isNewEntry == false) {?><input type="submit" class="btn btn-primary float-right" onclick="printPage()" style="float:right;"value="Print"><?php } ?>
                         <br>
                         <br> 
+                        <div id="printTicket1" class="box-body printTicket" style="
+    /*width: 21%;*/
+    /* background: red; */
+    line-height: 5px;
+    font-size: 12px;
+    font-family: sans-serif;
+">
+    <div class="ticketHeader" style="
+    text-align: center;
+    margin-left: -70px;
+    font-size: 15px;
+">
+        
+        <p>Menzies Bobba</p>
+        <p>Entry Gate1</p>
+        <p><img src="http://localhost/pms//barcode/625915163736864018.png" <="" h3="">
+
+        </p></div>
+    <div style="ticketBody">
+        <div class="ticketLine"><p>Entry Date and Time: <span>2018-01-19 20:24:46</span></p></div>
+        <div class="ticketLine"><p>Exit Date and Time: <span>2018-01-19 20:24:46</span></p></div>
+        <div class="ticketLine"><p>Total Amount:  <span>30.00</span></p></div>
+        <div class="ticketLine"><p>Vehicle : <span>7W</span></p></div>
+        <div class="ticketLine"><p>Company Name: <span>New Company</span></div>
+        <div class="ticketLineHeading"><p>Driver Details </p></div>
+        <div class="ticketLine"><p>Aravind</p></div>
+        <div class="ticketLine"><p>License No: <span>TS12345781234564</span></div>
+        <div class="ticketLine"><p>RC: <span>AP12345685</span></div>
+        <div class="ticketLineHeading"><p>Parking Charges </p></div>
+        <div class="ticketLine"><p>0-45mins : Rs. 0.00</p></div>
+        <div class="ticketLine"><p>30-60mins : Rs. 30.00</p></div>
+        <div class="ticketLine"><p>60-120mins : Rs. 70.00</p></div>
+        <div class="ticketLine"><p>120-180mins : Rs. 90.00</p></div>
+        <div class="ticketLine"><p>180-210mins : Rs. 100.00</p></div>
+    
+    </div>
+    
+    <div style="ticketFooter">
+        <!--                            <h4>Beyond this per hour : Rs. 20.00</h4>-->
+        <div class="ticketLine"><p>No Horn </p></div>
+        <div class="ticketLine"><p>Speed Limit : <span>10Km/Hr</span></div>
+      
+    </div>    
+</div>
 <!--                        <h3 class="box-title">Print Preview</h3>-->
-                        <div class="box-body printTicket" >
+                        <div class="box-body printTicket" id="printTicket">
                             <div style="text-align: center; ">
+                                <a href="javascript:window.print()">Print</a>
                             <h2><?php echo $login_user_company_name; ?></h2>
                             <h3><?php echo $gateDetails->name; ?></h3>
                             <h3><img src="<?php echo base_url().'/barcode/'.$entryDetails->barcode.'.png';?>"</h3>
@@ -102,14 +147,15 @@
                                     
                                     <?php } ?>
                             <h4>Vehicle : <span><?php echo $entryDetails->number_of_wheels; ?>W</span></h4>
-                            <h4>Company Name: <span><?php echo $entryDetails->vehicle_company; ?></span></h4>
-                            <h4>Vehicle No: <span><?php echo $entryDetails->vehicle_number; ?></span></h4>
+                            <?php if(!empty($entryDetails->vehicle_company)) { ?><h4>Company Name: <span><?php echo $entryDetails->vehicle_company; ?></span></h4> <?php } ?>
+                            <?php if(!empty($entryDetails->vehicle_number)) { ?><h4>Vehicle No: <span><?php echo $entryDetails->vehicle_number; ?></span></h4><?php } ?>
                            
+                            <?php if(!empty($entryDetails->driver_name) || !empty($entryDetails->driving_license_number) || !empty($entryDetails->rc)) { ?>
                             <h3>Driver Details </h3>
-                            <h4><?php echo $entryDetails->driver_name; ?></h4>
-                            <h4>DL : <span><?php echo $entryDetails->driving_license_number; ?></span></h4>
-                            <h4>RC : <span><?php echo $entryDetails->rc?></span></h4>
-                            
+                            <?php if(!empty($entryDetails->driver_name)) { ?><h4><?php echo $entryDetails->driver_name; ?></h4><?php } ?>
+                            <?php if(!empty($entryDetails->driving_license_number)) { ?><h4>DL : <span><?php echo $entryDetails->driving_license_number; ?></span></h4><?php } ?>
+                            <?php if(!empty($entryDetails->rc)) { ?><h4>RC : <span><?php echo $entryDetails->rc; ?></span></h4><?php } ?>
+                            <?php } ?>
                              <h3>Parking Charges </h3>
     <?php
                                     
@@ -119,16 +165,17 @@
                                     <?php
                                   }
                                     ?>
-                            <h4>Beyond this per hour : Rs. <?php echo $masterPriceDetails->more_than_minutes_per_hour_amount; ?></h4>
+<!--                            <h4>Beyond this per hour : Rs. <?php echo $masterPriceDetails->more_than_minutes_per_hour_amount; ?></h4>-->
                             <h3>No Horn </h3>
                             <h3>Speed Limit : <span>10Km/Hr</span></h3>
-                            <h3>Kastech India Pvt. Ltd. </h3>
+<!--                            <h3>Kastech India Pvt. Ltd. </h3>-->
                             </div>
                         </div>
                             
                     </div> 
                     
                 </div>
+                
                 </div>
             <?php if($isNotExited == false && !$this->config->item('disable_uploadimage_exit')) {
                 
@@ -191,7 +238,7 @@
                                  
                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="vehicle_type_id">Vehicle Type</label>
+                                        <label for="vehicle_type_id">Vehicle Type<span class="color-red">*</span></label>
                                         <select class="form-control required" id="vehicle_type_id" name="vehicle_type_id">
                                             <option value="" >Select Vehicle Type</option>
                                             <?php
@@ -212,7 +259,7 @@
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="vehicle_company">Vehicle Company</label>
-                                        <input type="text" class="form-control" id="vehicle_company" name="vehicle_company" value="">
+                                        <input type="text" class="form-control" id="vehicle_company" name="vehicle_company" value="New Company">
                                     </div>
                                 </div>
                                  
@@ -230,7 +277,7 @@
                                 
                                 <div class="col-md-6">                                
                                     <div class="form-group">
-                                        <label for="image_vehicle_number_plate">Vehicle Number Plate Image</label>
+                                        <label for="image_vehicle_number_plate">Vehicle Number Plate Image<span class="color-red">*</span></label>
                                         <input type="file" class="form-control required" id="image_vehicle_number_plate" name="image_vehicle_number_plate" value="">
                                          
                                     </div>
@@ -247,6 +294,7 @@
                                         <label for="driving_license_number">Driving License Number</label>
                                         <input type="text" class="form-control" id="driving_license_number" name="driving_license_number" value="">
                                     </div>
+                                     
                                 </div>
                                 
                                 <div class="col-md-6">                                
@@ -310,7 +358,11 @@
     </section>
 
 </div>
+
+
+<script src='http://www.jqueryscript.net/demo/Print-Specified-Area-Of-A-Page-PrintArea/demo/jquery.PrintArea.js'></script>
 <script type="text/javascript">
+    
     function readURL(input) {
 
   if (input.files && input.files[0]) {
@@ -337,5 +389,9 @@ $('#display_image').attr('src', e.target.result);
 $("#image_vehicle_number_plate,#image_driving_license_number").change(function() {
   readURL(this);
 });
+function printPage(){
+     var options = {mode:"popup",popHt: 500,   popWd: 400, popX: 500,   popY: 600,popTitle:"",popClose: false};
+      $("#printTicket1").printArea( options ); 
+}
 </script>
 <script src="<?php echo base_url(); ?>assets/js/employee/common.js" type="text/javascript"></script>

@@ -536,4 +536,5 @@ $config['enable_gate_restriction_for_employee_at_employee_login'] = TRUE;
 $config['disable_mandatory_field_entry'] = TRUE;
 $config['disable_cashtype_exit'] = TRUE;
 $config['disable_uploadimage_exit'] = TRUE;
+$config['enable_more_than_minutes_per_hour_amount'] = FALSE;
 
