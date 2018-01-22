@@ -10,6 +10,8 @@ $government_id_number = '';
 $user_company_id = '';
 $shift_id = '';
 $status = '';
+$user_name = '';
+
 if(!empty($userInfo))
 {
     foreach ($userInfo as $uf)
@@ -25,6 +27,7 @@ if(!empty($userInfo))
         $user_company_id = $uf->user_company_id;
         $shift_id = $uf->shift_id;
         $status = $uf->status;
+        $user_name = $uf->user_name;
     }
 }
 
@@ -208,7 +211,13 @@ if(!empty($userInfo))
                                             ?>
                                         </select>
                                     </div>
-                                </div>   
+                                </div>  
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="user_name">User Name<span class="color-red">*</span></label>
+                                        <input type="text" class="form-control required user_name" id="user_name" name="user_name" value="<?php echo $user_name; ?>">
+                                    </div>
+                                </div>
                             </div>
                         </div><!-- /.box-body -->
     
@@ -252,4 +261,4 @@ if(!empty($userInfo))
     </section>
 </div>
 
-<script src="<?php echo base_url(); ?>assets/js/admin/user.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/js/admin/edit_user.js" type="text/javascript"></script>

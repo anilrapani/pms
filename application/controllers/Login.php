@@ -58,7 +58,8 @@ class Login extends CI_Controller
         
         $this->load->library('form_validation');
         
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[128]|trim');
+        // $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[128]|trim');
+        $this->form_validation->set_rules('user_name', 'user_name', 'required|max_length[128]|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|max_length[32]');
         $this->form_validation->set_rules('gate_id', 'gate selection', 'required|max_length[32]');
 
@@ -70,11 +71,12 @@ class Login extends CI_Controller
         else
         {
                  
-            $email = $this->input->post('email');
+         //   $email = $this->input->post('email');
+            $user_name = $this->input->post('user_name');
             $password = $this->input->post('password');
             $gate_id = $this->input->post('gate_id');
             
-            $result = $this->login_model->loginMe($email, $password);
+            $result = $this->login_model->loginMe($user_name, $password);
             
             $userStatus = 2;
             $sessionArray['role'] = 0;
@@ -162,7 +164,7 @@ class Login extends CI_Controller
             }
             else
             {
-                $this->session->set_flashdata('error', 'Email or password mismatch');
+                $this->session->set_flashdata('error', 'Username or password mismatch');
                 redirect('/login');
             }
         }

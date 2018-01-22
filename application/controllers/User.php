@@ -110,6 +110,25 @@ class User extends BaseController
         else { echo("false"); }
     }
     
+    
+    /**
+     * This function is used to check whether email already exist or not
+     */
+    function checkUserNameExists()
+    {
+        $userId = $this->input->post("userId");
+        $user_name = $this->input->post("user_name");
+        
+        if(empty($userId)){
+            $result = $this->user_model->checkUsernameExists($user_name);
+        } else {
+            $result = $this->user_model->checkUsernameExists($user_name, $userId);
+        }
+        
+        if(empty($result)){ echo("true"); }
+        else { echo("false"); }
+    }
+    
     /**
      * This function is used to add new user to the system
      */
@@ -129,6 +148,7 @@ class User extends BaseController
             $this->form_validation->set_rules('cpassword','Confirm Password','trim|required|matches[password]|max_length[20]');
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]');
+            $this->form_validation->set_rules('user_name','user_name','trim|required|max_length[128]');
             
             if($this->form_validation->run() == FALSE)
             {
@@ -146,6 +166,7 @@ class User extends BaseController
                 $user_company_id = $this->input->post('user_company_id');
                 $shift_id = $this->input->post('shift_id');
                 $status = $this->input->post('status');
+                $user_name = $this->input->post('user_name');
                 
                 
                 $userInfo = array('email'=>$email, 
@@ -158,6 +179,7 @@ class User extends BaseController
                                   'user_company_id'    => $user_company_id,
                                   'shift_id'   => $shift_id,
                                   'status' => $status,
+                                  'user_name' => $user_name,
                                   'created_by'=>$this->vendorId,
                                   'created_time'=>date('Y-m-d H:i:s')
                     );
@@ -231,7 +253,7 @@ class User extends BaseController
             $this->form_validation->set_rules('cpassword','Confirm Password','matches[password]|max_length[20]');
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
             $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]');
-            
+            $this->form_validation->set_rules('user_name','user_name','trim|required|max_length[128]');
             
             if($this->form_validation->run() == FALSE)
             {
@@ -249,10 +271,11 @@ class User extends BaseController
                 $government_id_number = $this->input->post('government_id_number');
                 $user_company_id = $this->input->post('user_company_id');
                 $shift_id = $this->input->post('shift_id');
+                $user_name = $this->input->post('user_name');
                 $status = $this->input->post('status');
                 
                 $userInfo = array();
-                
+              
                 if(empty($password))
                 {
                     $userInfo = array('email'=>$email, 'role_id'=>$roleId, 'name'=>$name,
@@ -261,11 +284,11 @@ class User extends BaseController
                                         'user_company_id'    => $user_company_id,
                                         'shift_id'   => $shift_id,
                                         'status'   => $status,
-                                        'mobile'=>$mobile, 'updated_by'=>$this->vendorId, 'updated_time'=>date('Y-m-d H:i:s'));
+                                        'mobile'=>$mobile, 'user_name' => $user_name, 'updated_by'=>$this->vendorId, 'updated_time'=>date('Y-m-d H:i:s'));
                 }
                 else
                 {
-                    $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'role_id'=>$roleId,
+                    $userInfo = array('email'=>$email, 'user_name'=>$user_name, 'password'=>getHashedPassword($password), 'role_id'=>$roleId,
                         'name'=>ucwords($name), 'mobile'=>$mobile, 'updated_by'=>$this->vendorId, 
                         'updated_time'=>date('Y-m-d H:i:s'));
                 }

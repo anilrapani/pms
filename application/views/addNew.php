@@ -203,6 +203,12 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="user_name">User Name<span class="color-red">*</span></label>
+                                        <input type="text" class="form-control required user_name" id="user_name" name="user_name" >
+                                    </div>
+                                </div>
                             </div>
                         </div><!-- /.box-body -->
     
@@ -218,4 +224,4 @@
     </section>
     
 </div>
-<script src="<?php echo base_url(); ?>assets/js/admin/user.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/js/admin/add_user.js" type="text/javascript"></script>

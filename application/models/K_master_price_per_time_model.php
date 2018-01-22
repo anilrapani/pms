@@ -149,8 +149,6 @@ class K_master_price_per_time_model extends Common_Model {
           $this->db->where("$this->to_minutes = (SELECT MAX(to_minutes) FROM $this->table_name where $this->status = 1 and $this->deleted = 2 and $this->price_id = $priceId)");
           
         $query = $this->db->get();
-        echo $this->db->last_query();
-      //  exit;
         return $query->row(); 
     }
 

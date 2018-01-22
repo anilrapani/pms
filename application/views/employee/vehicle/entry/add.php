@@ -192,11 +192,11 @@
                             <div style="text-align: left;">
                            
                             <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
-                              <h4>Entry Date and Time: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
+                              <h4>Entry Date and Time: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
                              <?php if($isNotExited == false) { ?>
                                     
                           
-                            <h4>Exit Date and Time: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
+                            <h4>Exit Date and Time: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
                            
                                     <h4>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></h4>
                                     
@@ -236,13 +236,13 @@
             <p style="margin-left: 30px;"><img src="<?php echo base_url() . '/barcode/' . $entryDetails->barcode . '.png'; ?>" /> 
             <p style="margin-left: 70px;"><?php echo ($entryGateDetails->type == 1) ? 'Entry Ticket' : 'Exit Ticket'; ?></p>
             </p>
-            <div class="ticketLine"><p><img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:240px"></p></div>
+            
         </div>
         <div style="ticketBody" style="margin-top:100px;">
             <div class="ticketLine"><p><b><span class="ticketLineLeft">Ticket Number</span>: <span><?php echo $entryDetails->id; ?></span></b></p></div>
-            <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date and Time</span>: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->entry_time)); ?></span></p></div>
+            <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date and Time</span>: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->entry_time)); ?></span></p></div>
             <?php if ($isNotExited == false) { ?>
-                <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Date and Time</span>: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->exit_time)); ?></span></p></div>
+                <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Date and Time</span>: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->exit_time)); ?></span></p></div>
                 <div class="ticketLine"><p><span style="float: left;width: 115px;">Total Amount</span>:  <span><?php echo $entryDetails->total_amount; ?></span></p></div>
             <?php } ?>
                         <?php if (!empty($entryDetails->vehicle_number)) { ?><div class="ticketLine"><p><span style="float: left;width: 115px;">Vehicle Number</span>: <span><?php echo $entryDetails->vehicle_number; ?></span></div><?php } ?>
@@ -270,7 +270,7 @@
             <!--                            <h4>Beyond this per hour : Rs. 20.00</h4>-->
             <div class="ticketLine"><p><b>No Horn </b></p></div>
             <div class="ticketLine"><p><b>Speed Limit : <span>10Km/Hr</span></b></div>
-
+<div class="ticketLine"><p><img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:240px"></p></div>
         </div>    
     </div>
 
@@ -311,6 +311,25 @@
                                 </div>
 
                                 <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:400px">
+                                <div id="display_ticket" style="width: 100%; height: 30%"></div>
+
+
+
+                            </div>
+                            <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
+                        </div>
+                    </div>
+            
+             <div class="col-md-6">
+                 
+                        <div class="box box-primary">
+                            <div class="box-body">
+
+                                <div class="clearfix" >
+                                    <label id="display_label">Preview Driving License Number</label>
+                                </div>
+                                
+                                <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/drivinglicense/<?php echo $entryDetails->image_driving_license_number; ?>" alt="" style="width:400px">
                                 <div id="display_ticket" style="width: 100%; height: 30%"></div>
 
 
@@ -361,7 +380,7 @@
                                 <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="vehicle_company">Vehicle Company</label>
-                                        <input type="text" class="form-control" id="vehicle_company" name="vehicle_company" value="New Company">
+                                        <input type="text" class="form-control" id="vehicle_company" name="vehicle_company" placeholder="New Company">
                                     </div>
                                 </div>
                                  
@@ -440,14 +459,20 @@
                 <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-body">
-                                                    
-                                    
-                                        <label id="display_label"></label>
+                                         <label id="display_label"></label>
                                          <img id="display_image" src="" alt="" style="width:500px" />
                                          <div id="display_ticket" style="width: 100%; height: 30%"></div>
-                                         
-                                    
-                        
+                        </div>
+                        <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                                         <label id="display_label_license"></label>
+                                         <img id="display_image_license" src="" alt="" style="width:500px" />
+                                         <div id="display_ticket_license" style="width: 100%; height: 30%"></div>
                         </div>
                         <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
                     </div>
@@ -476,11 +501,13 @@ var clicked_id = $(input).attr("id");
         // clicked_id
 if(clicked_id == 'image_vehicle_number_plate'){
       $('#display_label').text('Preview Number Plate');
+      $('#display_image').attr('src', e.target.result);
 }else if(clicked_id == 'image_driving_license_number'){
-    $('#display_label').text('Preview License Number');
+    $('#display_label_license').text('Preview License Number');
+    $('#display_image_license').attr('src', e.target.result);
 }   
 
-$('#display_image').attr('src', e.target.result);
+
 
     }
 

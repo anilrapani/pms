@@ -286,9 +286,9 @@
 
 
                                     <h4>Ticket Number: <span><?php echo $entryDetails->id; ?></span></h4>
-                                    <h4>Entry Date and Time: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
+                                    <h4>Entry Date and Time: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
                                     <?php if($isNotExited == false) { ?>
-                                    <h4>Exit Date and Time: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
+                                    <h4>Exit Date and Time: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
                                     <h4><b>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></b></h4>
                                     <?php } ?>
                                     <h4>Vehicle : <span><?php echo $entryDetails->number_of_wheels; ?>W</span></h4>
@@ -325,13 +325,13 @@
             <p style="margin-left: 30px;"><img src="<?php echo base_url() . '/barcode/' . $entryDetails->barcode . '.png'; ?>" /> 
             <p style="margin-left: 70px;"><?php echo ($exitGateDetails->type == 1) ? 'Entry Ticket' : 'Exit Ticket'; ?></p>
             </p>
-            <div class="ticketLine"><p><img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:240px"></p></div>
+            
         </div>
         <div style="ticketBody" style="margin-top:100px;">
             <div class="ticketLine"><p><b><span class="ticketLineLeft">Ticket Number</span>: <span><?php echo $entryDetails->id; ?></span></b></p></div>
-            <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date and Time</span>: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->entry_time)); ?></span></p></div>
+            <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date and Time</span>: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->entry_time)); ?></span></p></div>
             <?php if ($isNotExited == false) { ?>
-                <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Date and Time</span>: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->exit_time)); ?></span></p></div>
+                <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Date and Time</span>: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->exit_time)); ?></span></p></div>
                 <div class="ticketLine"><p><span style="float: left;width: 115px;">Total Amount</span>:  <span><?php echo $entryDetails->total_amount; ?></span></p></div>
             <?php } ?>
                         <?php if (!empty($entryDetails->vehicle_number)) { ?><div class="ticketLine"><p><span style="float: left;width: 115px;">Vehicle Number</span>: <span><?php echo $entryDetails->vehicle_number; ?></span></div><?php } ?>
@@ -359,7 +359,7 @@
             <!--                            <h4>Beyond this per hour : Rs. 20.00</h4>-->
             <div class="ticketLine"><p><b>No Horn </b></p></div>
             <div class="ticketLine"><p><b>Speed Limit : <span>10Km/Hr</span></b></div>
-
+            <div class="ticketLine"><p><img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:240px"></p></div>
         </div>    
     </div>
 

@@ -14,12 +14,16 @@ $(document).ready(function(){
 	$.validator.addMethod("alphanumericChars", function(value, element) {
                 return this.optional(element) || /^[a-z0-9\ \-\&]+$/i.test(value);
          }, "Field should contain only letters and numbers");
+         
+         $.validator.addMethod("user_name", function(value, element) {
+                return this.optional(element) || /^[a-z0-9\ \_]+$/i.test(value);
+         }, "Field should contain only letters, numbers and _");
     
 	var validator = addUserForm.validate({
-		
 		rules:{
 			fname :{ required : true, alphanumericChars : true },
 			email : { required : true, email : true, remote : { url : baseURL + "checkEmailExists", type :"post"} },
+                        user_name : { required : true, user_name : true, remote : { url : baseURL + "checkUsernameExists", type :"post"} },
 			password : { required : true },
 			cpassword : {required : true, equalTo: "#password"},
 			mobile : { required : true, digits : true, minlength :10, maxlength :12 },
@@ -33,6 +37,7 @@ $(document).ready(function(){
 		messages:{
 			fname :{ required : "This field is required" },
 			email : { required : "This field is required", email : "Please enter valid email address", remote : "Email already taken" },
+                        user_name : { required : "This field is required", email : "Please enter valid user name", remote : "UserName already taken" },
 			password : { required : "This field is required" },
 			cpassword : {required : "This field is required", equalTo: "Please enter same password" },
 			mobile : { required : "This field is required", digits : "Please enter numbers only" },

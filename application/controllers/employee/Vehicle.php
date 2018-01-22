@@ -353,6 +353,7 @@ class Vehicle extends BaseController {
                 $rc = strtoupper(trim($this->input->post('rc')));
                 $image_vehicle_number_plate = $image_driving_license_number = '';
                 
+                $vehicle_company = (!empty($vehicle_company))?$vehicle_company:'New Company';
                 
                 $config['allowed_types']        = 'gif|jpg|png';
 //                $config['max_size']             = 2000;
@@ -692,10 +693,6 @@ class Vehicle extends BaseController {
                 redirect("employee/vehicle/exitdetails/".$entryDetails->barcode);
             }
             
-         //   $entryDetails = $this->k_parking_model->getDetails($entryId);
-            
-            // echo strtotime(convertTime(date('Y-m-d H:i:s'), $timeZoneName ='')) - strtotime(convertTime($entryDetails->entry_time, $timeZoneName =''));
-            
             if(isset($entryDetails->vehicle_type_id)){
                 
                 $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
@@ -726,13 +723,22 @@ class Vehicle extends BaseController {
                     $amount = round($total_number_of_minutes/$maximumToMinutesByPriceId)*$resultMaximumToMinutesByPriceId->amount; 
                 }
             }{ 
+                
+                /* seconds logic
             foreach ($vehicleTypePrices as $key => $value) {
-              //  echo $value->from_minutes.'--'.$value->to_minutes."<br>";
-                    if($total_number_of_seconds > ($value->from_minutes*60) && $total_number_of_seconds <= ($value->to_minutes*60)){
+                 if($total_number_of_seconds > ($value->from_minutes*60) && $total_number_of_seconds <= ($value->to_minutes*60)){
                         $amount = $value->amount;
                         break;
                     }
                 }
+                 * 
+                 */
+                foreach ($vehicleTypePrices as $key => $value) {
+                 if($total_number_of_minutes > $value->from_minutes && $total_number_of_minutes <= $value->to_minutes){
+                        $amount = $value->amount;
+                        break;
+                    }
+                }    
             }
                 
                 $config['allowed_types']        = 'gif|jpg|png';
@@ -775,7 +781,7 @@ class Vehicle extends BaseController {
                    $result = $this->k_parking_model->update($vehicleExitInfo, $entryDetails->id);
                    if($result){
                        if(isset($entryDetails->barcode))
-                   redirect('employee/vehicle/exitdetails/'.$entryDetails->barcode);
+                            redirect('employee/vehicle/exitdetails/'.$entryDetails->barcode);
                    }
                    
                }

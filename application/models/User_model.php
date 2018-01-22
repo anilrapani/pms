@@ -92,6 +92,27 @@ class User_model extends Common_Model
     
     
     /**
+     * This function is used to check whether email id is already exist or not
+     * @param {string} $email : This is email id
+     * @param {number} $userId : This is user id
+     * @return {mixed} $result : This is searched result
+     */
+    function checkUsernameExists($user_name, $userId = 0)
+    {
+        $this->db->select("user_name");
+        $this->db->from("k_user");
+        $this->db->where("user_name", $user_name);   
+        $this->db->where("deleted", 2);
+        if($userId != 0){
+            $this->db->where("id !=", $userId);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
+    
+    
+    /**
      * This function is used to add new user to system
      * @return number $insert_id : This is last inserted id
      */
@@ -114,7 +135,7 @@ class User_model extends Common_Model
      */
     function getUserInfo($userId)
     {
-        $this->db->select('id, name, email, mobile, role_id, government_proof_type_id, government_id_number, user_company_id, shift_id,status');
+        $this->db->select('id, name, email, mobile, role_id, government_proof_type_id, government_id_number, user_company_id, shift_id,status,user_name');
         $this->db->from('k_user');
         $this->db->where('deleted', 2);
 		$this->db->where('role_id !=', 1);

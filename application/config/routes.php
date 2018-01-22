@@ -62,6 +62,7 @@ $route['userListing/(:num)'] = "user/userListing/$1";
 $route['addNew'] = "user/addNew";
 $route['pageNotFound'] = "user/pageNotFound";
 $route['checkEmailExists'] = "user/checkEmailExists";
+$route['checkUsernameExists'] = "user/checkUsernameExists";
 
 $route['addNewUser'] = "user/addNewUser";
 $route['editOld'] = "user/editOld";

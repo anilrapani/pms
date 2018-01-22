@@ -254,10 +254,10 @@
             content += "<tr><td>"+element.from_minutes+"</td>"+"<td>"+element.to_minutes+"</td>"+"<td>"+element.amount+"</td></tr>";
    
         });
-   
+   /*
         if( data.priceDetails !== null)
             content += "<tr><td colspan=2 >Beyond this per hour</td>"+"<td>"+data.priceDetails.more_than_minutes_per_hour_amount+"</td></tr>";
-        
+        */
         $("#pricePerTimeList").html(content);
         
     }
