@@ -111,7 +111,7 @@ class Employee extends BaseController {
             if ($this->form_validation->run() == FALSE) {
                 $this->addCompanyView();
             } else {
-                $name = ucwords(strtolower($this->input->post('name')));
+                $name = ucwords($this->input->post('name'));
                 $email = strtolower($this->input->post('email'));
                 $phone = $this->input->post('phone');
                 $address = $this->input->post('address');
@@ -186,7 +186,7 @@ class Employee extends BaseController {
 
                 redirect("admin/employee/edit/company/$companyId");
             } else {
-                $name = ucwords(strtolower($this->input->post('name')));
+                $name = ucwords($this->input->post('name'));
                 $email = strtolower($this->input->post('email'));
                 $phone = $this->input->post('phone');
                 $address = $this->input->post('address');

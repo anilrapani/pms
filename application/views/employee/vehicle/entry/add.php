@@ -18,6 +18,9 @@
         line-height: 10px;
         font-size: 14px !important;
     }
+    .ticketLineLeft{
+        
+    }
 </style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -76,7 +79,7 @@
                 
 
 
-                <div class="box box-primary ">
+                <div class="box box-primary " >
                     <div class="box-header">
                         <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php if($isNewEntry == false) {?><input type="submit" class="btn btn-primary float-right" onclick="printPage()" style="float:right;"value="Print"><?php } ?>
                         <br>
@@ -87,41 +90,39 @@
     line-height: 5px;
     font-size: 12px;
     font-family: sans-serif;
+    display:none;
 ">
-    <div class="ticketHeader" style="
-    text-align: center;
-    margin-left: -70px;
-    font-size: 15px;
-">
+    <div class="ticketHeader" style="font-size: 14px;" >
         
-        <p>Menzies Bobba</p>
-        <p>Entry Gate1</p>
-        <p><img src="http://localhost/pms//barcode/625915163736864018.png" <="" h3="">
+        <p><b>Menzies Aviation Bobba (B'lor) Pvt Ltd</b></p>
+        <p style="margin-left: 70px;">Entry Gate1</p>
+        <p style="margin-left: 30px;"><img src="http://localhost/pms//barcode/625915163736864018.png" <="" h3="">
 
         </p></div>
     <div style="ticketBody">
-        <div class="ticketLine"><p>Entry Date and Time: <span>2018-01-19 20:24:46</span></p></div>
-        <div class="ticketLine"><p>Exit Date and Time: <span>2018-01-19 20:24:46</span></p></div>
-        <div class="ticketLine"><p>Total Amount:  <span>30.00</span></p></div>
-        <div class="ticketLine"><p>Vehicle : <span>7W</span></p></div>
-        <div class="ticketLine"><p>Company Name: <span>New Company</span></div>
-        <div class="ticketLineHeading"><p>Driver Details </p></div>
-        <div class="ticketLine"><p>Aravind</p></div>
-        <div class="ticketLine"><p>License No: <span>TS12345781234564</span></div>
-        <div class="ticketLine"><p>RC: <span>AP12345685</span></div>
-        <div class="ticketLineHeading"><p>Parking Charges </p></div>
-        <div class="ticketLine"><p>0-45mins : Rs. 0.00</p></div>
-        <div class="ticketLine"><p>30-60mins : Rs. 30.00</p></div>
-        <div class="ticketLine"><p>60-120mins : Rs. 70.00</p></div>
-        <div class="ticketLine"><p>120-180mins : Rs. 90.00</p></div>
-        <div class="ticketLine"><p>180-210mins : Rs. 100.00</p></div>
+        <div class="ticketLine"><p><b><span class="ticketLineLeft">Ticket Number</span>: <span>50</span></b></p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date and Time</span>: <span>2018-01-19 20:24:46</span></p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Date and Time</span>: <span>2018-01-19 20:24:46</span></p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">Total Amount</span>:  <span>30.00</span></p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">Vehicle Type</span>: <span>7W</span></p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">Company Name</span>: <span>New Company</span></div>
+        <div class="ticketLineHeading" style="margin-top:15px;"><p><b>Driver Details</b></p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">Name</span> : Aravind</p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">License No</span>: <span>TS12345781234564</span></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">RC</span>: <span>AP12345685</span></div>
+        <div class="ticketLineHeading" style="margin-top:15px;"><p><b>Parking Charges </b></p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">0-45mins</span>     : Rs. 0.00</p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">30-60mins</span>    : Rs. 30.00</p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">60-120mins</span>   : Rs. 70.00</p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">120-180mins</span>  : Rs. 90.00</p></div>
+        <div class="ticketLine"><p><span style="float: left;width: 115px;">180-210mins</span>  : Rs. 100.00</p></div>
     
     </div>
     
-    <div style="ticketFooter">
+    <div class="ticketFooter" style="margin-top:15px;">
         <!--                            <h4>Beyond this per hour : Rs. 20.00</h4>-->
-        <div class="ticketLine"><p>No Horn </p></div>
-        <div class="ticketLine"><p>Speed Limit : <span>10Km/Hr</span></div>
+        <div class="ticketLine"><p><b>No Horn </b></p></div>
+        <div class="ticketLine"><p><b>Speed Limit : <span>10Km/Hr</span></b></div>
       
     </div>    
 </div>
@@ -132,7 +133,7 @@
                             <h2><?php echo $login_user_company_name; ?></h2>
                             <h3><?php echo $gateDetails->name; ?></h3>
                             <h3><img src="<?php echo base_url().'/barcode/'.$entryDetails->barcode.'.png';?>"</h3>
-                            
+                                <h3><?php echo ($gateDetails->type == 1)?'Entry Ticket':'Exit Ticket'; ?></h3>
                             </div>
                             <div style="text-align: left;">
                            
@@ -390,8 +391,29 @@ $("#image_vehicle_number_plate,#image_driving_license_number").change(function()
   readURL(this);
 });
 function printPage(){
+    
+     var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h1>' + document.title  + '</h1>');
+    mywindow.document.write(document.getElementById("#printTicket1").innerHTML);
+    mywindow.document.write('</body></html>');
+
+    mywindow.document.close(); // necessary for IE >= 10
+    mywindow.focus(); // necessary for IE >= 10*/
+
+    mywindow.print();
+    mywindow.close();
+
+    return true;
+    
+    
+    
+    $("#printTicket1").css("display", "block");
      var options = {mode:"popup",popHt: 500,   popWd: 400, popX: 500,   popY: 600,popTitle:"",popClose: false};
-      $("#printTicket1").printArea( options ); 
+    $("#printTicket1").printArea( options ); 
+    $("#printTicket1").css("display", "none");
 }
 </script>
 <script src="<?php echo base_url(); ?>assets/js/employee/common.js" type="text/javascript"></script>
