@@ -404,9 +404,17 @@ class Vehicle extends BaseController {
             } else {
                 $name = ucwords($this->input->post('name'));
                 $type = $this->input->post('type');
+                
+                 if($this->config->item('enable_gate_restriction_for_employee_at_employee_login')) {
                 $user_id_Array = $this->input->post('user_id');
                 $shift_id_Array = $this->input->post('shift_id');
-                $device_registry_id_Array = $this->input->post('device_registry_id');
+              
+            }    
+            if($this->config->item('enable_ip_restriction_for_employee_at_employee_login')) {
+                $device_registry_id_Array = $this->input->post('device_registry_id');  
+            }    
+                
+                
                 $status = $this->input->post('status');
                 
                 $insertData = array(
@@ -423,7 +431,7 @@ class Vehicle extends BaseController {
                 
                 // gate employees logic start
                 
-                
+                if($this->config->item('enable_gate_restriction_for_employee_at_employee_login')) {
                        for($i=0; $i<count($user_id_Array);$i++) {
                     $finalArray[] = array('user_id' => $user_id_Array[$i], 
                                           // 'device_registry_id' => $device_registry_id_Array[$i],
@@ -441,6 +449,7 @@ class Vehicle extends BaseController {
 
                 $this->load->model('k_master_price_model');
                 $this->k_master_vehicle_gate_employee_model->insertEmployeesAtGate($finalArray);
+                }
                 if ($vehicle_gate_id > 0) {
                     $this->session->set_flashdata('success', 'New vehicle gate created successfully');
                 } else {
@@ -527,12 +536,14 @@ class Vehicle extends BaseController {
                 $name = ucwords($this->input->post('name'));
                 $type = $this->input->post('type');
                 $status = $this->input->post('status');
-                
+            if($this->config->item('enable_gate_restriction_for_employee_at_employee_login')) {
                 $user_id_Array = $this->input->post('user_id');
                 $shift_id_Array = $this->input->post('shift_id');
-            //    $device_registry_id_Array = $this->input->post('device_registry_id');
-                
-                
+              
+            }    
+            if($this->config->item('enable_ip_restriction_for_employee_at_employee_login')) {
+                $device_registry_id_Array = $this->input->post('device_registry_id');  
+            }    
                 $updateInfo = array(
                     'name' => $name,
                     'type' => $type,
@@ -541,7 +552,7 @@ class Vehicle extends BaseController {
                     'updated_time' => date('Y-m-d H:i:s')
                 );
                 
-             
+            if($this->config->item('enable_ip_restriction_for_employee_at_employee_login')) { 
                        for($i=0; $i<count($user_id_Array);$i++) {
                     $finalArray[] = array('user_id' => $user_id_Array[$i], 
 
@@ -560,7 +571,7 @@ class Vehicle extends BaseController {
                 $deleteArray = array('deleted' => 1); 
                 $this->k_master_vehicle_gate_employee_model->deleteEmployeesAtGate($deleteArray,$id);
                 $this->k_master_vehicle_gate_employee_model->insertEmployeesAtGate($finalArray);
-
+            }
                 
                 
                 

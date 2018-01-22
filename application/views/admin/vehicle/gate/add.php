@@ -124,7 +124,7 @@
                                                                 </div>
                                                             </div>
                             </div>
-                            
+                            <?php if($this->config->item('enable_gate_restriction_for_employee_at_employee_login')) { ?>
                             <div class="row">
         <div class="col-md-12">
             <div data-role="dynamic-fields">
@@ -212,7 +212,7 @@
 
 
                         </div><!-- /.box-body -->
-
+                            <?php } ?>
                         <div class="box-footer">
                             <input type="submit" class="btn btn-primary" value="Submit" />
                             <input type="reset" class="btn btn-default" value="Reset" />

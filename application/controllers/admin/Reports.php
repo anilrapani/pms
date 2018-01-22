@@ -1315,8 +1315,8 @@ class Reports extends BaseController {
             $data['records'] = $this->k_parking_model->getExitListByVehicleCompany($data);
 //             echo $this->db->last_query();
 //            exit;
-            $this->global['pageTitle'] = PROJECT_NAME . ' : Time Based Report';
-            $data['title'] = 'Time Based Report';
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Company wise report';
+            $data['title'] = 'Company wise report';
             $data['sub_title'] = 'List';
             $this->global['assets'] = array('cssTopArray' => array(
                     base_url() . 'assets/plugins/datepicker/datepicker3',

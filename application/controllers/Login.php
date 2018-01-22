@@ -107,6 +107,21 @@ class Login extends CI_Controller
                     redirect('/login');
                 }
                  $this->load->model('k_master_vehicle_gate_model');
+                       $gateDetails = $this->k_master_vehicle_gate_model->getDetails($gate_id);
+                 $sessionArray['gateDetails'] = $gateDetails;           
+                if($this->config->item('enable_role_base_terminal_access_login')){
+                        if($gateDetails->type == 1 && !array_key_exists(23, unserialize($sessionArray['role_privileges']))){
+                            $this->session->set_flashdata('error', 'Terminal Access denied!');
+                            redirect('/login');
+                        } 
+                        if($gateDetails->type == 2 && !array_key_exists(25, unserialize($sessionArray['role_privileges']))){
+                            $this->session->set_flashdata('error', 'Terminal Access denied!');
+                            redirect('/login'); 
+                        }
+                        
+                    
+                } 
+                 
                 if($sessionArray['role'] != 2 && $this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE || $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == TRUE){
                        
                         $ip = $this->input->ip_address();
@@ -136,12 +151,14 @@ class Login extends CI_Controller
 
                  
                 }
-                 $gateDetails = $this->k_master_vehicle_gate_model->getDetails($gate_id);
-                 $sessionArray['gateDetails'] = $gateDetails;          
-                 
-                 
+          
                 $this->session->set_userdata($sessionArray);
-                redirect('/dashboard');
+                if($gateDetails->type == 1){
+                  redirect('/employee/vehicle/add/entry');  
+                }else{
+                    redirect('employee/vehicle/exit/details');  
+                }
+                //redirect('/dashboard');
             }
             else
             {

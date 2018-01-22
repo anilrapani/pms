@@ -116,7 +116,7 @@
                         <input type="text" class="form-control required" id="field-value" name="amount[]" placeholder="Amount">
                     </div>
                     <button class="btn btn-danger" data-role="remove">
-                        <span class="glyphicon glyphicon-remove"></span>
+                        <span class="glyphicon glyphicon-minus"></span>
                     </button>
                     <button class="btn btn-primary" data-role="add">
                         <span class="glyphicon glyphicon-plus"></span>

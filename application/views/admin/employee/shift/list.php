@@ -35,6 +35,8 @@
                     <tr>
                       <th>Id</th>
                       <th>Name</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
                       <th>Status</th>
                       <th class="text-center">Actions</th>
                     </tr>
@@ -47,6 +49,9 @@
                     <tr class="currentRow">
                       <td><?php echo $record->id ?></td>
                       <td><?php echo $record->name ?></td>
+                      <td><?php echo $record->start_time ?></td>
+                      <td><?php echo $record->end_time ?></td>
+                      
                       <td><input type="checkbox" name="status" class="statusCheckbox" <?php echo ($record->status == 1)?"checked":""; ?>  value="<?php echo $record->id; ?>" /></td>
                       <td class="text-center">
                           <a class="btn btn-sm btn-info" href="<?php echo base_url().'admin/employee/edit/shift/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>

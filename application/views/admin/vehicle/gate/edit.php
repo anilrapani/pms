@@ -124,6 +124,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <?php if($this->config->item('enable_gate_restriction_for_employee_at_employee_login')) { ?>
                             <div class="row">
         <div class="col-md-12">
             <div data-role="dynamic-fields">
@@ -312,7 +313,7 @@
 
 
                         </div><!-- /.box-body -->
-                              
+                            <?php } ?>
                             
 
                               <input type="hidden" value="<?php echo $resultInfo->id; ?>" name="id" id="id" />    

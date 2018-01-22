@@ -26,7 +26,7 @@ class K_master_user_shift_model extends Common_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true) {
             $this->db->select($this->id);
         } else {
-            $this->db->select("$this->id,$this->name,$this->status");
+            $this->db->select("$this->id,$this->name,$this->start_time,$this->end_time,$this->status");
         }
         $this->db->from($this->table_name);
         if (!empty($inputData['searchText'])) {

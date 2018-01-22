@@ -133,17 +133,17 @@ define('ROLE_PRIVILEGES_ARRAY',                            json_encode(array(   
                                                                                // 31=>'Add Category',
                                                                                 32=>'Master - Gates', // Add Terminal
                                                                                 //33=>'Add Employee' - user already present
-                                                                                33=>'Master - Employee Company',
-                                                                                34=>'Govt Proof Types',
+                                                                                //33=>'Master - Employee Company', // working
+                                                                                //34=>'Govt Proof Types', // working
                                                                                 35=>'Master - Prices',
                                                                                 36=>'Administrative Tasks - Vehicle Types and Prices',
                                                                                 37=>'Administrative Tasks - Gates and Employee',
-                                                                                38=>'Cash Management - Report Chart',
-                                                                                39=>'Cash Management - Cash Report Summary',
-                                                                                40=>'Approve Employee Report',
-                                                                                41=>'Cash Management - Cash Collected list',
-                                                                                42=>'All Exited list',
-                                                                                43=>'My Current Report',
-                                                                                44=>'My Submitted Report'
+                                                                             //   38=>'Cash Management - Report Chart', // working
+                                                                             //   39=>'Cash Management - Cash Report Summary', // working
+                                                                             //   40=>'Approve Employee Report', // working
+                                                                              //  41=>'Cash Management - Cash Collected list', // working
+                                                                             //   42=>'All Exited list', // working
+                                                                             //   43=>'My Current Report', // working
+                                                                             //   44=>'My Submitted Report' // working
                                                                         )));
 define('EXT',                              '');

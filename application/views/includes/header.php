@@ -111,12 +111,12 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                 <section class="sidebar">
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        <li class="header">MAIN NAVIGATION</li>
+<!--                        <li class="header">MAIN NAVIGATION</li>
                         <li class="treeview">
                             <a href="<?php echo base_url(); ?>dashboard">
                                 <i class="fa fa-dashboard"></i> <span>Dashboard</span></i>
                             </a>
-                        </li>
+                        </li>-->
 <?php if (count(array_intersect(array(1,8,19,33,34,35), array_keys($role_privileges))) > 0) { ?>
                             <li class="treeview <?php echo ($this->uri->segment(1) == 'admin' && ($this->uri->segment(2) == 'employee' || $this->uri->segment(2) == 'vehicle' )) ? 'active' : ''; ?> ">
                                 <a href="#"><i class="fa fa-database"></i><span>Master Data</span> <i class="fa fa-angle-left pull-right"></i></a>

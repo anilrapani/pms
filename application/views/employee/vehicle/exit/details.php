@@ -132,9 +132,9 @@
          
         </div>
                <div class="box-tools" style="padding-left: 10px;">
-                <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
+                <form action="<?php echo base_url() ?>employee/vehicle/generateExitReciept" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
-                        <input type="text" name="barcode" id="barcodeEntryId" autofocus class="form-control input-sm pull-left" style="width: 150px;" placeholder="Scan Barcode" value="" >
+                        <input type="text" name="entryId" id="barcodeEntryId" autofocus class="form-control input-sm pull-left" style="width: 150px;" placeholder="Scan Barcode" value="" >
                         <div class="input-group-btn pull-left " >
                             <button class="btn btn-sm btn-default searchList"><i class="fa fa-barcode"></i></button>
                         </div>
@@ -155,7 +155,7 @@
         </div>
             
             <div class="box-tools" style="padding-left: 10px;">
-                <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
+                <form action="<?php echo base_url() ?>employee/vehicle/generateExitReciept" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
                         <input type="text" name="entryId" id="entryId" class="form-control input-sm pull-left" style="width: 150px;" placeholder="Ticket Id" value="" >
                         <div class="input-group-btn pull-left">
@@ -263,7 +263,7 @@
                                                                     <?php if($isNotExited == true) { ?>
                                         <input type="submit" class="btn btn-primary"  value="Submit">
                                                                     <?php } ?>
-                                        <?php if ($isNewEntry == false) { ?><input type="reset" class="btn btn-primary float-right" value="Print"><?php } ?>
+                                        <?php if ($isNewEntry == false) { ?><input type="reset" class="btn btn-primary float-right" value="Print" onclick="printPage()" ><?php } ?>
                                 </div>
                                 </form>
                                  <h3 class="box-title">Preview Details<?php //echo $sub_title . ' No : ' . $entryId; ?></h3> 
@@ -275,9 +275,10 @@
                                 <?php if($isNotExited == false) { ?>
                                 
                                 <div style="text-align: center; ">
-                                    <h2><?php echo $login_user_company_name; ?></h2>
-                                    <h3><?php echo $gateDetails->name; ?></h3>
+                                    <h3><b><?php echo $login_user_company_name; ?></b></h3>
+                                    <h3><b><?php echo $exitGateDetails->name; ?></b></h3>
                                     <h3><img src="<?php echo base_url().'/barcode/'.$entryDetails->barcode.'.png';?>"</h3>
+                                    <h3><b><?php echo ($exitGateDetails->type == 1)?'Entry Ticket':'Exit Ticket'; ?></b></h3>
                                 </div>
                                 <?php } ?>
                                 <div style="text-align: left;">
@@ -285,24 +286,21 @@
 
 
                                     <h4>Ticket Number: <span><?php echo $entryDetails->id; ?></span></h4>
-                                    <h4>Entry Date and Time: <span><?php echo $entryDetails->entry_time; // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
-                                    <h4>Exit Date and Time: <span><?php echo $entryDetails->exit_time; //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
-                                        <?php if($isNotExited == false) {
-                                        
-                                    ?>
+                                    <h4>Entry Date and Time: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
+                                    <?php if($isNotExited == false) { ?>
+                                    <h4>Exit Date and Time: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
                                     <h4><b>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></b></h4>
-                                    <?php
-                                    } ?>
+                                    <?php } ?>
                                     <h4>Vehicle : <span><?php echo $entryDetails->number_of_wheels; ?>W</span></h4>
-                                    <h4>Company Name: <span><?php echo $entryDetails->vehicle_company; ?></span></h4>
-                                    <h4>Vehicle No: <span><?php echo $entryDetails->vehicle_number; ?></span></h4>
-                                
-                                    <h3>Driver Details </h3>
-                                    <h4><?php echo $entryDetails->driver_name; ?></h4>
-                                    <h4>DL : <span><?php echo $entryDetails->driving_license_number; ?></span></h4>
-                                    <h4>RC : <span><?php echo $entryDetails->rc ?></span></h4>
-
-                                    <h3>Parking Charges </h3>
+                                    <?php if(!empty($entryDetails->vehicle_company)) { ?><h4>Company Name: <span><?php echo $entryDetails->vehicle_company; ?></span></h4><?php } ?>
+                                    <?php if(!empty($entryDetails->vehicle_number)) { ?><h4>Vehicle No: <span><?php echo $entryDetails->vehicle_number; ?></span></h4><?php } ?>
+                                <?php if(!empty($entryDetails->driver_name) || !empty($entryDetails->driving_license_number) || !empty($entryDetails->rc)) { ?>
+                                    <h3><b>Driver Details</b> </h3>
+                                <?php if(!empty($entryDetails->driver_name)) { ?>    <h4><?php echo $entryDetails->driver_name; ?></h4><?php } ?>
+                                    <?php if(!empty($entryDetails->driving_license_number)) { ?><h4>DL : <span><?php echo $entryDetails->driving_license_number; ?></span></h4><?php } ?>
+                                    <?php if(!empty($entryDetails->rc)) { ?><h4>RC : <span><?php echo $entryDetails->rc ?></span></h4><?php } ?>
+                                    <?php } ?>
+                                    <h3><b>Parking Charges</b> </h3>
                                     <?php
                                     
                                 foreach ($vehicleTypePrices as $key => $value) {
@@ -311,14 +309,59 @@
                                     <?php
                                   }
                                     ?>
+                                        <?php if($this->config->item('enable_more_than_minutes_per_hour_amount')) { ?>
                                         <h4>Beyond this per hour : Rs. <?php echo $masterPriceDetails->more_than_minutes_per_hour_amount; ?></h4>
+                                        <?php } ?>
                                         
-                                    <h3>No Horn </h3>
-                                    <h3>Speed Limit : <span>10Km/Hr</span></h3>
-                                    <h3>Kastech India Pvt. Ltd. </h3>
+                                    <h3><b>No Horn</b> </h3>
+                                    <h3><b>Speed Limit : <span>10Km/Hr</span></b></h3>
                                 </div>
                             </div>
+                            <div id="printTicketData" class="box-body" style="/*width: 21%;background: red; */line-height: 5px;font-size: 12px;font-family: sans-serif;display:none;">
+        <div class="ticketHeader" style="font-size: 13px;" >
 
+            <p><b><?php echo $login_user_company_name; ?></b></p>
+            <p style="margin-left: 70px;"><?php echo $exitGateDetails->name; ?></p>
+            <p style="margin-left: 30px;"><img src="<?php echo base_url() . '/barcode/' . $entryDetails->barcode . '.png'; ?>" /> 
+            <p style="margin-left: 70px;"><?php echo ($exitGateDetails->type == 1) ? 'Entry Ticket' : 'Exit Ticket'; ?></p>
+            </p>
+            <div class="ticketLine"><p><img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:240px"></p></div>
+        </div>
+        <div style="ticketBody" style="margin-top:100px;">
+            <div class="ticketLine"><p><b><span class="ticketLineLeft">Ticket Number</span>: <span><?php echo $entryDetails->id; ?></span></b></p></div>
+            <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date and Time</span>: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->entry_time)); ?></span></p></div>
+            <?php if ($isNotExited == false) { ?>
+                <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Date and Time</span>: <span><?php echo date("d-m-Y H:i:s", strtotime($entryDetails->exit_time)); ?></span></p></div>
+                <div class="ticketLine"><p><span style="float: left;width: 115px;">Total Amount</span>:  <span><?php echo $entryDetails->total_amount; ?></span></p></div>
+            <?php } ?>
+                        <?php if (!empty($entryDetails->vehicle_number)) { ?><div class="ticketLine"><p><span style="float: left;width: 115px;">Vehicle Number</span>: <span><?php echo $entryDetails->vehicle_number; ?></span></div><?php } ?>
+            <div class="ticketLine"><p><span style="float: left;width: 115px;">Vehicle Type</span>: <span><?php echo $entryDetails->number_of_wheels; ?>W</span></p></div>
+
+
+            <?php if (!empty($entryDetails->vehicle_company)) { ?><div class="ticketLine"><p><span style="float: left;width: 115px;">Company Name</span>: <span><?php echo $entryDetails->vehicle_company; ?></span></div><?php } ?>
+            <?php if (!empty($entryDetails->driver_name) || !empty($entryDetails->driving_license_number) || !empty($entryDetails->rc)) { ?>
+                <div class="ticketLineHeading" style="margin-top:15px;"><p><b>Driver Details</b></p></div>
+                <?php if (!empty($entryDetails->driver_name)) { ?><div class="ticketLine"><p><span style="float: left;width: 115px;">Name</span> : <?php echo $entryDetails->driver_name; ?></p></div><?php } ?>
+                <?php if (!empty($entryDetails->driving_license_number)) { ?><div class="ticketLine"><p><span style="float: left;width: 115px;">License No</span>: <span><?php echo $entryDetails->driving_license_number; ?></span></div><?php } ?>
+                <?php if (!empty($entryDetails->rc)) { ?><div class="ticketLine"><p><span style="float: left;width: 115px;">RC</span>: <span><?php echo $entryDetails->rc; ?></span></div><?php } ?>
+            <?php } ?>
+            <div class="ticketLineHeading" style="margin-top:15px;"><p><b>Parking Charges </b></p></div>
+            <?php
+            foreach ($vehicleTypePrices as $key => $value) {
+                ?>
+                <div class="ticketLine"><p><span style="float: left;width: 115px;"><?php echo $value->from_minutes; ?>-<?php echo $value->to_minutes; ?>mins</span> : Rs. <?php echo $value->amount; ?></p></div>
+                <?php
+            }
+            ?>
+
+        </div>
+        <div class="ticketFooter" style="margin-top:15px;">
+            <!--                            <h4>Beyond this per hour : Rs. 20.00</h4>-->
+            <div class="ticketLine"><p><b>No Horn </b></p></div>
+            <div class="ticketLine"><p><b>Speed Limit : <span>10Km/Hr</span></b></div>
+
+        </div>    
+    </div>
 
 
                         </div>
@@ -352,7 +395,20 @@
                             <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
                         </div>
                     </div>
-                  
+                     <?php if(!$this->config->item('enable_image_driving_license_number') && !empty($entryDetails->image_driving_license_number)) { ?>
+            <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-body">
+                                            <div class="clearfix" >
+                                    <label id="display_label">Preview Driving License</label>
+                                </div>
+                                         <img src="<?php echo base_url() ?>/assets/images/upload/drivinglicense/<?php echo $entryDetails->image_driving_license_number; ?>" alt="" style="width:400px" />
+                                         
+                        </div>
+                         <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> 
+                    </div>
+                </div>
+                    <?php } ?>
                 </div>
     <?php } else { ?>
                 <div class="row">
@@ -530,5 +586,11 @@ $("#barcodeEntryId").on("paste", function () {
     $("#image_vehicle_number_plate_exit").change(function () {
         readURL(this);
     });
+    function printPage(){
+    $("#printTicketData").css("display", "block");
+    var options = {mode:"popup",popHt: 500, popWd: 400, popX: 500,   popY: 600,popTitle:"",popClose: false};
+    $("#printTicketData").printArea( options ); 
+    $("#printTicketData").css("display", "none");
+}
 </script>
 <script src="<?php echo base_url(); ?>assets/js/employee/common.js" type="text/javascript"></script>

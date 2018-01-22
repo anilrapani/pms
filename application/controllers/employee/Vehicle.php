@@ -16,7 +16,7 @@ class Vehicle extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('k_master_vehicle_company_model','k_parking_model','k_master_vehicle_type_model','k_master_price_model','k_master_price_per_time_model'));
+        $this->load->model(array('k_master_vehicle_company_model','k_parking_model','k_master_vehicle_type_model','k_master_price_model','k_master_price_per_time_model','k_master_vehicle_gate_model'));
         $this->isLoggedIn();
     }
 
@@ -278,11 +278,16 @@ class Vehicle extends BaseController {
                     $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
                     $data['vehicleTypePrices'] = $vehicleTypePrices;
                     $data['masterPriceDetails'] = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
-        
                     }
 
                     
                 }
+                
+                if(isset($entryDetails->gate_id_entry)){
+                    $entryGateDetails = $this->k_master_vehicle_gate_model->getDetails($entryDetails->gate_id_entry);
+                    $data['entryGateDetails']= $entryGateDetails;
+                }
+                
                 
                 
                 if(count($entryDetails) != 1){
@@ -309,6 +314,12 @@ class Vehicle extends BaseController {
             $data['vehicleTypeListArray'] = $this->k_master_vehicle_type_model->get();
             
             // $data['vehicleCompanyListArray'] = $this->k_master_vehicle_company_model->get();
+                  $this->global['assets'] = array('cssTopArray'     => array(),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(base_url() . 'assets/js/employee/jquery.PrintArea'),
+                              'jsBottomArray'   => array()
+                              
+                    );
             
             $this->loadViews($view, $this->global, $data, NULL);
         }
@@ -524,6 +535,7 @@ class Vehicle extends BaseController {
                         
                         
                     }
+                    
 
                      $isNotExited = $isNewEntry = true;
             if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
@@ -604,6 +616,16 @@ class Vehicle extends BaseController {
                         //$data['entryId'] = $entryDetails->id;
                         
                     }
+                    
+                             if(isset($entryDetails->gate_id_entry)){
+                    $entryGateDetails = $this->k_master_vehicle_gate_model->getDetails($entryDetails->gate_id_entry);
+                    $data['entryGateDetails']= $entryGateDetails;
+                }
+                
+                 if(isset($entryDetails->gate_id_exit)){
+                    $entryGateDetails = $this->k_master_vehicle_gate_model->getDetails($entryDetails->gate_id_exit);
+                    $data['exitGateDetails']= $entryGateDetails;
+                }
 
                      $isNotExited = $isNewEntry = true;
             if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
@@ -622,6 +644,13 @@ class Vehicle extends BaseController {
                              $view = 'employee/vehicle/entry/invalid';
                     }
                     $data['entryDetails'] = $entryDetails;
+                       $this->global['assets'] = array('cssTopArray'     => array(),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(base_url() . 'assets/js/employee/jquery.PrintArea'),
+                              'jsBottomArray'   => array()
+                              
+                    );
+                    
                     $this->loadViews($view, $this->global, $data, NULL);
                     
         }    
@@ -649,13 +678,21 @@ class Vehicle extends BaseController {
             if ($this->form_validation->run() == FALSE) {
                 $this->exitDetailsView();
             } else {
+                
                 $entryId = $this->input->post('entryId');
                 $customer_paid_by_cash_or_card = $this->input->post('customer_paid_by_cash_or_card');
                 $image_vehicle_number_plate_exit = '';
             }
             
             $data['entryId'] = $entryId;
-            $entryDetails = $this->k_parking_model->getDetails($entryId);
+            $entryDetails = $this->k_parking_model->getDetailsByBarcodeOrId($entryId);
+            if($entryDetails == NULL){
+                redirect('/employee/vehicle/exit/details');
+            }else if($entryDetails->exit_time != '0000-00-00 00:00:00'){
+                redirect("employee/vehicle/exitdetails/".$entryDetails->barcode);
+            }
+            
+         //   $entryDetails = $this->k_parking_model->getDetails($entryId);
             
             // echo strtotime(convertTime(date('Y-m-d H:i:s'), $timeZoneName ='')) - strtotime(convertTime($entryDetails->entry_time, $timeZoneName =''));
             
@@ -735,14 +772,15 @@ class Vehicle extends BaseController {
                     
                 );
                    
-                   $result = $this->k_parking_model->update($vehicleExitInfo, $entryId);
+                   $result = $this->k_parking_model->update($vehicleExitInfo, $entryDetails->id);
                    if($result){
                        if(isset($entryDetails->barcode))
                    redirect('employee/vehicle/exitdetails/'.$entryDetails->barcode);
                    }
                    
                }
-               $entryDetails = $this->k_parking_model->getDetails($entryId);
+               $entryDetails = $this->k_parking_model->getDetails($entryDetails->id);
+             
             $data['entryDetails'] =  $entryDetails;
                     if(isset($entryDetails->vehicle_type_id)){
                         $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
