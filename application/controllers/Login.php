@@ -61,18 +61,21 @@ class Login extends CI_Controller
         // $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[128]|trim');
         $this->form_validation->set_rules('user_name', 'user_name', 'required|max_length[128]|trim');
         $this->form_validation->set_rules('password', 'Password', 'required|max_length[32]');
-        $this->form_validation->set_rules('gate_id', 'gate selection', 'required|max_length[32]');
-
+        $user_name = trim($this->input->post('user_name'));
+        // $this->config->item('enable_admin_no_gate_restriction') == TRUE
+        if(strtolower(trim($user_name)) != 'admin' && !$this->config->item('enable_admin_no_gate_restriction')){
+            $this->form_validation->set_rules('gate_id', 'gate selection', 'required|max_length[32]');
+        }
+        
         if($this->form_validation->run() == FALSE)
         {
-
             $this->index();
         }
         else
         {
                  
          //   $email = $this->input->post('email');
-            $user_name = $this->input->post('user_name');
+            
             $password = $this->input->post('password');
             $gate_id = $this->input->post('gate_id');
             
@@ -93,37 +96,34 @@ class Login extends CI_Controller
                                             'login_user_company_name'=>$res->company_name,
                                             'isLoggedIn' => TRUE
                                     );
-                  
-                  
-                                    
                   $userStatus = $res->user_status;
-                    
                 }
-                
-                
-                
-                
                 
                 if($userStatus == 2){
                     $this->session->set_flashdata('error', 'User is not activated!');
                     redirect('/login');
                 }
-                 $this->load->model('k_master_vehicle_gate_model');
-                       $gateDetails = $this->k_master_vehicle_gate_model->getDetails($gate_id);
-                 $sessionArray['gateDetails'] = $gateDetails;           
-                if($this->config->item('enable_role_base_terminal_access_login')){
-                        if($gateDetails->type == 1 && !array_key_exists(23, unserialize($sessionArray['role_privileges']))){
-                            $this->session->set_flashdata('error', 'Terminal Access denied!');
-                            redirect('/login');
-                        } 
-                        if($gateDetails->type == 2 && !array_key_exists(25, unserialize($sessionArray['role_privileges']))){
-                            $this->session->set_flashdata('error', 'Terminal Access denied!');
-                            redirect('/login'); 
-                        }
-                        
+                if($sessionArray['role'] == 2 && $this->config->item('enable_admin_no_gate_restriction')){
                     
-                } 
+                }else{
+                 $this->load->model('k_master_vehicle_gate_model');
+                 $gateDetails = $this->k_master_vehicle_gate_model->getDetails($gate_id);
                  
+                 $sessionArray['gateDetails'] = $gateDetails;           
+                 
+                    if($this->config->item('enable_role_base_terminal_access_login')){
+                            if($gateDetails->type == 1 && !array_key_exists(23, unserialize($sessionArray['role_privileges']))){
+                                $this->session->set_flashdata('error', 'Terminal Access denied!');
+                                redirect('/login');
+                            } 
+                            if($gateDetails->type == 2 && !array_key_exists(25, unserialize($sessionArray['role_privileges']))){
+                                $this->session->set_flashdata('error', 'Terminal Access denied!');
+                                redirect('/login'); 
+                            }
+
+
+                    } 
+                } 
                 if($sessionArray['role'] != 2 && $this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE || $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == TRUE){
                        
                         $ip = $this->input->ip_address();

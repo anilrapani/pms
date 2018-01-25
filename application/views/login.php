@@ -52,14 +52,14 @@
         <form action="<?php echo base_url(); ?>loginMe" method="post">
           <div class="form-group has-feedback">
 <!--            <input type="email" class="form-control" placeholder="Email" name="email" required />-->
-            <input type="user_name" class="form-control" placeholder="User Name" name="user_name" required />
+            <input type="user_name" class="form-control" placeholder="User Name" name="user_name" required id="user_name"/>
 <!--            <span class="glyphicon glyphicon-user-circle form-control-feedback"></span>-->
           </div>
           <div class="form-group has-feedback">
             <input type="password" class="form-control" placeholder="Password" name="password" required />
 <!--            <span class="glyphicon glyphicon-lock form-control-feedback"></span>-->
           </div>
-           <div class="form-group has-feedback">
+          <div class="form-group has-feedback" id="gate_id_details">
                
                <select name="gate_id" class="form-control">
                    <option value="">Select Gate</option>
@@ -93,5 +93,16 @@
 
     <script src="<?php echo base_url(); ?>assets/js/jQuery-2.1.4.min.js"></script>
     <script src="<?php echo base_url(); ?>assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <?php if($this->config->item('enable_admin_no_gate_restriction')) { ?>
+    <script>
+        $( "#user_name" ).keyup(function() {
+            if($.trim($( "#user_name" ).val()).toLowerCase() == "admin"){
+                $( "#gate_id_details" ).css("display","none");
+            }else{
+                $( "#gate_id_details" ).css("display","block");
+            }
+        });
+    </script>
+    <?php } ?>
   </body>
 </html>

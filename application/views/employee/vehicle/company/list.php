@@ -35,7 +35,7 @@
                     <tr>
                       <th>Id</th>
                       <th>Name</th>
-                      <th>Status</th>
+                      <th>Active</th>
                       <th class="text-center">Actions</th>
                     </tr>
                     <?php

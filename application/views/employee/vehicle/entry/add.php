@@ -121,7 +121,9 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
+        <?php if($isNewEntry == true) { ?>
         <div class="box-header col-md-6">
+            
             <h1 class="box-title"><i class="fa "></i> <?php echo ($isNewEntry == true)?'New Entry':'';  ?></h1>
                     <div class="box-tools">
                         <form action="<?php echo base_url() ?>employee/vehicle/searchEntry" method="POST">
@@ -134,7 +136,7 @@
                         </form>
                     </div>
         </div>
-        
+        <?php } ?>
         
     </section>
     <div class="clearfix"></div>
@@ -319,7 +321,7 @@
                             <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
                         </div>
                     </div>
-            
+            <?php if(!empty($entryDetails->image_driving_license_number)){ ?>
              <div class="col-md-6">
                  
                         <div class="box box-primary">
@@ -338,7 +340,7 @@
                             <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
                         </div>
                     </div>
-                    
+            <?php } ?>    
             
             <?php }else { ?>
             
@@ -355,6 +357,39 @@
 
                     <?php if($isNewEntry == true) { ?>
                         <div class="box-body">
+                            <?php if($role == 2 && $this->config->item('enable_admin_no_gate_restriction')){ ?>
+                            <div class="row">
+                                <div class="col-md-6">
+                                       <div class="form-group" style="display:none;">
+                                        <label for="gate_id">Terminal<span class="color-red">*</span></label>
+                                        <select class="form-control required" id="gate_id" name="gate_id">
+                                            <option value="" >Select Terminal</option>
+                                            <?php
+                                            
+                                            if(!empty($terminalListArray))
+                                            {
+                                                $entryTerminalCount = 0;
+                                                foreach ($terminalListArray as $value)
+                                                {
+                                                    if($value->type == 1){
+                                                        $entryTerminalCount++;
+                                                    } 
+                                                }
+                                                foreach ($terminalListArray as $value)
+                                                {
+                                                    if($value->type == 1){
+                                                    ?>
+                                                    <option value="<?php echo $value->id;  ?>" <?php if($entryTerminalCount == 1){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
+                                                    <?php
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php } ?>
                             <div class="row">
                                  
                                <div class="col-md-6">
@@ -456,7 +491,7 @@
                     <?php } ?>
                 </div>
             </div>
-                <div class="col-md-6">
+                <div class="col-md-6" style="display:none;" id="display_image_main">
                     <div class="box box-primary">
                         <div class="box-body">
                                          <label id="display_label"></label>
@@ -467,7 +502,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-6" style="display:none;" id="display_image_license_main">
                     <div class="box box-primary">
                         <div class="box-body">
                                          <label id="display_label_license"></label>
@@ -502,9 +537,11 @@ var clicked_id = $(input).attr("id");
 if(clicked_id == 'image_vehicle_number_plate'){
       $('#display_label').text('Preview Number Plate');
       $('#display_image').attr('src', e.target.result);
+      $('#display_image_main').css("display","block");
 }else if(clicked_id == 'image_driving_license_number'){
     $('#display_label_license').text('Preview License Number');
     $('#display_image_license').attr('src', e.target.result);
+    $('#display_image_license_main').css("display","block");
 }   
 
 

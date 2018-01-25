@@ -540,5 +540,6 @@ $config['disable_uploadimage_exit'] = TRUE;
 $config['enable_more_than_minutes_per_hour_amount'] = FALSE;
 
 $config['enable_gate_restriction_for_employee_at_employee_login'] = FALSE;
+$config['enable_admin_no_gate_restriction'] = TRUE;
 
 

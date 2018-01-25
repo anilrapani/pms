@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=0.75,maximum-scale=0.75,user-scalable=0">
+      <title>Demo - Scandit Barcode Scanner SDK for the Web</title>
+      <meta name="description" content="Scandit Web Barcode Scanner - Web Assembly - Demo App">
+      <meta name="author" content="Lorenzo Wölckner">
+      <meta name="theme-color" content="#000000">
+      <meta name="msapplication-navbutton-color" content="#000000">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
+      <link rel="preload" href="https://websdk.scandit.com/css/themes/default/assets/fonts/icons.woff2" as="font" type="font/woff2">
+      <link rel="preload" href="https://websdk.scandit.com/fonts/opensans_regular.woff2" as="font" type="font/woff2">
+      <link rel="preload" href="https://websdk.scandit.com/fonts/opensans_bold.woff2" as="font" type="font/woff2">
+      <link rel="preload" href="https://websdk.scandit.com/css/styles.min.css" as="style">
+      <link rel="preload" href="https://websdk.scandit.com/js/app.min.js" as="script">
+      <link rel="preload" href="https://websdk.scandit.com/scandit-engine-sdk.min.js" as="script">
+      <link rel="preload" href="https://websdk.scandit.com/scandit-engine-sdk.wasm" as="fetch">
+      <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+         ga("create", "UA-23556890-11", "auto", { siteSpeedSampleRate: 100 });
+         ga("require", "linkid");
+         ga("send", "pageview");
+      </script><script async src="https://www.google-analytics.com/analytics.js"></script>
+   </head>
+   <body onload="start()" style="background-color: black">
+      <i class="camera icon" style="width: 0; height: 0; opacity: 0.0001"></i><!-- preload -->
+      <div id="main-content" style="display: none">
+         <div id="window-flasher"></div>
+         <div id="picker-container">
+            <div id="info-fullscreen-desktop" class="info-fullscreen" style="display: none">Double click to enter fullscreen mode</div>
+            <div id="info-fullscreen-mobile" class="info-fullscreen" style="display: none">Double tap to enter fullscreen mode</div>
+            <div id="barcode-picker"></div>
+            <div id="logo">
+               <p><a href="https://ssl.scandit.com/customers/new?p=test&source=websdk" target="_blank">Interested?&nbsp;<u>Sign Up for Trial</u>.</a></p>
+            </div>
+         </div>
+         <div id="menu-container" class="ui stackable container centered grid">
+            <div class="center aligned column">
+               <div class="ui inverted six item small labeled icon menu">
+                  <a id="barcode-popup" class="ui item"><i class="barcode icon"></i>Barcodes<i class="dropdown icon" style="margin: auto"></i></a>
+                  <div id="barcode-popup-menu" class="ui inverted fluid popup bottom right transition hidden">
+                     <h4 class="ui header">1D Barcodes</h4>
+                     <div class="ui three column relaxed equal height grid">
+                        <div class="column reduced-padding"><a class="item ui toggle checkbox"><input type="checkbox" name="ean13"><label>EAN-13</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="ean8"><label>EAN-8</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="code39"><label>Code 39</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="code93"><label>Code 93</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="code11"><label>Code 11</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="code25"><label>Code 25</label></a></div>
+                        <div class="column reduced-padding"><a class="item ui toggle checkbox"><input type="checkbox" name="code128"><label>Code 128</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="upce"><label>UPCE</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="upca"><label>UPCA</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="itf"><label>ITF</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="two-digit-add-on"><label>EAN-2 Addon</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="five-digit-add-on"><label>EAN-5 Addon</label></a></div>
+                        <div class="column reduced-padding"><a class="item ui toggle checkbox"><input type="checkbox" name="msi-plessey"><label>MSI-Plessey</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="codabar"><label>Codabar</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="databar"><label>DataBar</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="databar-expanded"><label>DataBar Exp.</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="databar-limited"><label>DataBar Lim.</label></a></div>
+                     </div>
+                     <h4 class="ui header">2D Barcodes</h4>
+                     <div class="ui three column relaxed equal height grid">
+                        <div class="column reduced-padding"><a class="item ui toggle checkbox"><input type="checkbox" name="qr"><label>QR</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="aztec"><label>Aztec</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="data-matrix"><label>DataMatrix</label></a></div>
+                        <div class="column reduced-padding"><a class="item ui toggle checkbox"><input type="checkbox" name="maxicode"><label>MaxiCode</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="dotcode"><label>DotCode</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="kix"><label>KIX</label></a></div>
+                        <div class="column reduced-padding"><a class="item ui toggle checkbox"><input type="checkbox" name="pdf417"><label>PDF417</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="micropdf417"><label>MicroPDF417</label></a><a class="item ui toggle checkbox"><input type="checkbox" name="rm4scc"><label>RM4SCC</label></a></div>
+                     </div>
+                  </div>
+                  <a id="camera-dropdown" class="ui inverted pointing dropdown link item"><i class="video camera icon"></i>Camera<i class="dropdown icon" style="margin: auto"></i></a><a id="toggle-mirror" class="item toggle-button"><i class="exchange icon"></i>Mirror<br>Image</a><a id="toggle-sound" class="item toggle-button"><i class="music icon"></i>Sound<br>Effects</a><a id="toggle-full-image-localization" class="item toggle-button off"><i class="maximize icon"></i>Full-Image<br>Localization</a><a id="toggle-duplicate-filter" class="item toggle-button"><i class="history icon"></i>Duplicate<br>Time Filter</a>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id="unsupported-browser-modal" class="ui tiny basic modal">
+         <div class="ui icon header"><i class="warning sign icon"></i>Unsupported Browser</div>
+         <div class="content">
+            <p>Unfortunately the platform/browser combination you're using doesn't support the features needed to run this page.</p>
+            <p>Please use any of the following browsers in order to be able to access this content.</p>
+            <div class="ui grid">
+               <div class="seven wide column">
+                  <h5>Desktop:</h5>
+                  <div class="ui list">
+                     <div class="item">
+                        <i class="chrome large icon"></i>
+                        <div class="middle aligned content">Chrome &nbsp;&nbsp;57+</div>
+                     </div>
+                     <div class="item">
+                        <i class="firefox large icon"></i>
+                        <div class="middle aligned content">Firefox &nbsp;&nbsp;52+</div>
+                     </div>
+                     <div class="item">
+                        <i class="opera large icon"></i>
+                        <div class="middle aligned content">Opera &nbsp;&nbsp;44+</div>
+                     </div>
+                     <div class="item">
+                        <i class="safari large icon"></i>
+                        <div class="middle aligned content">Safari &nbsp;&nbsp;11+</div>
+                     </div>
+                     <div class="item">
+                        <i class="edge large icon"></i>
+                        <div class="middle aligned content">Edge &nbsp;&nbsp;16+</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="seven wide column">
+                  <h5>Mobile - Android:</h5>
+                  <div class="ui list">
+                     <div class="item">
+                        <i class="chrome large icon"></i>
+                        <div class="middle aligned content">Chrome &nbsp;&nbsp;59+</div>
+                     </div>
+                     <div class="item">
+                        <i class="firefox large icon"></i>
+                        <div class="middle aligned content">Firefox &nbsp;&nbsp;55+</div>
+                     </div>
+                  </div>
+                  <h5>Mobile - iOS &nbsp;(11+):</h5>
+                  <div class="ui list">
+                     <div class="item">
+                        <i class="safari large icon"></i>
+                        <div class="middle aligned content">Safari &nbsp;&nbsp;11+</div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div id="intro-modal" class="ui basic modal center aligned segment" style="display:none">
+         <div class="content">
+            <img src="images/scandit_logo.png"><br><br>
+            <p class="subtitle uppercase">Barcode Scanner SDK for the Web</p>
+            <br>
+            <p>Our latest innovation brings powerful scanning technology to the browser, allowing customers to integrate scanning via smartphone or desktop cameras directly into any mobile and desktop web application.</p>
+            <p>To experience the scanner in the browser, please choose a mode below:</p>
+            <div class="ui inverted mode segment inline">
+               <div class="ui scrolling form">
+                  <div class="grouped fields">
+                     <div class="ui centered stackable two column grid">
+                        <div class="column">
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="1dRetail" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/1d_retail.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">1D Retail</span><br><span class="mode-description">EAN-13, EAN-8, EAN-2 &amp; EAN-5 Addons, UPC, DataBar</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="1dIndustrial" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/1d_industrial.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">1D Industrial</span><br><span class="mode-description">Code 128, Code 39, Code 93, ITF, Code 11, Code 25, Codabar, MSI-Plessey</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="2dAll" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/2d_all.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">All 2D Codes</span><br><span class="mode-description">QR, DataMatrix, PDF417, MicroPDF417, Aztec, MaxiCode, DotCode, RM4SCC, KIX</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="swissQR" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/swiss_qr.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">Swiss QR-bill</span><br><span class="mode-description">QR (parsed)</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="three wide column">
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="qr" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/qr.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">QR Codes</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="dpm" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/dpm.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">DPM Codes</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="all" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/all.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">All Symbologies</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                           <div class="field">
+                              <div class="ui radio checkbox">
+                                 <input type="radio" name="scannerMode" value="usDriverLicense" class="hidden">
+                                 <label>
+                                    <div class="ui horizontal segments">
+                                       <div class="ui image segment"><img src="images/dlid.svg"></div>
+                                       <div class="ui segment">
+                                          <p><span class="uppercase">US Driver's License</span><br><span class="mode-description">PDF417 (parsed)</span></p>
+                                       </div>
+                                    </div>
+                                 </label>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="actions">
+            <br>
+            <div class="ui center aligned grid">
+               <div class="ui scandit-blue ok inverted disabled large button">Start Scanner</div>
+            </div>
+            <div class="ui center aligned grid">
+               <div class="version">v 1.4.1</div>
+            </div>
+         </div>
+      </div>
+      <div id="tutorial-modal" class="ui basic modal center aligned segment">
+         <div class="ui icon header"><i class="info circle icon"></i>Quick Tutorial</div>
+         <div class="content">
+            <p>Welcome</p>
+            <p>Here's a short overview of what you can do with this demo app.</p>
+         </div>
+         <div class="actions">
+            <br>
+            <div class="ui center aligned grid">
+               <div id="next-tip-button" class="ui inverted button" onclick="advanceTutorial()"><i class="lightbulb icon"></i>Next Tip</div>
+               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+               <div class="ui scandit-blue ok inverted button"><i class="barcode icon"></i>Start Scanning</div>
+            </div>
+         </div>
+      </div>
+      <div id="sdk-license-error-modal" class="ui basic modal center aligned segment">
+         <div class="ui icon header"><i class="warning sign icon"></i>Scandit SDK Licensing Error</div>
+         <div class="content">
+            <p id="sdk-license-error-message"></p>
+         </div>
+      </div>
+      <div id="no-camera-access-modal" class="ui basic modal center aligned segment">
+         <div class="ui icon header"><i class="warning sign icon"></i>No Camera Access</div>
+         <div class="content">
+            <p>Camera access denied.</p>
+            <p>Please grant camera access and reload this page in order to use this application.</p>
+         </div>
+         <div class="actions">
+            <br>
+            <div class="ui center aligned grid">
+               <div class="ui green ok inverted button"><i class="refresh icon"></i>Reload</div>
+            </div>
+         </div>
+      </div>
+      <div id="no-camera-available-modal" class="ui basic modal center aligned segment">
+         <div class="ui icon header"><i class="warning sign icon"></i>No Camera</div>
+         <div class="content">
+            <p>No camera available.</p>
+            <p>Please use a device with an accessible camera in order to use this application.</p>
+         </div>
+      </div>
+      <div id="rotate-screen-modal" class="ui basic modal center aligned segment">
+         <div class="ui icon header"><i class="refresh icon"></i>Rotate Screen</div>
+         <div class="content">
+            <p>Please rotate your device in portrait position.</p>
+         </div>
+      </div>
+      <div id="loader-modal" class="ui basic modal">
+         <div class="content">
+            <div class="ui huge centered inline text loader">
+               <div id="loader-modal-camera">
+                  <i class="camera fitted large icon"></i>
+                  <p>Accessing<br>Camera...</p>
+               </div>
+               <div id="loader-modal-load">
+                  <i class="cogs fitted large icon"></i>
+                  <p>Loading<br>Application...</p>
+               </div>
+            </div>
+            <div class="ui center aligned segment basic">
+               <p>Don't worry. This can also happen in the background!</p>
+            </div>
+         </div>
+      </div>
+      <div id="scan-result-modal" class="ui basic modal center aligned segment">
+         <div class="ui icon header"><i class="list icon"></i>Scan Result</div>
+         <div class="scrolling content">
+            <div class="ui center aligned grid"></div>
+         </div>
+         <div class="actions">
+            <br>
+            <div class="ui center aligned grid">
+               <div class="ui scandit-blue ok inverted button">Scan Again</div>
+            </div>
+         </div>
+      </div>
+      <div id="noty_layout__bottom" class="noty_layout ui text container"></div>
+      <script async src="https://websdk.scandit.com/js/app.min.js"></script>
+   </body>
+</html>

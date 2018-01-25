@@ -5,7 +5,11 @@
     .printTicketMain{
         padding-bottom: 10%;
     }
-
+    canvas.drawing, canvas.drawingBuffer {
+            position: absolute;
+            left: 0;
+            top: 0;
+    }
     @media (max-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
 
         .printTicket{
@@ -132,14 +136,15 @@
          
         </div>
                <div class="box-tools" style="padding-left: 10px;">
-                <form action="<?php echo base_url() ?>employee/vehicle/generateExitReciept" method="POST" id="formBarcodeScanner">
+                <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
-                        <input type="text" name="entryId" id="barcodeEntryId" autofocus class="form-control input-sm pull-left" style="width: 150px;" placeholder="Scan Barcode" value="" >
-                        <div class="input-group-btn pull-left " >
-                            <button class="btn btn-sm btn-default searchList"><i class="fa fa-barcode"></i></button>
+                        <input type="text" name="barcode" id="barcodeEntryId" autofocus class="form-control input-sm pull-left" style="width: 150px;" placeholder="Scan Barcode" value="" >
+                        <div class="input-group-btn pull-left" id="triggerScanner">
+                            <span class="btn btn-sm btn-default searchList"><i class="fa fa-barcode"></i></span>
                         </div>
                     </div>
                 </form>
+                   
             </div>
             </div>
 
@@ -155,7 +160,7 @@
         </div>
             
             <div class="box-tools" style="padding-left: 10px;">
-                <form action="<?php echo base_url() ?>employee/vehicle/generateExitReciept" method="POST" id="formBarcodeScanner">
+                <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
                         <input type="text" name="entryId" id="entryId" class="form-control input-sm pull-left" style="width: 150px;" placeholder="Ticket Id" value="" >
                         <div class="input-group-btn pull-left">
@@ -167,7 +172,16 @@
             </div>
         
 
+<!--        <div class="row" id="scannerBlock" style="display:none">  
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <div style="position: relative; " id="scanner-container"></div>
 
+                    </div>
+                </div>
+            </div>
+        </div>-->
     </section>
     <div class="clearfix"></div>
                 <?php if ($onlysearchView == false) { ?>
@@ -256,17 +270,57 @@
                             </form>-->
         <?php } ?>
                         <div class="box box-primary printTicketMain">
+                            
                             <div class="box-header">
+<!--                                <h3 class="box-title">Preview Details<?php //echo $sub_title . ' No : ' . $entryId; ?></h3> -->
                                 <form role="form" id="addEntry" action="<?php echo base_url() ?>employee/vehicle/generateexitreciept" method="post" enctype="multipart/form-data" novalidate="novalidate">
+                                
                                 <div class="box-footer" style="float:right;" >
+                                    
                                                                     <input type="hidden" id="entryId" name="entryId" value="<?php echo $entryDetails->id; ?>" />
                                                                     <?php if($isNotExited == true) { ?>
-                                        <input type="submit" class="btn btn-primary"  value="Submit">
+                                                                    
+                                        <input type="submit" class="btn btn-primary"  value="Confirm">
                                                                     <?php } ?>
-                                        <?php if ($isNewEntry == false) { ?><input type="reset" class="btn btn-primary float-right" value="Print" onclick="printPage()" ><?php } ?>
+                                        <?php if ($isNewEntry == false && $isNotExited == false) { ?>
+                                            <input type="reset" class="btn btn-primary float-right" value="Print" onclick="printPage()" >
+                                        <?php } ?>
                                 </div>
+                                      <?php if($isNotExited == true && $role == 2 && $this->config->item('enable_admin_no_gate_restriction')) { ?>
+                                    <div class="row">
+                                <div class="col-md-6">
+                                       <div class="form-group" >
+                                        <label for="gate_id">Terminal<span class="color-red">*</span></label>
+                                        <select class="form-control required" id="gate_id" name="gate_id">
+                                            <option value="" >Select Terminal</option>
+                                            <?php
+                                            
+                                            if(!empty($terminalListArray))
+                                            {
+                                                $entryTerminalCount = 0;
+                                                foreach ($terminalListArray as $value)
+                                                {
+                                                    if($value->type == 2){
+                                                        $entryTerminalCount++;
+                                                    } 
+                                                }
+                                                foreach ($terminalListArray as $value)
+                                                {
+                                                    if($value->type == 2){
+                                                    ?>
+                                                    <option value="<?php echo $value->id;  ?>" <?php if($entryTerminalCount == 1){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
+                                                    <?php
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                                      <?php } ?>
                                 </form>
-                                 <h3 class="box-title">Preview Details<?php //echo $sub_title . ' No : ' . $entryId; ?></h3> 
+                                 
 <!--                                <br>
                                 <br>
                                 <h3 class="box-title">Preview Details</h3>-->
@@ -556,7 +610,7 @@
 return true;
 }
 $("#barcodeEntryId").on("paste", function () {
-    setTimeout(function() {
+        setTimeout(function() {
         if(DoValidate()) $('#formBarcodeScanner').submit();
         $('[name=submit]').trigger('click')
     });
@@ -592,5 +646,118 @@ $("#barcodeEntryId").on("paste", function () {
     $("#printTicketData").printArea( options ); 
     $("#printTicketData").css("display", "none");
 }
+
+    var _scannerIsRunning = false;
+
+        function startScanner() {
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#scanner-container'),
+                    constraints: {
+                        width: 480, //240,
+                        height: 320, //160,
+                        facingMode: "environment"
+                    },
+                },
+              locator: {
+
+                        patchSize: "large",
+
+                        halfSample: false
+
+                      },
+
+
+                decoder: {
+                    readers: [
+                        "code_128_reader",
+//                        "ean_reader",
+//                        "ean_8_reader",
+//                        "code_39_reader",
+//                        "code_39_vin_reader",
+//                        "codabar_reader",
+//                        "upc_reader",
+//                        "upc_e_reader",
+//                        "i2of5_reader"
+                    ],
+                    debug: {
+                        showCanvas: true,
+                        showPatches: true,
+                        showFoundPatches: true,
+                        showSkeleton: true,
+                        showLabels: true,
+                        showPatchLabels: true,
+                        showRemainingPatchLabels: true,
+                        boxFromPatches: {
+                            showTransformed: true,
+                            showTransformedBox: true,
+                            showBB: true
+                        }
+                    }
+                },
+
+            }, function (err) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
+
+                // Set flag to is running
+                _scannerIsRunning = true;
+            });
+
+            Quagga.onProcessed(function (result) {
+                var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+                if (result) {
+                    if (result.boxes) {
+                        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                        result.boxes.filter(function (box) {
+                            return box !== result.box;
+                        }).forEach(function (box) {
+                            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                        });
+                    }
+
+                    if (result.box) {
+                        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                    }
+
+                    if (result.codeResult && result.codeResult.code) {
+                        Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                    }
+                }
+            });
+
+
+            Quagga.onDetected(function (result) {
+                // $("#detected_code").append("<p>"+result.codeResult.code+"<p>");
+                $("#barcodeEntryId").val(result.codeResult.code);
+                setTimeout(function() {
+        if(DoValidate()) $('#formBarcodeScanner').submit();
+        $('[name=submit]').trigger('click')
+    });
+                // console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
+                console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
+            });
+        }
+
+
+        // Start/stop scanner
+        document.getElementById("triggerScanner").addEventListener("click", function () {
+            if (_scannerIsRunning) {
+                Quagga.stop();
+            } else {
+                $('#scannerBlock').css('display', 'block');
+                startScanner();
+            }
+        }, false);
+
 </script>
 <script src="<?php echo base_url(); ?>assets/js/employee/common.js" type="text/javascript"></script>

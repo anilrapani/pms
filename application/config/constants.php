@@ -127,7 +127,7 @@ define('ROLE_PRIVILEGES_ARRAY',                            json_encode(array(   
                                                                                 25=>'Exit form',
                                                                                // 26=>'Duplicate Entry Ticket',
                                                                                 27=>'Summary Report For Supervisor',
-                                                                            //    28=>'Manual Exit',
+                                                                                28=>'Manual Exit',
                                                                             //    29=>'Manual Exit Report',
                                                                                // 30=>'Add Free Time',
                                                                                // 31=>'Add Category',

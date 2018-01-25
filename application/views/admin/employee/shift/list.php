@@ -37,7 +37,7 @@
                       <th>Name</th>
                       <th>Start Time</th>
                       <th>End Time</th>
-                      <th>Status</th>
+                      <th>Active</th>
                       <th class="text-center">Actions</th>
                     </tr>
                     <?php

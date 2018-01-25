@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link href="https://github.com/serratus/quaggaJS/blob/gh-pages/v1.0.0-beta.1/examples/multiple/styles.css" rel="stylesheet" type="text/css" />
+        <script src="https://github.com/serratus/quaggaJS/blob/gh-pages/v1.0.0-beta.1/examples/js/quagga.js"></script>
+        <script src="https://github.com/serratus/quaggaJS/blob/gh-pages/v1.0.0-beta.1/examples/js/prism.js"></script>
+        <script type="text/javascript">
+            /**Quagga initialiser starts here*/
+
+var Quagga = window.Quagga;
+var App = {
+    _lastResult: null,
+    init: function() {
+        this.attachListeners();
+    },
+    activateScanner: function() {
+        var scanner = this.configureScanner('.overlay__content'),
+            onDetected = function (result) {
+                this.addToResults(result);
+            }.bind(this),
+            stop = function() {
+                scanner.stop();  // should also clear all event-listeners?
+                scanner.removeEventListener('detected', onDetected);
+                this.hideOverlay();
+                this.attachListeners();
+            }.bind(this);
+
+        this.showOverlay(stop);
+        console.log("activateScanner");
+        scanner.addEventListener('detected', onDetected).start();
+    },
+    addToResults: function(result) {
+        if (this._lastResult === result.codeResult.code) {
+            return;
+        }
+        this._lastResult = result.codeResult.code;
+        var resultSets = document.querySelectorAll('ul.results');
+
+        Array.prototype.slice.call(resultSets).forEach(function(resultSet) {
+            var li = document.createElement('li'),
+                format = document.createElement('span'),
+                code = document.createElement('span');
+
+            console.log(result);
+            li.className = "result";
+            format.className = "format";
+            code.className = "code";
+
+            li.appendChild(format);
+            li.appendChild(code);
+
+            format.appendChild(document.createTextNode(result.codeResult.format));
+            code.appendChild(document.createTextNode(result.codeResult.code));
+
+            resultSet.insertBefore(li, resultSet.firstChild);
+        });
+    },
+    attachListeners: function() {
+        var button = document.querySelector('button.scan'),
+            self = this;
+
+        button.addEventListener("click", function clickListener (e) {
+            e.preventDefault();
+            button.removeEventListener("click", clickListener);
+            self.activateScanner();
+        });
+    },
+    showOverlay: function(cancelCb) {
+        document.querySelector('.container .controls')
+            .classList.add('hide');
+        document.querySelector('.overlay--inline')
+            .classList.add('show');
+        var closeButton = document.querySelector('.overlay__close');
+        closeButton.addEventListener('click', function closeHandler() {
+            closeButton.removeEventListener("click", closeHandler);
+            cancelCb();
+        });
+    },
+    hideOverlay: function() {
+        document.querySelector('.container .controls')
+            .classList.remove('hide');
+        document.querySelector('.overlay--inline')
+            .classList.remove('show');
+    },
+    querySelectedReaders: function() {
+        return Array.prototype.slice.call(document.querySelectorAll('.readers input[type=checkbox]'))
+            .filter(function(element) {
+                return !!element.checked;
+            })
+            .map(function(element) {
+                return element.getAttribute("name");
+            });
+    },
+    configureScanner: function(selector) {
+        var scanner = Quagga
+            .decoder({readers: this.querySelectedReaders()})
+            .locator({patchSize: 'medium'})
+            .fromSource({
+                target: selector,
+                constraints: {
+                    width: 600,
+                    height: 600,
+                    facingMode: "environment"
+                }
+            });
+        return scanner;
+    }
+};
+App.init();
+            </script>
+        
+    </head>
+    <body>
+        
+<section id="container" class="container">
+    <h3>Scan various barcodes continously</h3>
+    <p>
+        Be aware that not all combinations play together nicely. Some
+        codes do not have a checksum (e.g. ITF).
+    </p>
+    <div class="controls">
+        <button type="button" class="icon-barcode button scan">Start Scanning</button>
+        <div class="readers">
+            <label>
+                <span>EAN-13</span>
+                <input type="checkbox" checked name="ean_reader" />
+            </label>
+            <label>
+                <span>EAN-8</span>
+                <input type="checkbox" name="ean_8_reader" />
+            </label>
+            <label>
+                <span>UPC-E</span>
+                <input type="checkbox" name="upc_e_reader" />
+            </label>
+            <label>
+                <span>Code 39</span>
+                <input type="checkbox" checked name="code_39_reader" />
+            </label>
+            <label>
+                <span>Codabar</span>
+                <input type="checkbox" name="codabar_reader" />
+            </label>
+            <label>
+                <span>Code 128</span>
+                <input type="checkbox" checked name="code_128_reader" />
+            </label>
+            <label>
+                <span>Interleaved 2 of 5</span>
+                <input type="checkbox" name="i2of5_reader" />
+            </label>
+        </div>
+    </div>
+    <div class="overlay overlay--inline">
+        <div class="overlay__content">
+            <div class="overlay__close">X</div>
+            <ul class="results"></ul>
+        </div>
+    </div>
+</section>
+<ul class="results"></ul>
+        </body>
+</html>
