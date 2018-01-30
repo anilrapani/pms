@@ -559,7 +559,7 @@ $("#image_vehicle_number_plate,#image_driving_license_number").change(function()
   readURL(this);
 });
 function printPage(){
-    
+    /*
         var entryId = "<?php echo $entryId;?>";
          $.ajax({
         type: 'POST', 
@@ -570,7 +570,7 @@ function printPage(){
         $("#printBtn").remove();
     }
     });
-    
+    */
     
     
     $("#printTicketData").css("display", "block");
