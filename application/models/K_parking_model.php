@@ -26,6 +26,7 @@ class K_parking_model extends Common_Model {
     var $gate_id_entry = 'gate_id_entry';
     var $gate_id_exit = 'gate_id_exit';
     var $exited_by = 'exited_by';
+    var $entry_printed = 'entry_printed';
     var $customer_paid_by_cash_or_card = 'customer_paid_by_cash_or_card';
     
     function __construct() {
@@ -169,7 +170,7 @@ class K_parking_model extends Common_Model {
     
     function getReport($inputData){
         
-        $this->db->select("user.name as user_name, sum(BaseTbl.$this->total_amount) as total_amount, BaseTbl.$this->gate_id_exit, gate.name as gate_name, BaseTbl.$this->exited_by, SUM(CASE WHEN BaseTbl.$this->customer_paid_by_cash_or_card = 1 THEN BaseTbl.$this->total_amount ELSE 0 END) as cash_amount, SUM(CASE WHEN BaseTbl.$this->customer_paid_by_cash_or_card = 2 THEN BaseTbl.$this->total_amount ELSE 0 END) as card_amount, min(BaseTbl.$this->exit_time) as first_parking_id_time_after_login, max(BaseTbl.$this->exit_time) as last_parking_id_time_after_login, min(BaseTbl.$this->id) as parking_id_from, max(BaseTbl.$this->id) as parking_id_to ");
+        $this->db->select("user.name as user_name, sum(BaseTbl.$this->total_amount) as total_amount, BaseTbl.$this->gate_id_exit, gate.name as gate_name, BaseTbl.$this->exited_by, SUM(CASE WHEN BaseTbl.$this->customer_paid_by_cash_or_card = 1 THEN BaseTbl.$this->total_amount ELSE 0 END) as cash_amount, SUM(CASE WHEN BaseTbl.$this->customer_paid_by_cash_or_card = 2 THEN BaseTbl.$this->total_amount ELSE 0 END) as card_amount, min(BaseTbl.$this->exit_time) as first_parking_id_time_after_login, max(BaseTbl.$this->exit_time) as last_parking_id_time_after_login, min(BaseTbl.$this->id) as parking_id_from, max(BaseTbl.$this->id) as parking_id_to, count(BaseTbl.$this->id) as total_vehicles_exited");
         $this->db->from("$this->table_name as BaseTbl");
         $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id_exit",'left');
         $this->db->join('k_user as user', "user.id = BaseTbl.$this->exited_by",'left');
@@ -721,7 +722,9 @@ class K_parking_model extends Common_Model {
         $this->db->select("BaseTbl.$this->vehicle_company");
         $this->db->from("$this->table_name as BaseTbl");
         $this->db->where("BaseTbl.$this->exit_time !=",'0000-00-00 00:00:00');
+        $this->db->group_by("BaseTbl.$this->vehicle_company");
         $query = $this->db->get();
+        
         return $query->result();
        
                     

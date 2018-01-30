@@ -143,7 +143,7 @@ define('ROLE_PRIVILEGES_ARRAY',                            json_encode(array(   
                                                                              //   40=>'Approve Employee Report', // working
                                                                               //  41=>'Cash Management - Cash Collected list', // working
                                                                              //   42=>'All Exited list', // working
-                                                                             //   43=>'My Current Report', // working
-                                                                             //   44=>'My Submitted Report' // working
+                                                                                43=>'My Current Report', // working
+                                                                                44=>'My Submitted Report' // working
                                                                         )));
 define('EXT',                              '');

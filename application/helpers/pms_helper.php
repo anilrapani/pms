@@ -186,6 +186,16 @@ function convertTime($dateTime, $timeZoneName, $utc = FALSE) {
 }
 }
 
+if ( ! function_exists('minutes_to_hours_n_minutes'))
+{
+    function minutes_to_hours_n_minutes($number,$divider)
+    {
+        $arr['hours'] = str_pad((floor($number / $divider)), 2, 0, STR_PAD_LEFT);
+        $arr['minutes'] = str_pad(($number % $divider), 2, 0, STR_PAD_LEFT);
+        return $arr;
+    }
+}
+
 
 
 

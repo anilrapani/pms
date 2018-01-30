@@ -73,6 +73,7 @@ class Report extends BaseController {
                                             'last_parking_id_time_after_login' => $record->last_parking_id_time_after_login,
                                             'parking_id_from' => $record->parking_id_from,
                                             'parking_id_to' => $record->parking_id_to,
+                                            'total_vehicles_exited' => $record->total_vehicles_exited,
                                           'status' => 1,
                                             'deleted' => 2,
                                             'created_by' => $this->vendorId,
@@ -133,7 +134,12 @@ class Report extends BaseController {
             $this->global['pageTitle'] = PROJECT_NAME . ' : Employee Report';
             $data['title'] = 'Submitted Report';
             $data['sub_title'] = 'List';
+            $this->global['assets'] = array('cssTopArray'     => array(),
+                       'cssBottomArray'  => array(),
+                       'jsTopArray'      => array(base_url() . 'assets/js/employee/jquery.PrintArea',base_url() . 'assets/js/employee/quagga.min'),
+                       'jsBottomArray'   => array()
 
+             );
             $this->loadViews("employee/report/submittedlist", $this->global, $data, NULL);
         
     }

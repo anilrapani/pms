@@ -3,6 +3,7 @@ require APPPATH . '/libraries/BaseController.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Tcpdf;
 /*
  * Copyright (C) 2017 Kastech
  * @project : pms
@@ -37,6 +38,7 @@ class Reports extends BaseController {
             // $download = false;
             $download = $this->input->get("download");
             $vehicle_type_id = $this->input->get("vehicle_type_id");
+            $pdf = $this->input->get("pdf");
              $data['totalCount'] = false;
             $data['entryDate'] = $entryDate;
             $data['download'] = $download;
@@ -92,9 +94,14 @@ class Reports extends BaseController {
 //             for ($index = 0; $index < 100; $index++) {
 //                        $sheet->setCellValue('A' . $index, 'Hi Anil' . $index);
 //                    }
-
+                  $downloaded_name = "daily_exit_report";
+                  if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
                     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="daily_entry_report.xls"');
+                    header("Content-Disposition:attachment;filename=".$downloaded_name.".xls");
+                    }
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -104,7 +111,12 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                       if($pdf == true){
+                           $writer = new Tcpdf($spreadsheet);
+                        
+                    }else{ 
+                        $writer = new Xls($spreadsheet);
+                    }
                     $writer->save('php://output');
                     exit;
                 
@@ -181,6 +193,7 @@ class Reports extends BaseController {
             // $download = false;
             $download = $this->input->get("download");
             $vehicle_type_id = $this->input->get("vehicle_type_id");
+            $pdf = $this->input->get("pdf");
              $data['totalCount'] = false;
             $data['exitDate'] = $exitDate;
             $data['download'] = $download;
@@ -251,9 +264,14 @@ class Reports extends BaseController {
 //             for ($index = 0; $index < 100; $index++) {
 //                        $sheet->setCellValue('A' . $index, 'Hi Anil' . $index);
 //                    }
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="daily_exit_report.xls"');
+                    $downloaded_name = "daily_exit_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -263,7 +281,11 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                    if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }
                     $writer->save('php://output');
                     exit;
                 
@@ -339,6 +361,7 @@ class Reports extends BaseController {
             // $download = false;
             $download = $this->input->get("download");
             $vehicle_type_id = $this->input->get("vehicle_type_id");
+            $pdf = $this->input->get("pdf");
              $data['totalCount'] = false;
             $data['entryDate'] = $entryDate;
             $data['download'] = $download;
@@ -394,9 +417,15 @@ class Reports extends BaseController {
 //             for ($index = 0; $index < 100; $index++) {
 //                        $sheet->setCellValue('A' . $index, 'Hi Anil' . $index);
 //                    }
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="daily_remaining_report.xls"');
+               $downloaded_name = "daily_remaining_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -406,7 +435,11 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                     if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                     }else{
+                        $writer = new Xls($spreadsheet);
+                     }
                     $writer->save('php://output');
                     exit;
                 
@@ -479,6 +512,7 @@ class Reports extends BaseController {
             $year = $this->input->get("year");
             $month = $this->input->get("month");
             $download = $this->input->get("download");
+            $pdf = $this->input->get("pdf");
             
             $data['totalCount'] = false;
             $data['download'] = $download;
@@ -518,9 +552,15 @@ class Reports extends BaseController {
               $sheet->setCellValue('D' . $count, $final_total_amount);
                
            
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="monthly_report.xls"');
+                $downloaded_name = "monthly_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -530,7 +570,11 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                    if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }
                     $writer->save('php://output');
                     exit;
                 
@@ -597,6 +641,7 @@ class Reports extends BaseController {
             $shift_id = $this->input->get("shift_id");
             $exitDate = $this->input->get("exitDate");
             $download = $this->input->get("download");
+            $pdf = $this->input->get("pdf");
             
             $data['totalCount'] = false;
             $data['download'] = $download;
@@ -615,7 +660,11 @@ class Reports extends BaseController {
                $monthlySummaryByVehicleType = $this->k_parking_model->getShiftSummaryByVehicleTypeList($data);   
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
+                if($shift_id){
                 $sheet->setCellValue('B1', 'Shift :'.$data['start_time'].'-'.$data['end_time']);
+                }else{
+                    $sheet->setCellValue('B1', 'Shift : All');
+                }
                 $sheet->setCellValue('C1', 'Exit Date :'.$data['exitDate']);
                 $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
                 
@@ -643,10 +692,15 @@ class Reports extends BaseController {
               $sheet->setCellValue('C' . $count, $final_total_vehicles_exited);
               $sheet->setCellValue('D' . $count, $final_total_amount);
                
-           
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="shift_report.xls"');
+             $downloaded_name = "shift_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -656,7 +710,11 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                    if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }
                     $writer->save('php://output');
                     exit;
                 
@@ -731,6 +789,7 @@ class Reports extends BaseController {
             $to_time = $this->input->get("to_time");
             $vehicle_type_id = $this->input->get("vehicle_type_id");
             $gate_id = $this->input->get("gate_id");
+            $pdf = $this->input->get("pdf");
             
             $download = $this->input->get("download");
             $data['from_date'] = $from_date;
@@ -789,9 +848,15 @@ class Reports extends BaseController {
               $sheet->setCellValue('C' . $count, $final_total_amount);
                
            
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="summary_tariff_excel_report.xls"');
+  $downloaded_name = "summary_tariff_excel_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -801,8 +866,13 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
-                    $writer->save('php://output');
+                    if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                        $writer->save('php://output');
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                        $writer->save('php://output');
+                    }
                     exit;
                 
                 
@@ -880,6 +950,7 @@ class Reports extends BaseController {
             $to_time = $this->input->get("to_time");
             $vehicle_type_id = $this->input->get("vehicle_type_id");
             $gate_id = $this->input->get("gate_id");
+            $pdf = $this->input->get("pdf");
             
             $download = $this->input->get("download");
             $data['from_date'] = $from_date;
@@ -936,9 +1007,15 @@ class Reports extends BaseController {
               $sheet->setCellValue('C' . $count, $final_total_amount);
                
            
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="summary_supervisor_excel_report.xls"');
+                    $downloaded_name = "summary_supervisor_excel_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -948,7 +1025,11 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                    if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }
                     $writer->save('php://output');
                     exit;
                 
@@ -1017,6 +1098,7 @@ class Reports extends BaseController {
             $to_date = $this->input->get("to_date");
             $from_time = $this->input->get("from_time");
             $to_time = $this->input->get("to_time");
+            $pdf = $this->input->get("pdf");
             
             $data['from_date'] = $from_date;
             $data['to_date'] = $to_date;
@@ -1098,9 +1180,15 @@ class Reports extends BaseController {
 //             for ($index = 0; $index < 100; $index++) {
 //                        $sheet->setCellValue('A' . $index, 'Hi Anil' . $index);
 //                    }
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="time_based_report.xls"');
+  $downloaded_name = "time_based_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -1110,7 +1198,12 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                    if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }
+                    
                     $writer->save('php://output');
                     exit;
                 
@@ -1184,6 +1277,7 @@ class Reports extends BaseController {
             $report_type = $this->input->get("report_type");
             $vehicle_company = $this->input->get("vehicle_company");
             $download = $this->input->get("download");
+            $pdf = $this->input->get("pdf");
             
             $data['date'] = $date;
             $data['report_type'] = $report_type;
@@ -1263,9 +1357,15 @@ class Reports extends BaseController {
 //             for ($index = 0; $index < 100; $index++) {
 //                        $sheet->setCellValue('A' . $index, 'Hi Anil' . $index);
 //                    }
-
-                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                    header('Content-Disposition: attachment;filename="companywise_report.xls"');
+                      $downloaded_name = "companywise_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    
                     header('Cache-Control: max-age=0');
             // If you're serving to IE 9, then the following may be needed
                     header('Cache-Control: max-age=1');
@@ -1275,7 +1375,11 @@ class Reports extends BaseController {
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
-                    $writer = new Xls($spreadsheet);
+                    if($pdf == true){
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }    
                     $writer->save('php://output');
                     exit;
                 

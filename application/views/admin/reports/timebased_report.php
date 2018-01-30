@@ -68,13 +68,23 @@
 
 
                 </div>      
-            </form>         
+            </form>     
+               <div class="col-xs-2 pull-right">
+                    <div class="form-group">
+                        <label for="role">&nbsp;</label>
+                        <div class="input-group" >
+                            <button type="submit" id="download_pdf" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                                <i class="fa fa-download"></i> Download Pdf
+                            </button>
+                        </div>
+                    </div>
+            </div> 
                <div class="col-xs-2 pull-right">
                     <div class="form-group">
                         <label for="role">&nbsp;</label>
                         <div class="input-group" >
                             <button type="submit" id="download" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                                <i class="fa fa-download"></i> Download
+                                <i class="fa fa-download"></i> Download Xls
                             </button>
                         </div>
                     </div>
@@ -219,6 +229,16 @@ $fullURL = current_url() . '?' . $params.'&download=true'; echo $fullURL; //curr
 
 
   });
+    $( "#download_pdf" ).click( function(){
+      
+window.location="<?php $params   = $_SERVER['QUERY_STRING'];
+
+
+$fullURL = current_url() . '?' . $params.'&download=true&pdf=true'; echo $fullURL; //current_url(); //base_url().uri_string()?>";
+
+
+  });
+
 
 });
    

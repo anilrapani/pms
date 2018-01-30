@@ -37,7 +37,9 @@
                     
                       <th>From Id</th>
                       <th>To Id</th>
+                      <th>Total Vehicles</th>
                       <th>Report Status</th>
+                      <th>Print</th>
 <!--                      <th class="text-center">Actions</th>-->
                     </tr>
                     <?php
@@ -56,13 +58,30 @@
                       <td><?php echo $record->last_parking_id_time_after_login; ?></td>
                       <td><?php echo $record->parking_id_from; ?></td>
                       <td><?php echo $record->parking_id_to; ?></td>
+                      <td><?php echo $record->total_vehicles_exited; ?></td>
                       <td><?php $report_paid_to_admin = json_decode(REPORT_PAID_TO_ADMIN,TRUE);
                                 echo $report_paid_to_admin[$record->paid_to_admin];
                           ?></td>
-<!--                      <td class="text-center">
-                          <a class="btn btn-sm btn-info" href="<?php echo base_url().'employee/vehicle/edit/company/'.$record->id; ?>"><i class="fa fa-pencil"></i></a>
-                          <a class="btn btn-sm btn-danger deleteCompany" href="#" data-id="<?php echo $record->id; ?>"><i class="fa fa-trash"></i></a>
-                      </td>-->
+                      <td>
+                           
+                           <span class="btn btn-sm btn-info" href="" onclick="printPage(<?php echo $record->id; ?>)"><i class="fa fa-print"></i></span>
+                           
+                           <div id="printTicketData" class="box-body generatedReportPrint<?php echo $record->id; ?>" style="line-height: 5px; font-size: 12px; font-family: sans-serif; display: none;">
+                                <div class="ticketHeader" style="font-size: 13px;">
+                                <p><b>Menzies Aviation Bobba (B'lore) Pvt Ltd</b></p>
+                                    <p style="margin-left: 70px;"><?php echo $record->gate_name; ?></p>
+                                    <p style="margin-left: 90px;">Report</p>
+                                    <p><span>-------------------------------------------------------</span></p>
+                                </div>
+                                <div style="ticketBody">
+                                    <div class="ticketLine"><p><span style="float: left;width: 130px;">Date</span>: <span><?php echo date("d-m-Y ", strtotime($record->last_parking_id_time_after_login)); ?></span></p></div>
+                                    <div class="ticketLine"><p><span style="float: left;width: 130px;">Time</span>: <span><?php echo date("H:i ", strtotime($record->last_parking_id_time_after_login)); ?></span></p></div>
+                                    <div class="ticketLine"><p><span style="float: left;width: 130px;">No. of vehicles entered</span>: <span><?php echo $record->total_vehicles_exited; ?></span></p></div>                        
+                                    <div class="ticketLine"><p><span style="float: left;width: 130px;">Total Amount</span>: <span><?php echo $record->total_amount; ?></span></p></div>
+                                </div>
+                            </div>
+                          </td>
+
                     </tr>
                     <?php
                         }
@@ -87,5 +106,11 @@
 </div>
 <script type="text/javascript">
     deleteUrl = "employee/vehicle/deleteCompany";
+function printPage(report_id){
+    $(".generatedReportPrint"+report_id).css("display", "block");
+    var options = {mode:"popup",popHt: 500, popWd: 400, popX: 500,   popY: 600,popTitle:"",popClose: false};
+    $(".generatedReportPrint"+report_id).printArea( options ); 
+    $(".generatedReportPrint"+report_id).css("display", "none");
+}
 </script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/admin/common.js" charset="utf-8"></script>

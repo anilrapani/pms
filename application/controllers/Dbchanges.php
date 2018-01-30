@@ -14,9 +14,9 @@ class Dbchanges extends CI_Controller {
     function addcolumndirectly(){
      $this->load->dbforge();
      $fields = array(
-        'privileges' => array('type' => 'MEDIUMBLOB', 'null'=>FALSE, 'after' => 'name')
+        'privileges' => array('name' => "Menzies Aviation Bobba (B'lore) Pvt Ltd", 'null'=>FALSE, 'after' => 'name')
 );
-$result = $this->dbforge->add_column('k_user_role', $fields);
+$result = $this->dbforge->add_column('k_master_user_company', $fields);
 if($result){
      echo 'added column';
 }else{

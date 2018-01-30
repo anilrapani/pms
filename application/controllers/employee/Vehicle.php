@@ -352,7 +352,7 @@ class Vehicle extends BaseController {
                 $vehicle_number = strtoupper(trim($this->input->post('vehicle_number')));
                 $driving_license_number = strtoupper(trim($this->input->post('driving_license_number')));
                 $driver_name = ucwords(trim($this->input->post('driver_name')));
-                $rc = strtoupper(trim($this->input->post('rc')));
+                // $rc = strtoupper(trim($this->input->post('rc')));
                 $image_vehicle_number_plate = $image_driving_license_number = '';
                 if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
                     $gate_id = $this->input->post('gate_id');
@@ -432,7 +432,7 @@ class Vehicle extends BaseController {
                     'image_driving_license_number' => $image_driving_license_number,
                     'driver_name' => $driver_name,
                     'gate_id_entry' => $gate_id,
-                    'rc' => $rc,
+                  //   'rc' => $rc,
                     'entry_time' => date('Y-m-d H:i:s'),
                     'barcode' =>  $code, 
                     'status' => 1,
@@ -736,7 +736,7 @@ class Vehicle extends BaseController {
                     $total_number_of_hours = ceil($total_number_of_seconds/3600);
                     $amount = $priceDetails->more_than_minutes_per_hour_amount*$total_number_of_hours;
                 }else{
-                    $amount = ceil($total_number_of_minutes/$maximumToMinutesByPriceId)*$resultMaximumToMinutesByPriceId->amount; 
+                    $amount = (ceil($total_number_of_minutes/$maximumToMinutesByPriceId))*$resultMaximumToMinutesByPriceId->amount; 
                 }
             }{ 
                 
@@ -790,7 +790,8 @@ class Vehicle extends BaseController {
                     'exited_by' => $this->vendorId,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s'),
-                    'image_vehicle_number_plate_exit' => $image_vehicle_number_plate_exit
+                    'image_vehicle_number_plate_exit' => $image_vehicle_number_plate_exit,
+                    'total_minutes' => $total_number_of_minutes   
                     
                 );
                    
@@ -1327,7 +1328,26 @@ class Vehicle extends BaseController {
         }
     }
     
-
+    function entryPrintStatus(){
+         /**
+     * This function is used to delete the company using id
+     * @return boolean $result : TRUE / FALSE
+     */
+     if(!array_key_exists(23,$this->role_privileges)){
+            echo(json_encode(array('status' => 'access')));
+        } else {
+            $id = $this->input->post('id');
+            $data = array('entry_printed' => 1, 'updated_by' => $this->vendorId, 'updated_time' => date('Y-m-d H:i:s'));
+            $result = $this->k_parking_model->update($data, $id);
+            if ($result > 0) {
+                echo(json_encode(array('status' => TRUE)));
+            } else {
+                echo(json_encode(array('status' => FALSE)));
+            }
+        }
+    
+    }
+   
     
     function pageNotFound() {
         $this->global['pageTitle'] = 'Pms : 404 - Page Not Found';

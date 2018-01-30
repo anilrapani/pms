@@ -141,8 +141,8 @@
                             </div>
                             
                             
-                             <div class="row">
-                                  <div class="col-md-6">
+                             <div class="row" >
+                                  <div class="col-md-6" style="display: none;">
                                     <div class="form-group">
                                         <label for="user_company_id">Employee Company<span class="color-red">*</span></label>
                                         <select class="form-control required" id="user_company_id" name="user_company_id">
@@ -153,7 +153,7 @@
                                                 foreach ($employeeCompanies as $rl)
                                                 {
                                                     ?>
-                                                    <option value="<?php echo $rl->id ?>"><?php echo $rl->name ?></option>
+                                                    <option value="<?php echo $rl->id ?>" <?php if($rl->id == 1){ echo 'selected="selected"'; } ?> ><?php echo $rl->name ?></option>
                                                     <?php
                                                 }
                                             }
@@ -161,30 +161,7 @@
                                         </select>
                                     </div>
                                 </div>    
-                                  <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="shift_id">Employee Shift<span class="color-red">*</span></label>
-                                        <select class="form-control required" id="shift_id" name="shift_id">
-                                            <option value="0">Select Employee Shift</option>
-                                            <?php
-                                            if(!empty($employeeShifts))
-                                            {
-                                                foreach ($employeeShifts as $rl)
-                                                {
-                                           ?>
-                                                    <option value="<?php echo $rl->id ?>"  ><?php echo $rl->name.' : '.$rl->start_time.' - '.$rl->end_time ?></option>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>   
-                              
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
+                                 <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="status">Status</label>
                                                                     <select class="form-control required" id="status" name="status">
@@ -203,12 +180,36 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-                                  <div class="col-md-6">
+                                  <div class="col-md-6" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="shift_id">Employee Shift<span class="color-red">*</span></label>
+                                        <select class="form-control required" id="shift_id" name="shift_id">
+                                            <option value="0">Select Employee Shift</option>
+                                            <?php
+                                            if(!empty($employeeShifts))
+                                            {
+                                                foreach ($employeeShifts as $rl)
+                                                {
+                                           ?>
+                                                    <option value="<?php echo $rl->id ?>" <?php echo 'selected="selected"';?> ><?php echo $rl->name.' : '.$rl->start_time.' - '.$rl->end_time ?></option>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>   
+                               <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="user_name">User Name<span class="color-red">*</span></label>
                                         <input type="text" class="form-control required user_name" id="user_name" name="user_name" >
                                     </div>
                                 </div>
+                            </div>
+                            
+                            <div class="row">
+                                
+                                 
                             </div>
                         </div><!-- /.box-body -->
     

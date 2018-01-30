@@ -11,7 +11,7 @@ $(document).ready(function(){
 	var companyForm = $("#addCompany,#editCompany,#addGovtProofType,#editGovtProofType,#addShift,#editShift,#addPrice,#editPrice,#addRole,#editRole,#addType,#editType,#addGate,#editGate");
 	 
         $.validator.addMethod("alphanumericChars", function(value, element) {
-                return this.optional(element) || /^[a-z0-9\ \-\&]+$/i.test(value);
+                return this.optional(element) || /^[a-z0-9\ \-\&\,]+$/i.test(value);
          }, "Field should contain only letters and numbers");
     
         $.validator.addMethod("price", function(value, element) {
@@ -28,7 +28,7 @@ $(document).ready(function(){
                         start_time:{required : true},
                         end_time:{required : true},
                         more_than_minutes_per_hour_amount :{ required : true, price: true},
-                        number_of_wheels :{required : true, number: true}
+                        number_of_wheels :{required : true, number: true},
                         
 			
 		},

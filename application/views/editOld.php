@@ -149,7 +149,7 @@ if(!empty($userInfo))
                             
                             
                              <div class="row">
-                                  <div class="col-md-6">
+                                  <div class="col-md-6" style="display: none;">
                                     <div class="form-group">
                                         <label for="user_company_id">Employee Company<span class="color-red">*</span></label>
                                         <select class="form-control required" id="user_company_id" name="user_company_id">
@@ -187,12 +187,17 @@ if(!empty($userInfo))
                                         </select>
                                     </div>
                                 </div>
-                                 
+                                      <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="user_name">User Name<span class="color-red">*</span></label>
+                                        <input type="text" class="form-control required user_name" id="user_name" name="user_name" value="<?php echo $user_name; ?>">
+                                    </div>
+                                </div>
                               
                               
                             </div>
                             <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" style="display: none;">
                                       
                                     <div class="form-group">
                                         <label for="shift_id">Employee Shift<span class="color-red">*</span></label>
@@ -212,12 +217,7 @@ if(!empty($userInfo))
                                         </select>
                                     </div>
                                 </div>  
-                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="user_name">User Name<span class="color-red">*</span></label>
-                                        <input type="text" class="form-control required user_name" id="user_name" name="user_name" value="<?php echo $user_name; ?>">
-                                    </div>
-                                </div>
+                            
                             </div>
                         </div><!-- /.box-body -->
     
