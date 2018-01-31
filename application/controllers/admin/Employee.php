@@ -21,7 +21,8 @@ class Employee extends BaseController {
                                     'k_master_user_shift_model',
                                     'k_master_device_registry_model',
                                     'user_model',
-                                    'k_user_role_model'
+                                    'k_user_role_model',
+                                    'k_master_vehicle_gate_model'
                                 )
                            );
         $this->isLoggedIn();
@@ -915,6 +916,12 @@ class Employee extends BaseController {
             $data['title'] = "Role";
 
             $data['sub_title'] = "Add";
+            $gates = $this->k_master_vehicle_gate_model->get();
+            
+            foreach ($gates as $key => $value) {
+                $gatesListArray[$value->id] = $value->name;
+            }
+            $data['gatesListArray'] = $gatesListArray;
             $this->loadViews("admin/employee/role/add", $this->global, $data, NULL);
         }
     }
@@ -961,7 +968,12 @@ class Employee extends BaseController {
                 $data['title'] = "Employee Role";
 
                 $data['sub_title'] = "Add";
-                $this->loadViews("admin/employee/role/add", $this->global, $data, NULL);
+            $gates = $this->k_master_vehicle_gate_model->get();
+            foreach ($gates as $key => $value) {
+                $gatesListArray[$value->id] = $value->name;
+            }
+            $data['gatesListArray'] = $gatesListArray;
+            $this->loadViews("admin/employee/role/add", $this->global, $data, NULL);
             }
         }
     }
@@ -984,7 +996,11 @@ class Employee extends BaseController {
             $data['title'] = "Role";
 
             $data['sub_title'] = "Edit";
-
+            $gates = $this->k_master_vehicle_gate_model->get();
+            foreach ($gates as $key => $value) {
+                $gatesListArray[$value->id] = $value->name;
+            }
+            $data['gatesListArray'] = $gatesListArray;
             $this->loadViews("admin/employee/role/edit", $this->global, $data, NULL);
         }
     }

@@ -67,7 +67,7 @@
                                     <div class="form-group">
                                         <?php 
                                         $role_privileges_array = json_decode(ROLE_PRIVILEGES_ARRAY,true);
-                                            
+                                        $role_privileges_array = $role_privileges_array+$gatesListArray;
                                         foreach ($role_privileges_array as $key => $value) {
                                     ?>  
                                         <div class="checkbox">

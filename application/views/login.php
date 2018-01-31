@@ -7,13 +7,13 @@
     <link href="<?php echo base_url(); ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url(); ?>assets/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <style type="text/css">
+        .error{
+            color : red;
+            font-weight: normal;
+        }
+    </style>
+    <script src="<?php echo base_url(); ?>assets/js/jQuery-2.1.4.min.js"></script>
   </head>
   <body class="login-page">
     <div class="login-box">
@@ -49,19 +49,19 @@
             </div>
         <?php } ?>
         
-        <form action="<?php echo base_url(); ?>loginMe" method="post">
+        <form action="<?php echo base_url(); ?>loginMe" method="post" id="login">
           <div class="form-group has-feedback">
 <!--            <input type="email" class="form-control" placeholder="Email" name="email" required />-->
-            <input type="user_name" class="form-control" placeholder="User Name" name="user_name" required id="user_name"/>
+              <input type="text" class="form-control required" placeholder="User Name" name="user_name" id="user_name"  />
 <!--            <span class="glyphicon glyphicon-user-circle form-control-feedback"></span>-->
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password" name="password" required />
+            <input type="password" class="form-control required" placeholder="Password" name="password" />
 <!--            <span class="glyphicon glyphicon-lock form-control-feedback"></span>-->
           </div>
-          <div class="form-group has-feedback" id="gate_id_details">
+<!--          <div class="form-group has-feedback" id="gate_id_details">
                
-               <select name="gate_id" class="form-control">
+               <select name="gate_id" class="form-control required">
                    <option value="">Select Gate</option>
                    <?php foreach($gatesList as $gate){
                        ?>
@@ -70,7 +70,7 @@
                    } ?>
                </select>
                
-          </div>  
+          </div>  -->
           <div class="row">
             <div class="col-xs-8">    
               <!-- <div class="checkbox icheck">
@@ -90,19 +90,23 @@
         
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
-
-    <script src="<?php echo base_url(); ?>assets/js/jQuery-2.1.4.min.js"></script>
+    
+    <script src="<?php echo base_url(); ?>assets/js/login.js" type="text/javascript"></script>
     <script src="<?php echo base_url(); ?>assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery.validate.js" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>assets/js/validation.js" type="text/javascript"></script>
     <?php if($this->config->item('enable_admin_no_gate_restriction')) { ?>
     <script>
-        $( "#user_name" ).keyup(function() {
+     /*   $( "#user_name" ).keyup(function() {
             if($.trim($( "#user_name" ).val()).toLowerCase() == "admin"){
                 $( "#gate_id_details" ).css("display","none");
             }else{
                 $( "#gate_id_details" ).css("display","block");
             }
         });
+        */
     </script>
     <?php } ?>
+    
   </body>
 </html>

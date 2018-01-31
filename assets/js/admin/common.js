@@ -21,7 +21,7 @@ $(document).ready(function(){
 	companyForm.validate({
 		
 		rules:{
-			name :{ required : true, alphanumericChars: true },
+			name :{ required : true },
                         phone :{ required : true, number: true, minlength: 10, maxlength: 12 },
                         email :{ required : true,email : true },
                         address:{required : true},

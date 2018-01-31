@@ -89,12 +89,13 @@
                                         
                                         $savedPrivileges = unserialize($roleInfo->privileges);
                                         $role_privileges_array = json_decode(ROLE_PRIVILEGES_ARRAY,true);
-                                            
+                                        
+                                        $role_privileges_array = $role_privileges_array+$gatesListArray;    
                                         foreach ($role_privileges_array as $key => $value) {
                                     ?>  
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="privilege[<?php echo $key; ?>]" <?php if(array_key_exists($key,$savedPrivileges)) { ?> checked="checked"  <?php } ?> >
+                                                <input type="checkbox" name="privilege[<?php echo $key; ?>]" <?php if(@array_key_exists($key,$savedPrivileges)) { ?> checked="checked"  <?php } ?> >
                                                 <?php echo "$value"; ?>
                                             </label>
                                         </div>    

@@ -175,7 +175,7 @@
 
                 <div class="box box-primary " >
                     <div class="box-header">
-                        <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php if($isNewEntry == false && $entryDetails->entry_printed == 2) {?><input id="printBtn" type="submit" class="btn btn-primary float-right" onclick="printPage()" style="float:right;"value="Print"><?php } ?>
+                        <h3 class="box-title"><?php echo $sub_title.' No : '.$entryId; ?></h3> <?php // if($isNewEntry == false && $entryDetails->entry_printed == 2) {?><input id="printBtn" type="submit" class="btn btn-primary float-right" onclick="printPage()" style="float:right;"value="Print"><?php //} ?>
                         <br>
                         <br> 
                         
