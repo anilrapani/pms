@@ -59,7 +59,7 @@
             <input type="password" class="form-control required" placeholder="Password" name="password" />
 <!--            <span class="glyphicon glyphicon-lock form-control-feedback"></span>-->
           </div>
-<!--          <div class="form-group has-feedback" id="gate_id_details">
+         <div class="form-group has-feedback" id="gate_id_details">
                
                <select name="gate_id" class="form-control required">
                    <option value="">Select Gate</option>
@@ -70,7 +70,7 @@
                    } ?>
                </select>
                
-          </div>  -->
+          </div>  
           <div class="row">
             <div class="col-xs-8">    
               <!-- <div class="checkbox icheck">
