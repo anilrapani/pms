@@ -323,7 +323,7 @@
                             </div> 
                             <div class="box-body printTicket" >
                                 <?php if($isNotExited == false) { 
-                                    $parked_hours = minutes_to_hours_n_minutes(1,60);
+                                    $parked_hours = minutes_to_hours_n_minutes($entryDetails->total_minutes,60);
                                     ?>
                                 
                                 <div style="text-align: center; ">
