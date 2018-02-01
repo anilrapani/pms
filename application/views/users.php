@@ -36,6 +36,7 @@
                         <th>S.No</th>  
 <!--                      <th>Id</th>-->
                       <th>Name</th>
+                      <th>User Name</th>
                       <th>Email</th>
                       <th>Mobile</th>
                       <th>Role</th>
@@ -53,8 +54,10 @@
                       <td><?php echo $record_count++; ?></td>
 <!--                  <td><?php echo $record->id ?></td>-->
                       <td><?php echo $record->name ?></td>
+                      <td><?php echo $record->user_name ?></td>
                       <td><?php echo $record->email ?></td>
                       <td><?php echo $record->mobile ?></td>
+                      
                       <td><?php echo ucfirst($record->role_name) ?></td>
                       <td><input type="checkbox" name="status" class="statusCheckbox" <?php echo ($record->status == 1)?"checked":""; ?>  value="<?php echo $record->id; ?>" /></td>
                       <td class="text-center">

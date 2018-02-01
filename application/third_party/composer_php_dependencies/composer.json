@@ -3,15 +3,11 @@
         "phpoffice/phpspreadsheet": "^1.0"
     },
     "require-dev": {
-        "tecnickcom/tcpdf": "^6.2",
-        "dompdf/dompdf": "^0.8.0",
-        "mpdf/mpdf": "^7.0.0"
+        "tecnickcom/tcpdf": "^6.2"
         
     },
     "suggest": {
-        "tecnick.com/tcpdf": "Option for rendering PDF with PDF Writer",
-        "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
-             "mpdf/mpdf": "Option for rendering PDF with PDF Writer"
+        "tecnick.com/tcpdf": "Option for rendering PDF with PDF Writer"
         
         
     }

@@ -1,4 +1,9 @@
 <?php
+$exitGateIdsArray = array(1,2,4);
+$role_privileges = array(2,4,5,6,1);
+echo count(array_intersect($exitGateIdsArray, $role_privileges));
+exit;
+
 echo 2%60;
 echo "<pre>";
 function minutes_to_hours_n_minutes($number, $divider) {

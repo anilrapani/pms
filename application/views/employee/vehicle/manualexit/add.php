@@ -396,7 +396,7 @@
                                     <div class="form-group">
                                                 <label for="role">Entry Date</label>
                                                 <div class="input-group date" data-provide="datepicker">
-                                                    <input type="text" class="form-control" name="entry_date" value="">
+                                                    <input type="text" class="form-control required" name="entry_date" value="">
                                                     <div class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </div>
@@ -406,7 +406,7 @@
                                 <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="role">From Time(hh:mm)</label>
-                                                <input type="text" class="form-control" name="entry_time" value="">
+                                                <input type="text" class="form-control required" name="entry_time" value="">
                                             </div>
                                 </div>
                             </div>
@@ -416,7 +416,7 @@
                                     <div class="form-group">
                                                 <label for="role">Exit Date</label>
                                                 <div class="input-group date" data-provide="datepicker">
-                                                    <input type="text" class="form-control" name="exit_date" value="">
+                                                    <input type="text" class="form-control required" name="exit_date" value="">
                                                     <div class="input-group-addon">
                                                         <span class="glyphicon glyphicon-calendar"></span>
                                                     </div>
@@ -426,7 +426,7 @@
                                 <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="role">Exit Time(hh:mm)</label>
-                                                <input type="text" class="form-control" name="exit_time" value="">
+                                                <input type="text" class="form-control required" name="exit_time" value="">
                                             </div>
                                 </div>
                             </div>
@@ -435,11 +435,18 @@
                                 <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="role">Amount</label>
-                                                <input type="text" class="form-control" name="amount" value="">
+                                                <input type="text" class="form-control required" name="amount" value="">
                                             </div>
                                 </div>
-                                  
-                                <div class="col-md-6">
+                                  <?php    $exitTerminalCount = 0;
+                                                foreach ($terminalListArray as $value)
+                                                {
+                                                    if($value->type == 2 && in_array($value->id,array_keys($role_privileges))){
+                                                        $exitTerminalCount++;
+                                                    } 
+                                                }
+                                                ?>
+                                <div class="col-md-6" <?php if($exitTerminalCount == 1 || count(array_intersect($exitGateIdsArray, array_keys($role_privileges))) == 1){ ?> style="display:none;" <?php } ?> >
                                        <div class="form-group" >
                                         <label for="gate_id">Terminal<span class="color-red">*</span></label>
                                         <select class="form-control required" id="gate_id" name="gate_id">
@@ -448,18 +455,12 @@
                                             
                                             if(!empty($terminalListArray))
                                             {
-                                                $entryTerminalCount = 0;
+                                             
                                                 foreach ($terminalListArray as $value)
                                                 {
-                                                    if($value->type == 2){
-                                                        $entryTerminalCount++;
-                                                    } 
-                                                }
-                                                foreach ($terminalListArray as $value)
-                                                {
-                                                    if($value->type == 2){
+                                                    if($value->type == 2 && in_array($value->id,array_keys($role_privileges))){
                                                     ?>
-                                                    <option value="<?php echo $value->id;  ?>" <?php if($entryTerminalCount == 1){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
+                                                    <option value="<?php echo $value->id;  ?>" <?php if($exitTerminalCount == 1 || (count(array_intersect($exitGateIdsArray, array_keys($role_privileges))) == 1 && in_array($value->id,array_keys($role_privileges)) ) ){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
                                                     <?php
                                                     }
                                                 }
@@ -552,12 +553,12 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6">                                
+<!--                                <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="rc">RC</label>
                                         <input type="text" class="form-control" id="rc" name="rc" value="">
                                     </div>
-                                </div>
+                                </div>-->
                              
                             </div>
                             

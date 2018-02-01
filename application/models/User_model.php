@@ -40,7 +40,7 @@ class User_model extends Common_Model
      */
     function userListing($searchText = '', $page, $segment)
     {
-        $this->db->select('BaseTbl.id, BaseTbl.email, BaseTbl.name, BaseTbl.status, BaseTbl.mobile, Role.name as role_name');
+        $this->db->select('BaseTbl.id, BaseTbl.email, BaseTbl.name, BaseTbl.status, BaseTbl.mobile, Role.name as role_name, BaseTbl.user_name');
         $this->db->from('k_user as BaseTbl');
         $this->db->join('k_user_role as Role', 'Role.id = BaseTbl.role_id','left');
         if(!empty($searchText)) {

@@ -69,7 +69,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                     <!-- Sidebar toggle button-->
                     <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                         <span class="sr-only">Toggle navigation</span>
-                        <?php if($role == 2 && $this->config->item('enable_admin_no_gate_restriction')){ } else { echo "At " . $gateDetails->name; } ?>
+                        <?php // if($role == 2 && $this->config->item('enable_admin_no_gate_restriction')){ } else { echo "At " . $gateDetails->name; } ?>
                     </a>
                     <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
@@ -346,11 +346,17 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
 
 <?php } ?>
 
-<?php if (count(array_intersect(array(23,25,43,44), array_keys($role_privileges))) > 0) { ?>   
+<?php 
 
-    <?php
+$check_array = array_merge($allGateListArray,array(43,44));
+//var_dump($allGateListArray);
+//var_dump($check_array);
+//var_dump($role_privileges);
+//exit;
+if (count(array_intersect($check_array, array_keys($role_privileges))) > 0) { 
     
-    if ((@$gateDetails->type_name == 'entry' && array_key_exists(23, $role_privileges)) || ($role == 2 && $this->config->item('enable_admin_no_gate_restriction'))) {
+    // if ((@$gateDetails->type_name == 'entry' && array_key_exists(23, $role_privileges)) || ($role == 2 && $this->config->item('enable_admin_no_gate_restriction'))) {
+    if (count(array_intersect($entryGateIdsArray, array_keys($role_privileges))) > 0) {
         ?>
                                 <li class="treeview">
                                     <a href="<?php echo base_url(); ?>employee/vehicle/add/entry" >
@@ -360,7 +366,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                 </li>
     <?php
     }
-    if ((@$gateDetails->type_name == 'exit' && array_key_exists(25, $role_privileges)) || ($role == 2 && $this->config->item('enable_admin_no_gate_restriction'))) {
+    if (count(array_intersect($exitGateIdsArray, array_keys($role_privileges))) > 0) {
         ?>
                                 <li class="treeview">
                                     <a href="<?php echo base_url(); ?>employee/vehicle/exit/details" >
@@ -373,7 +379,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                 
                                 <?php
     
-    if ((@$gateDetails->type_name == 'exit' && array_key_exists(28, $role_privileges)) || ($role == 2 && $this->config->item('enable_admin_no_gate_restriction'))) {
+    if (count(array_intersect($exitGateIdsArray, array_keys($role_privileges))) > 0 && array_key_exists(28, $role_privileges)) {
         ?>
                                 <li class="treeview">
                                     <a href="<?php echo base_url(); ?>employee/vehicle/add/manualexit" >
@@ -384,7 +390,7 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
     <?php }
     ?>
                                 
-     <?php if (array_key_exists(43, $role_privileges)) { ?>
+     <?php if (array_key_exists(43, $role_privileges) ) { ?>
                                 <li class="treeview">
                                 <a href="<?php echo base_url(); ?>employee/report/current/list" >
                                     <i class="fa fa-circle-o"></i>

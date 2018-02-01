@@ -28,6 +28,7 @@ class K_parking_model extends Common_Model {
     var $exited_by = 'exited_by';
     var $entry_printed = 'entry_printed';
     var $customer_paid_by_cash_or_card = 'customer_paid_by_cash_or_card';
+    var $manual_exit = 'manual_exit';
     
     function __construct() {
         parent::__construct();

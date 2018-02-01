@@ -132,7 +132,7 @@
          
         </div>
                <div class="box-tools" style="padding-left: 10px;">
-                <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
+                <form action="<?php echo base_url() ?>employee/vehicle/generateExitReciept" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
                         <input type="text" name="barcode" id="barcodeEntryId" autofocus class="form-control input-sm pull-left" style="width: 150px;" placeholder="Scan Barcode" value="" >
                         <div class="input-group-btn pull-left" id="triggerScanner">
@@ -156,7 +156,7 @@
         </div>
             
             <div class="box-tools" style="padding-left: 10px;">
-                <form action="<?php echo base_url() ?>employee/vehicle/exitdetails" method="POST" id="formBarcodeScanner">
+                <form action="<?php echo base_url() ?>employee/vehicle/generateExitReciept" method="POST" id="formBarcodeScanner">
                     <div class="input-group">
                         <input type="text" name="entryId" id="entryId" class="form-control input-sm pull-left" style="width: 150px;" placeholder="Ticket Id" value="" >
                         <div class="input-group-btn pull-left">
@@ -282,29 +282,32 @@
                                             <input type="reset" class="btn btn-primary float-right" value="Print" onclick="printPage()" >
                                         <?php } ?>
                                 </div>
-                                      <?php if($isNotExited == true && $role == 2 && $this->config->item('enable_admin_no_gate_restriction')) { ?>
-                                    <div class="row">
+                                      <?php 
+                                          $exitTerminalCount = 0;
+                                                foreach ($terminalListArray as $value)
+                                                {
+                                                    if($value->type == 2 && in_array($value->id,array_keys($role_privileges))){
+                                                        $exitTerminalCount++;
+                                                    } 
+                                                }
+//                                               
+                                      // if($isNotExited == true && $role == 2 && $this->config->item('enable_admin_no_gate_restriction')) { ?>
+                                    <div class="row" <?php if(($exitTerminalCount == 1 || count(array_intersect($exitGateIdsArray, array_keys($role_privileges))) == 1) || $isNotExited == false){ ?> style="display:none;" <?php } ?> >
                                 <div class="col-md-6">
                                        <div class="form-group" >
                                         <label for="gate_id">Terminal<span class="color-red">*</span></label>
                                         <select class="form-control required" id="gate_id" name="gate_id">
                                             <option value="" >Select Terminal</option>
                                             <?php
-                                            
+                                           $data['terminalListArray'] = $this->k_master_vehicle_gate_model->get(); 
                                             if(!empty($terminalListArray))
                                             {
-                                                $entryTerminalCount = 0;
+                                            
                                                 foreach ($terminalListArray as $value)
                                                 {
-                                                    if($value->type == 2){
-                                                        $entryTerminalCount++;
-                                                    } 
-                                                }
-                                                foreach ($terminalListArray as $value)
-                                                {
-                                                    if($value->type == 2){
+                                                    if($value->type == 2 && in_array($value->id,array_keys($role_privileges))){
                                                     ?>
-                                                    <option value="<?php echo $value->id;  ?>" <?php if($entryTerminalCount == 1){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
+                                                    <option value="<?php echo $value->id;  ?>" <?php if($exitTerminalCount == 1 || (count(array_intersect($exitGateIdsArray, array_keys($role_privileges))) == 1 && in_array($value->id,array_keys($role_privileges)) ) ){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
                                                     <?php
                                                     }
                                                 }
@@ -314,7 +317,7 @@
                                     </div>
                                 </div>
                             </div>
-                                      <?php } ?>
+                                      <?php // } ?>
                                 </form>
                                  
 <!--                                <br>
@@ -352,7 +355,9 @@
                                 <?php if(!empty($entryDetails->driver_name)) { ?>    <h4><?php echo $entryDetails->driver_name; ?></h4><?php } ?>
                                     <?php if(!empty($entryDetails->driving_license_number)) { ?><h4>DL : <span><?php echo $entryDetails->driving_license_number; ?></span></h4><?php } ?>
                                     <?php if(!empty($entryDetails->rc)) { ?><h4>RC : <span><?php echo $entryDetails->rc ?></span></h4><?php } ?>
-                                    <?php } ?>
+                                    <?php } 
+                                    if($entryDetails->manual_exit == 2){
+                                    ?>
                                     <h3><b>Parking Charges</b> </h3>
                                     <?php
                                     
@@ -361,7 +366,9 @@
                                         <h4><?php echo $value->from_minutes; ?>-<?php echo $value->to_minutes; ?>mins : Rs. <?php echo $value->amount; ?></h4>
                                     <?php
                                   }
+                                }
                                     ?>
+                                        
                                         <?php if($this->config->item('enable_more_than_minutes_per_hour_amount')) { ?>
                                         <h4>Beyond this per hour : Rs. <?php echo $masterPriceDetails->more_than_minutes_per_hour_amount; ?></h4>
                                         <?php } ?>
@@ -374,7 +381,7 @@
         <div class="ticketHeader" style="font-size: 13px;" >
 
             <p><b><?php echo $login_user_company_name; ?></b></p>
-            <p style="margin-left: 70px;"><?php echo $exitGateDetails->name; ?></p>
+            <p style="margin-left: 70px;"><?php echo @$exitGateDetails->name; ?></p>
             <p style="margin-left: 30px;"><img src="<?php echo base_url() . '/barcode/' . $entryDetails->barcode . '.png'; ?>" /> 
             <p style="margin-left: 70px;"><?php echo ($exitGateDetails->type == 1) ? 'Entry Ticket' : 'Exit Ticket'; ?></p>
             </p>

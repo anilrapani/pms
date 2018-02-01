@@ -358,12 +358,24 @@
                    
                     <!-- form start -->
 
-                    <?php if($isNewEntry == true) { ?>
+                    <?php if($isNewEntry == true) { 
+                      
+                        ?>
                         <div class="box-body">
-                            <?php if($role == 2 && $this->config->item('enable_admin_no_gate_restriction')){ ?>
-                            <div class="row">
+                            <?php 
+
+   $entryTerminalCount = 0;
+                                                foreach ($terminalListArray as $value)
+                                                {
+                                                    if($value->type == 1 && in_array($value->id,array_keys($role_privileges))){
+                                                        $entryTerminalCount++;
+                                                    } 
+                                                }
+// if($role == 2 && $this->config->item('enable_admin_no_gate_restriction')){ ?>
+                            <div class="row" <?php if($entryTerminalCount == 1 || (count(array_intersect($entryGateIdsArray, array_keys($role_privileges))) == 1 && in_array($value->id,array_keys($role_privileges)) ) ){ ?> style="display:none;" <?php } ?> >
+                                
                                 <div class="col-md-6">
-                                       <div class="form-group" style="display:none;">
+                                       <div class="form-group"  >
                                         <label for="gate_id">Terminal<span class="color-red">*</span></label>
                                         <select class="form-control required" id="gate_id" name="gate_id">
                                             <option value="" >Select Terminal</option>
@@ -371,18 +383,12 @@
                                             
                                             if(!empty($terminalListArray))
                                             {
-                                                $entryTerminalCount = 0;
+
                                                 foreach ($terminalListArray as $value)
                                                 {
-                                                    if($value->type == 1){
-                                                        $entryTerminalCount++;
-                                                    } 
-                                                }
-                                                foreach ($terminalListArray as $value)
-                                                {
-                                                    if($value->type == 1){
+                                                    if($value->type == 1 && in_array($value->id,array_keys($role_privileges))){
                                                     ?>
-                                                    <option value="<?php echo $value->id;  ?>" <?php if($entryTerminalCount == 1){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
+                                                    <option value="<?php echo $value->id;  ?>" <?php if($entryTerminalCount == 1 || (count(array_intersect($entryGateIdsArray, array_keys($role_privileges))) == 1 && in_array($value->id,array_keys($role_privileges)) ) ){ echo 'selected=selected'; } ?> ><?php echo $value->name; ?></option>
                                                     <?php
                                                     }
                                                 }
@@ -392,7 +398,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <?php } ?>
+                            <?php // } ?>
                             <div class="row">
                                  
                                <div class="col-md-6">

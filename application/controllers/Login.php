@@ -98,15 +98,28 @@ class Login extends CI_Controller
                                     );
                   $userStatus = $res->user_status;
                 }
+                $this->load->model('k_master_vehicle_gate_model');
+                $allGateList = $this->k_master_vehicle_gate_model->get();
+                foreach ($allGateList as $key => $value) {
+                    
+                    if($value->type == 1){
+                        $entryGateIdsArray[] =  $value->id;
+                    }else{
+                        $exitGateIdsArray[] = $value->id;
+                    }
+                    $allGateListArray[] = $value->id;
+                }
                 
+                $sessionArray['allGateListArray'] = $allGateListArray;      
+                $sessionArray['entryGateIdsArray'] = $entryGateIdsArray;      
+                $sessionArray['exitGateIdsArray'] = $exitGateIdsArray;      
                 if($userStatus == 2){
                     $this->session->set_flashdata('error', 'User is not activated!');
                     redirect('/login');
                 }
-                if($sessionArray['role'] == 2 && $this->config->item('enable_admin_no_gate_restriction')){
+        /*        if($sessionArray['role'] == 2 && $this->config->item('enable_admin_no_gate_restriction')){
                     
                 }else{
-                 $this->load->model('k_master_vehicle_gate_model');
                  $gateDetails = $this->k_master_vehicle_gate_model->getDetails($gate_id);
                  
                  $sessionArray['gateDetails'] = $gateDetails;           
@@ -123,7 +136,7 @@ class Login extends CI_Controller
 
 
                     } 
-                } 
+                } */
                 if($sessionArray['role'] != 2 && $this->config->item('enable_gate_restriction_for_employee_at_employee_login') == TRUE || $this->config->item('enable_ip_restriction_for_employee_at_employee_login') == TRUE){
                        
                         $ip = $this->input->ip_address();
@@ -153,14 +166,13 @@ class Login extends CI_Controller
 
                  
                 }
-          
-                $this->session->set_userdata($sessionArray);
-                if($gateDetails->type == 1){
-                  redirect('/employee/vehicle/add/entry');  
-                }else{
+                 $this->session->set_userdata($sessionArray);
+          $role_privileges1 = unserialize($sessionArray['role_privileges']);
+                if(count(array_intersect($entryGateIdsArray, array_keys($role_privileges1))) > 0){
+                    redirect('/employee/vehicle/add/entry');  
+                }else if(count(array_intersect($exitGateIdsArray, array_keys($role_privileges1))) > 0){
                     redirect('employee/vehicle/exit/details');  
                 }
-                //redirect('/dashboard');
             }
             else
             {

@@ -2,17 +2,24 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
-        <small>Control panel</small>
+         Home Page
       </h1>
     </section>
     
-    <section class="content">
+<!--    <section class="content">
         <div class="row">
+            <p>Home page</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-xs-6">
+               small box 
+              <p>Home Page</p>
+              
+            </div> ./col 
             <?php      if($role == ROLE_ADMIN)
             {?>
             <div class="col-lg-3 col-xs-6">
-              <!-- small box -->
+               small box 
               <div class="small-box bg-yellow">
                 <div class="inner">
                   <h3><?php echo $userCount; ?></h3>
@@ -23,8 +30,8 @@
                 </div>
                 <a href="<?php echo base_url(); ?>userListing" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
-            </div><!-- ./col -->
+            </div> ./col 
             <?php     } ?>
           </div>
-    </section>
+    </section>-->
 </div>

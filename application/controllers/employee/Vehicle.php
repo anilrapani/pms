@@ -255,7 +255,8 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addEntryView($entryId = 0) {
-        if (!array_key_exists(23,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'entry') {
+       
+        if (count(array_intersect($this->session->userdata('entryGateIdsArray'), array_keys($this->role_privileges))) == 0) {
         // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
             $this->loadThis();
         } else {
@@ -331,7 +332,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addEntry() {
-        if (!array_key_exists(23,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'entry') {
+       if (count(array_intersect($this->session->userdata('entryGateIdsArray'), array_keys($this->role_privileges))) == 0) {
         // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
         
             $this->loadThis();
@@ -354,11 +355,13 @@ class Vehicle extends BaseController {
                 $driver_name = ucwords(trim($this->input->post('driver_name')));
                 // $rc = strtoupper(trim($this->input->post('rc')));
                 $image_vehicle_number_plate = $image_driving_license_number = '';
-                if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
+                
+                $gate_id = $this->input->post('gate_id');
+                /*if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
                     $gate_id = $this->input->post('gate_id');
                 }else{
                     $gate_id = $this->global['gateDetails']->id;
-                }    
+                } */   
                 
                 $vehicle_company = (!empty($vehicle_company))?$vehicle_company:'New Company';
                 
@@ -470,7 +473,7 @@ class Vehicle extends BaseController {
     
     
     function exitDetailsView(){
-        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+        if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
         // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
@@ -499,7 +502,7 @@ class Vehicle extends BaseController {
     }
     
     function exitDetails(){
-        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+       if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
         // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
@@ -582,7 +585,7 @@ class Vehicle extends BaseController {
     
     function exitDetailsByBarcode($barcode){
         
-        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+        if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
         // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
@@ -669,7 +672,7 @@ class Vehicle extends BaseController {
     }
     
     function generateExitReciept(){
-        if (!array_key_exists(25,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+       if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
         // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
             $this->loadThis();
         } else {
@@ -685,11 +688,26 @@ class Vehicle extends BaseController {
              if(!$this->config->item('disable_uploadimage_exit')) {
                 $this->form_validation->set_rules('customer_paid_by_cash_or_card', 'Cash or Card', 'trim|required|max_length[128]');
              }
-                if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
-                    $gate_id = $this->input->post('gate_id');
+             
+               $allGateList = $this->k_master_vehicle_gate_model->get();
+               $gate_id = '';
+                foreach ($allGateList as $key => $value) {
+                    
+                    if($value->type == 2){
+                        $random_gate_id = $value->id;
+                        if(in_array($value->id,array_keys($this->global['role_privileges']))){
+                            $gate_id = $value->id;
+                            }
+                        }   
+                }
+                
+                $gate_id = (empty($gate_id))?$random_gate_id:$gate_id;
+                  
+                /*if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
+                
                 }else{
                     $gate_id = $this->global['gateDetails']->id;
-                }   
+                } */  
             // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
                 
             if ($this->form_validation->run() == FALSE) {
@@ -898,7 +916,7 @@ class Vehicle extends BaseController {
     
     
     function manualExit(){
-         if ($this->isAdmin() == TRUE && $this->session->userdata('role') != 3) {
+        if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0 && !array_key_exists(28,$this->role_privileges)) {
             $this->loadThis();
         } else {
             $this->load->library('form_validation');
@@ -1104,7 +1122,7 @@ class Vehicle extends BaseController {
      * This function is used to load the add new form
      */
     function addManualExitView($entryId = 0) {
-        if (!array_key_exists(28,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'exit') {
+        if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0 && !array_key_exists(28,$this->role_privileges)) {
             $this->loadThis();
         } else {
             $data = array();
@@ -1177,7 +1195,7 @@ class Vehicle extends BaseController {
     
     
     function addManualExit() {
-        if (!array_key_exists(28,$this->role_privileges) && $this->session->userdata('gateDetails')->type_name != 'entry') {
+        if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0 && !array_key_exists(28,$this->role_privileges)) {
         // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'entry')) {
         
             $this->loadThis();
@@ -1208,13 +1226,30 @@ class Vehicle extends BaseController {
                 $vehicle_number = strtoupper(trim($this->input->post('vehicle_number')));
                 $driving_license_number = strtoupper(trim($this->input->post('driving_license_number')));
                 $driver_name = ucwords(trim($this->input->post('driver_name')));
-                $rc = strtoupper(trim($this->input->post('rc')));
+              //  $rc = strtoupper(trim($this->input->post('rc')));
                 $image_vehicle_number_plate = $image_driving_license_number = '';
+                $gate_id = $this->input->post('gate_id');
+                
+                
+                
+            if(isset($exit_date_time) && isset($entry_date_time)){
+                    $total_number_of_seconds = strtotime($exit_date_time) - strtotime($entry_date_time);
+            }
+            
+            
+            //if total number of minutes cross this max minutes write logic here to get final amount
+            $total_number_of_minutes = ceil($total_number_of_seconds/60);
+            
+                
+                
+                
+                
+                /*
                 if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
                     $gate_id = $this->input->post('gate_id');
                 }else{
                     $gate_id = $this->global['gateDetails']->id;
-                }    
+                } */   
                 
                 $vehicle_company = (!empty($vehicle_company))?$vehicle_company:'New Company';
                 
@@ -1289,9 +1324,11 @@ class Vehicle extends BaseController {
                     'driver_name' => $driver_name,
                     'gate_id_entry' => $gate_id,
                     'gate_id_exit' => $gate_id,
-                    'rc' => $rc,
+                 //   'rc' => $rc,
                     'entry_time' => $entry_date_time,
                     'exit_time' => $exit_date_time,
+                    'manual_exit' => 1,
+                    'total_minutes' =>   $total_number_of_minutes,
                     'total_amount' => $amount,   
                     'barcode' =>  $code, 
                     'status' => 1,
