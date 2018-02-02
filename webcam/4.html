@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript">
+            var getUserMedia = c => {
+            var face = c.video && c.video.facingMode;
+            face = face && ((typeof face === 'object') ? face : {ideal: face});
+
+            if (!(face && (face.exact == "environment" || face.ideal == "environment")) ||
+                (navigator.mediaDevices.getSupportedConstraints &&
+                 navigator.mediaDevices.getSupportedConstraints().facingMode)) {
+              return navigator.mediaDevices.getUserMedia(c);
+            }
+            // Polyfill "environment" facingMode. Look for "back" in label, or last cam (usually back).
+            delete c.video.facingMode;
+            return navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+              devices = devices.filter(d => d.kind == "videoinput");
+              var back = devices.find(d => d.label.toLowerCase().indexOf("back") != -1) ||
+                         (devices.length && devices[devices.length-1]);
+              if (back) {
+                c.video.deviceId = face.exact? { exact: back.deviceId } : { ideal: back.deviceId };
+              }
+              return navigator.mediaDevices.getUserMedia(c);
+            });
+          };
+
+          getUserMedia({ video: { facingMode: "environment" }, audio: true })
+            .then(stream => video.srcObject = stream)
+            .catch(e => log(e.name + ": "+ e.message));
+
+          var log = msg => div.innerHTML += msg + "<br>";
+        </script>
+    </head>
+    <body>
+        <video id="video" height="500" width="500" autoplay></video><br>
+<div id="div"></div>
+        
+    </body>
+</html>
