@@ -364,7 +364,7 @@ class Vehicle extends BaseController {
                 } */   
                 
                 $vehicle_company = (!empty($vehicle_company))?$vehicle_company:'New Company';
-                
+        /*        
                 $config['allowed_types']        = 'gif|jpg|png';
 //                $config['max_size']             = 2000;
 //                $config['max_width']            = 1024;
@@ -376,38 +376,139 @@ class Vehicle extends BaseController {
                 $this->load->library('upload', $config, 'number_plate_upload'); // Create custom object for cover upload
                 $this->number_plate_upload->initialize($config);
                 $image_error = false;
-                if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate'))
-                {
-                       $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
-                       $image_error = true;
-                       
-                }  else
-                {
-                        $upload_data_image_vehicle_number_plate = array('upload_data' => $this->number_plate_upload->data());
-                        $image_vehicle_number_plate = $upload_data_image_vehicle_number_plate['upload_data']['file_name'];
-                        
-                    
-                }
+          */  
                 
-                $config['upload_path'] = './assets/images/upload/drivinglicense/';
-                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\drivinglicense';
-                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,26)).mt_rand();
-                $this->load->library('upload', $config, 'dl_upload'); // Create custom object for cover upload
-                $this->dl_upload->initialize($config);
-                
+$image_vehicle_number_plate = $this->input->post('image_vehicle_number_plate');
+
+if(empty(trim($image_vehicle_number_plate))){
+$image_vehicle_number_plate = '';
+}else{
     
-                if ( ! $this->dl_upload->do_upload('image_driving_license_number') )
-                {
-                    if(!$this->config->item('disable_mandatory_field_entry')) { 
-                       $this->session->set_flashdata('error','Driving License Image: '. $this->dl_upload->display_errors());
-                       $image_error = true;
-                    } 
-                       
-                } else
-                {
-                        $upload_data_image_driving_license_number = array('upload_data' => $this->dl_upload->data());
-                        $image_driving_license_number = $upload_data_image_driving_license_number['upload_data']['file_name'];
-                }
+    $image_vehicle_number_plate_data = $image_vehicle_number_plate;
+    $image_vehicle_number_plate = str_replace('data:image/png;base64,', '', $image_vehicle_number_plate);
+    $image_vehicle_number_plate = str_replace(' ', '+', $image_vehicle_number_plate);
+    $image_vehicle_number_plate_filedata = base64_decode($image_vehicle_number_plate);
+    $image_vehicle_number_plate_name = $image_vehicle_number_plate = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand().'.png';
+    file_put_contents(APPPATH . '../assets/images/upload/numberplate/original/'.$image_vehicle_number_plate,$image_vehicle_number_plate_filedata);
+    
+    $fpath = FCPATH;
+    $fpath =  str_replace('\\', '/', $fpath);
+    $final_path = $fpath."assets/images/upload/numberplate/original/$image_vehicle_number_plate_name";
+    list($width_orig, $height_orig) = getimagesize($final_path);
+    
+    $image_vehicle_number_plate_path_to_upload = '../assets/images/upload/numberplate/';
+   // thumbnail_from_image_data('original',5,$image_vehicle_number_plate_data,$image_vehicle_number_plate_name,$image_vehicle_number_plate_path_to_upload,$width_orig,$height_orig);
+    thumbnail_from_image_data(75,76,$image_vehicle_number_plate_data,$image_vehicle_number_plate_name,$image_vehicle_number_plate_path_to_upload,$width_orig,$height_orig);
+    //thumbnail_from_image_data(150,151,$image_vehicle_number_plate_data,$image_vehicle_number_plate_name,$image_vehicle_number_plate_path_to_upload,$width_orig,$height_orig);
+    thumbnail_from_image_data(240,241,$image_vehicle_number_plate_data,$image_vehicle_number_plate_name,$image_vehicle_number_plate_path_to_upload,$width_orig,$height_orig);
+    //thumbnail_from_image_data(300,301,$image_vehicle_number_plate_data,$image_vehicle_number_plate_name,$image_vehicle_number_plate_path_to_upload,$width_orig,$height_orig);
+    thumbnail_from_image_data(640,641,$image_vehicle_number_plate_data,$image_vehicle_number_plate_name,$image_vehicle_number_plate_path_to_upload,$width_orig,$height_orig);
+    $image_vehicle_number_plate = $image_vehicle_number_plate_name;
+
+}
+
+
+
+
+
+/*
+ * without icons code
+$image_vehicle_number_plate = $this->input->post('image_vehicle_number_plate');
+if(empty(trim($image_vehicle_number_plate))){
+$image_vehicle_number_plate = '';
+}else{
+$image_vehicle_number_plate = str_replace('data:image/png;base64,', '', $image_vehicle_number_plate);
+$image_vehicle_number_plate = str_replace(' ', '+', $image_vehicle_number_plate);
+$image_vehicle_number_plate_filedata = base64_decode($image_vehicle_number_plate);
+$image_vehicle_number_plate = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand().'.png';
+file_put_contents(APPPATH . '../assets/images/upload/numberplate/'.$image_vehicle_number_plate,$image_vehicle_number_plate_filedata);
+}
+
+
+ */
+
+
+$image_driving_license_number = $this->input->post('image_driving_license_number');
+
+if(empty(trim($image_driving_license_number))){
+$image_driving_license_number = '';
+}else{
+    
+    $image_driving_license_number_data = $image_driving_license_number;
+    $image_driving_license_number = str_replace('data:image/png;base64,', '', $image_driving_license_number);
+    $image_driving_license_number = str_replace(' ', '+', $image_driving_license_number);
+    $image_driving_license_number_filedata = base64_decode($image_driving_license_number);
+
+    $image_driving_license_number_name = $image_driving_license_number = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand().'.png';
+    file_put_contents(APPPATH . '../assets/images/upload/drivinglicense/original/'.$image_driving_license_number,$image_driving_license_number_filedata);
+    
+    $fpath = FCPATH;
+    $fpath =  str_replace('\\', '/', $fpath);
+    $final_path = $fpath."assets/images/upload/drivinglicense/original/$image_driving_license_number_name";
+    list($width_orig, $height_orig) = getimagesize($final_path);
+    
+    $image_driving_license_number_path_to_upload = '../assets/images/upload/drivinglicense/';
+  //  thumbnail_from_image_data('original',5,$image_driving_license_number_data,$image_driving_license_number_name,$image_driving_license_number_path_to_upload,$width_orig,$height_orig);
+    thumbnail_from_image_data(75,76,$image_driving_license_number_data,$image_driving_license_number_name,$image_driving_license_number_path_to_upload,$width_orig,$height_orig);
+    //thumbnail_from_image_data(150,151,$image_driving_license_number_data,$image_driving_license_number_name,$image_driving_license_number_path_to_upload,$width_orig,$height_orig);
+    thumbnail_from_image_data(240,241,$image_driving_license_number_data,$image_driving_license_number_name,$image_driving_license_number_path_to_upload,$width_orig,$height_orig);
+    //thumbnail_from_image_data(300,301,$image_driving_license_number_data,$image_driving_license_number_name,$image_driving_license_number_path_to_upload,$width_orig,$height_orig);
+    thumbnail_from_image_data(640,641,$image_driving_license_number_data,$image_driving_license_number_name,$image_driving_license_number_path_to_upload,$width_orig,$height_orig);
+    $image_driving_license_number = $image_driving_license_number_name;
+
+}
+
+/*
+$image_driving_license_number = $this->input->post('image_driving_license_number');
+if(empty(trim($image_driving_license_number))){
+$image_driving_license_number = '';
+}else{
+$image_driving_license_number = str_replace('data:image/png;base64,', '', $image_driving_license_number);
+$image_driving_license_number = str_replace(' ', '+', $image_driving_license_number);
+$image_driving_license_number_filedata = base64_decode($image_driving_license_number);
+
+$image_driving_license_number = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand().'.png';
+file_put_contents(APPPATH . '../assets/images/upload/drivinglicense/'.$image_driving_license_number,$image_driving_license_number_filedata);
+}
+*/
+
+
+//saving
+
+
+
+//                if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate'))
+//                {
+//                       $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
+//                       $image_error = true;
+//                       
+//                }  else
+//                {
+//                        $upload_data_image_vehicle_number_plate = array('upload_data' => $this->number_plate_upload->data());
+//                        $image_vehicle_number_plate = $upload_data_image_vehicle_number_plate['upload_data']['file_name'];
+//                        
+//                    
+//                }
+//                
+//                $config['upload_path'] = './assets/images/upload/drivinglicense/';
+//                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\drivinglicense';
+//                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,26)).mt_rand();
+//                $this->load->library('upload', $config, 'dl_upload'); // Create custom object for cover upload
+//                $this->dl_upload->initialize($config);
+//                
+//    
+//                if ( ! $this->dl_upload->do_upload('image_driving_license_number') )
+//                {
+//                    if(!$this->config->item('disable_mandatory_field_entry')) { 
+//                       $this->session->set_flashdata('error','Driving License Image: '. $this->dl_upload->display_errors());
+//                       $image_error = true;
+//                    } 
+//                       
+//                } else
+//                {
+//                        $upload_data_image_driving_license_number = array('upload_data' => $this->dl_upload->data());
+//                        $image_driving_license_number = $upload_data_image_driving_license_number['upload_data']['file_name'];
+//                }
                 
                 if($image_error == false){
                            //load library
@@ -748,7 +849,8 @@ class Vehicle extends BaseController {
             //if total number of minutes cross this max minutes write logic here to get final amount
             
             $total_number_of_minutes = ceil($total_number_of_seconds/60);
-            
+            // $total_number_of_minutes = 8;
+            // echo $total_number_of_minutes."/".$maximumToMinutesByPriceId;
             if($total_number_of_minutes > $maximumToMinutesByPriceId){
                 if($this->config->item('enable_more_than_minutes_per_hour_amount')) {
                     $total_number_of_hours = ceil($total_number_of_seconds/3600);
@@ -767,14 +869,18 @@ class Vehicle extends BaseController {
                 }
                  * 
                  */
+                //echo $total_number_of_minutes.'////';
                 foreach ($vehicleTypePrices as $key => $value) {
-                 if($total_number_of_minutes > $value->from_minutes && $total_number_of_minutes <= $value->to_minutes){
+               //     echo $value->from_minutes."/".$value->to_minutes."<br>"; 
+                 if($total_number_of_minutes >= $value->from_minutes && $total_number_of_minutes <= $value->to_minutes){
+                     
                         $amount = $value->amount;
                         break;
                     }
                 }    
             }
-                
+            //echo $amount;
+              //  exit;
                 $config['allowed_types']        = 'gif|jpg|png';
 //                $config['max_size']             = 2000;
 //                $config['max_width']            = 1024;
@@ -1202,163 +1308,71 @@ class Vehicle extends BaseController {
         } else {
             $this->load->library('form_validation');
 
-           $this->form_validation->set_rules('vehicle_type_id', 'Vehicle Type', 'trim|required|max_length[128]');
+           $this->form_validation->set_rules('entryId', 'Entry Id', 'trim|required|max_length[128]');
+           $this->form_validation->set_rules('exit_date', 'Exit Id', 'trim|required|max_length[128]');
+           $this->form_validation->set_rules('exit_time', 'Exit Time', 'trim|required|max_length[128]');
+           $this->form_validation->set_rules('amount', 'Amount', 'trim|required|max_length[128]');
+           $this->form_validation->set_rules('parked_hours', 'Parked Hours', 'trim|required|max_length[128]');
            
-            // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
-                
-            if ($this->form_validation->run() == FALSE) {
+           
+           if ($this->form_validation->run() == FALSE) {
                 $this->addEntryView();
-            } else {
+           } else {
                 $data =array();
                 
-                $vehicle_type_id = $this->input->post('vehicle_type_id');
-                $entry_date = $this->input->post('entry_date');
-                $entry_time = $this->input->post('entry_time');
+                $gate_id = '';
+                $allGateList = $this->k_master_vehicle_gate_model->get();
+                foreach ($allGateList as $key => $value) {
+                    if($value->type == 2){
+                        $random_gate_id = $value->id;
+                        if(in_array($value->id,array_keys($this->global['role_privileges']))){
+                            $gate_id = $value->id;
+                            }
+                        }   
+                }
+                
+                $gate_id = (empty($gate_id))?$random_gate_id:$gate_id;
                 $exit_date = $this->input->post('exit_date');
+                $entryId = $this->input->post('entryId');
+                $barcode = $this->input->post('code');
+                
                 
                 $exit_time = $this->input->post('exit_time');
                 $amount = $this->input->post('amount');
-                
-                $entry_date_time = $entry_date.' '.$entry_time.':00';
+                $parked_hours = $this->input->post('parked_hours');
+                list($hours,$minutes) = explode(':',$parked_hours);
+                    
+                $total_number_of_minutes = ($hours*60)+$minutes;
                 $exit_date_time = $exit_date.' '.$exit_time.':00';
-                
-                $vehicle_company = ucwords(trim($this->input->post('vehicle_company')));
-                $vehicle_number = strtoupper(trim($this->input->post('vehicle_number')));
-                $driving_license_number = strtoupper(trim($this->input->post('driving_license_number')));
-                $driver_name = ucwords(trim($this->input->post('driver_name')));
-              //  $rc = strtoupper(trim($this->input->post('rc')));
-                $image_vehicle_number_plate = $image_driving_license_number = '';
-                $gate_id = $this->input->post('gate_id');
-                
-                
-                
-            if(isset($exit_date_time) && isset($entry_date_time)){
-                    $total_number_of_seconds = strtotime($exit_date_time) - strtotime($entry_date_time);
-            }
-            
-            
-            //if total number of minutes cross this max minutes write logic here to get final amount
-            $total_number_of_minutes = ceil($total_number_of_seconds/60);
-            
-                
-                
-                
-                
-                /*
-                if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
-                    $gate_id = $this->input->post('gate_id');
-                }else{
-                    $gate_id = $this->global['gateDetails']->id;
-                } */   
-                
-                $vehicle_company = (!empty($vehicle_company))?$vehicle_company:'New Company';
-                
-                $config['allowed_types']        = 'gif|jpg|png';
-//                $config['max_size']             = 2000;
-//                $config['max_width']            = 1024;
-//                $config['max_height']           = 768; 
-//                $config['max_height']           = 768; 
-                $config['upload_path'] = './assets/images/upload/numberplate/';
-                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\numberplate';
-                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand();
-                $this->load->library('upload', $config, 'number_plate_upload'); // Create custom object for cover upload
-                $this->number_plate_upload->initialize($config);
-                $image_error = false;
-                if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate'))
-                {
-                       $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
-                       $image_error = true;
-                       
-                }  else
-                {
-                        $upload_data_image_vehicle_number_plate = array('upload_data' => $this->number_plate_upload->data());
-                        $image_vehicle_number_plate = $upload_data_image_vehicle_number_plate['upload_data']['file_name'];
-                        
                     
-                }
-                
-                $config['upload_path'] = './assets/images/upload/drivinglicense/';
-                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\drivinglicense';
-                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,26)).mt_rand();
-                $this->load->library('upload', $config, 'dl_upload'); // Create custom object for cover upload
-                $this->dl_upload->initialize($config);
-                
-    
-                if ( ! $this->dl_upload->do_upload('image_driving_license_number') )
-                {
-                    if(!$this->config->item('disable_mandatory_field_entry')) { 
-                       $this->session->set_flashdata('error','Driving License Image: '. $this->dl_upload->display_errors());
-                       $image_error = true;
-                    } 
-                       
-                } else
-                {
-                        $upload_data_image_driving_license_number = array('upload_data' => $this->dl_upload->data());
-                        $image_driving_license_number = $upload_data_image_driving_license_number['upload_data']['file_name'];
-                }
-                
-                if($image_error == false){
-                           //load library
-		$this->load->library('zend');
-		//load in folder Zend
-		$this->zend->load('Zend/Barcode');
-		//generate barcode
-                $code = mt_rand(1000,10000).time().mt_rand(1000,10000);
-		$file = Zend_Barcode::draw('code128', 'image', array('text'=>$code), array());
-                
-                //$code = time().'1222';
-        imagepng($file,"barcode/{$code}.png");
-       // $data['barcode'] = $code.'.png';
-        // $data['bar'] = $bar;
-       // $this->load->view('anil',$data);
-                
-         
-                    
-                   $vehicleEntryInfo = array(
-                    'vehicle_type_id' => $vehicle_type_id,
-                    'vehicle_company' => $vehicle_company,
-                    'vehicle_number'  => $vehicle_number,
-                    'driving_license_number' => $driving_license_number,
-                    'image_vehicle_number_plate' => $image_vehicle_number_plate,
-                    'image_driving_license_number' => $image_driving_license_number,
-                    'driver_name' => $driver_name,
-                    'gate_id_entry' => $gate_id,
+                $manualExitData = array(
                     'gate_id_exit' => $gate_id,
-                 //   'rc' => $rc,
-                    'entry_time' => $entry_date_time,
                     'exit_time' => $exit_date_time,
                     'manual_exit' => 1,
                     'total_minutes' =>   $total_number_of_minutes,
-                    'total_amount' => $amount,   
-                    'barcode' =>  $code, 
-                    'status' => 1,
-                    'deleted' => 2,
-                    'created_by' => $this->vendorId,
-                    'created_time' => date('Y-m-d H:i:s')
+                    'total_amount' => $amount,
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s')
                     
                 );
-                   
-                $inserted_id = $this->k_parking_model->insert($vehicleEntryInfo);
-//                echo $this->db->last_query();
-//                echo $inserted_id;
-//                exit;
-                // $result = $this->k_parking_model->update($vehicleEntryInfo, $entryId);
+                
+                $result = $this->k_parking_model->update($manualExitData,$entryId);
+
                 $this->global['pageTitle'] = PROJECT_NAME . ' : Manual Exit';
                 $data['title'] = "Manual Exit";
                 $data['sub_title'] = "Exit";
                 
-                if ($inserted_id > 0) {
+                if ($result > 0) {
                         
-                        $this->session->set_flashdata('success', 'Entry Successful');
+                        $this->session->set_flashdata('success', 'Manual Exit Successful');
                 
                     } else {
                         $this->session->set_flashdata('error', 'Entry failed');
                 
                         
                     }
-                }
-            
-                redirect('/employee/vehicle/exitdetails/'.$code);
+               
+                redirect('employee/vehicle/manualexitdetails/'.$barcode);
                 // $this->addEntryView();
               //   $this->loadViews($view, $this->global, $data, NULL);
             }
@@ -1385,6 +1399,478 @@ class Vehicle extends BaseController {
     
     }
    
+    
+        function manualExitDetailsView(){
+        if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+            $this->loadThis();
+        } else {
+            
+           $data = array();
+           $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit';
+           $data['titleScannerEntry'] = "Scanner entry";
+           $data['titleManualEntry']  = "Manual entry";
+           $data['title'] = "Barcode";
+           
+           $view = 'employee/vehicle/manualexit/details';
+           $data['onlysearchView'] = true;
+           $data['isNewEntry'] = false;
+           $data['isNotExited'] = false;
+                 $this->global['assets'] = array('cssTopArray'     => array(),
+                              'cssBottomArray'  => array(),
+                              'jsTopArray'      => array(base_url() . 'assets/js/employee/quagga.min'),
+                              'jsBottomArray'   => array()
+                              
+                    );
+           $this->loadViews($view, $this->global, $data, NULL);
+                    
+            
+            
+        }    
+    }
+    
+    
+     function manualExitDetails(){
+       if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+            $this->loadThis();
+        } else {
+            
+            $data = array();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit Details';
+            $data['title'] = "Entry No";
+          
+            $this->load->library('form_validation');
+
+           $this->form_validation->set_rules('barcode', 'Barcode', 'trim|max_length[128]');
+           // $this->form_validation->set_rules('entryId', 'Email', 'trim|valid_email|max_length[128]');
+                 
+            if ($this->form_validation->run() == FALSE) {
+                $this->manualExitDetailsView();
+            } else {
+                 $entryId = $this->input->post('entryId');
+                  $id = (isset($barcode))?$barcode:$entryId;
+                  
+                  $barcode = $this->input->post('barcode');
+                  $entryId = $this->input->post('entryId');
+                  $id = (isset($barcode))?$barcode:$entryId;
+                  
+                     $data['onlysearchView'] = false;
+                    $data['sub_title'] = "Exit Details";
+                    
+                    $entryDetails = $this->k_parking_model->getDetailsByBarcodeOrId($id);
+                    
+                    if(isset($entryDetails->vehicle_type_id)){
+                        $data['barcode'] = $entryDetails->barcode;
+                        $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                        if(isset($vehicleTypeDetails->number_of_wheels)){
+                        $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                        }
+                    
+                    $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+                    $data['vehicleTypePrices'] = $vehicleTypePrices;
+                    $data['masterPriceDetails'] = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+        
+                        
+                        $data['vehicleTypePrices'] = $vehicleTypePrices;
+                        
+                        
+                        
+                    }
+                    
+
+                     $isNotExited = $isNewEntry = true;
+            if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
+                $isNewEntry = false;
+            }
+            
+            if(isset($entryDetails->exit_time) && strtotime($entryDetails->exit_time) > 0){
+                $isNotExited = false;
+            }
+            $data['isNewEntry'] = $isNewEntry;
+            $data['isNotExited'] = $isNotExited;
+            
+                    $view = "employee/vehicle/manualexit/details";
+                    $data['entryDetails'] = $entryDetails;
+                    if(count($entryDetails) != 1){
+                             $this->session->set_flashdata('error', 'Invalid Entry');
+                             $view = 'employee/vehicle/entry/invalid';
+                             $this->loadViews($view, $this->global, $data, NULL);
+                    }else{
+                        redirect('employee/vehicle/manualexitdetails/'.$entryDetails->barcode);
+                    }
+                    
+                    
+                    
+                    
+            
+            }
+           
+            
+            
+        }    
+    }
+    
+    function generateManualExitReceipt(){
+       if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+            $this->loadThis();
+        } else {
+            $data = array();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit Bill';
+            $data['title'] = "Exit Bill - Entry No : ";
+            $data['sub_title'] = "Exit Bill - Entry No : ";
+            
+            $this->load->library('form_validation');
+            
+            
+            $this->form_validation->set_rules('entryId', 'Vehicle Entry Id', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('exit_date', 'Exit Date', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('exit_time', 'Exit Time', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('parked_hours', 'Parked Hours', 'trim|required|max_length[128]');
+            $this->form_validation->set_rules('amount', 'Amount', 'trim|required|max_length[128]');
+            
+             if(!$this->config->item('disable_uploadimage_exit')) {
+                $this->form_validation->set_rules('customer_paid_by_cash_or_card', 'Cash or Card', 'trim|required|max_length[128]');
+             }
+             
+               $allGateList = $this->k_master_vehicle_gate_model->get();
+               $gate_id = '';
+                foreach ($allGateList as $key => $value) {
+                    
+                    if($value->type == 2){
+                        $random_gate_id = $value->id;
+                        if(in_array($value->id,array_keys($this->global['role_privileges']))){
+                            $gate_id = $value->id;
+                            }
+                        }   
+                }
+                
+                $gate_id = (empty($gate_id))?$random_gate_id:$gate_id;
+                  
+                /*if($this->session->userdata('role') == 2 && $this->config->item('enable_admin_no_gate_restriction')){
+                
+                }else{
+                    $gate_id = $this->global['gateDetails']->id;
+                } */  
+            // $this->form_validation->set_rules('email', 'Email', 'trim|valid_email|max_length[128]');
+                
+            if ($this->form_validation->run() == FALSE) {
+                $this->manualExitDetailsView();
+            } else {
+                
+                $entryId = $this->input->post('entryId');
+                $exit_date = $this->input->post('exit_date');
+                $customer_paid_by_cash_or_card = $this->input->post('customer_paid_by_cash_or_card');
+                $image_vehicle_number_plate_exit = '';
+            }
+            
+            $data['entryId'] = $entryId;
+            $entryDetails = $this->k_parking_model->getDetailsByBarcodeOrId($entryId);
+            if($entryDetails == NULL){
+                redirect('/employee/vehicle/manualexit/details');
+            }else if($entryDetails->exit_time != '0000-00-00 00:00:00'){
+                redirect("employee/vehicle/manualexitdetails/".$entryDetails->barcode);
+            }
+            
+            if(isset($entryDetails->vehicle_type_id)){
+                
+                $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+                $resultMaximumToMinutesByPriceId = $this->k_master_price_per_time_model->getMaximumToMinutesByPriceId($vehicleTypeDetails->price_id);
+                
+                $maximumToMinutesByPriceId = $resultMaximumToMinutesByPriceId->maxToMinutes;
+                
+                $priceDetails = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+        
+                if(isset($entryDetails->entry_time)){
+                    $total_number_of_seconds = strtotime(date('Y-m-d H:i:s')) - strtotime($entryDetails->entry_time);
+                    
+                }
+            }
+
+            $amount = 0;
+            
+            //if total number of minutes cross this max minutes write logic here to get final amount
+            
+            $total_number_of_minutes = ceil($total_number_of_seconds/60);
+            // $total_number_of_minutes = 8;
+            // echo $total_number_of_minutes."/".$maximumToMinutesByPriceId;
+            if($total_number_of_minutes > $maximumToMinutesByPriceId){
+                if($this->config->item('enable_more_than_minutes_per_hour_amount')) {
+                    $total_number_of_hours = ceil($total_number_of_seconds/3600);
+                    $amount = $priceDetails->more_than_minutes_per_hour_amount*$total_number_of_hours;
+                }else{
+                    $amount = (ceil($total_number_of_minutes/$maximumToMinutesByPriceId))*$resultMaximumToMinutesByPriceId->amount; 
+                }
+            }{ 
+                
+                /* seconds logic
+            foreach ($vehicleTypePrices as $key => $value) {
+                 if($total_number_of_seconds > ($value->from_minutes*60) && $total_number_of_seconds <= ($value->to_minutes*60)){
+                        $amount = $value->amount;
+                        break;
+                    }
+                }
+                 * 
+                 */
+                //echo $total_number_of_minutes.'////';
+                foreach ($vehicleTypePrices as $key => $value) {
+               //     echo $value->from_minutes."/".$value->to_minutes."<br>"; 
+                 if($total_number_of_minutes >= $value->from_minutes && $total_number_of_minutes <= $value->to_minutes){
+                     
+                        $amount = $value->amount;
+                        break;
+                    }
+                }    
+            }
+            //echo $amount;
+              //  exit;
+                $config['allowed_types']        = 'gif|jpg|png';
+//                $config['max_size']             = 2000;
+//                $config['max_width']            = 1024;
+//                $config['max_height']           = 768; 
+//                $config['max_height']           = 768; 
+                                $config['upload_path'] = './assets/images/upload/numberplate/exit/';
+                // $config['upload_path']          = 'G:\xampp\htdocs\pms\assets\images\upload\numberplate\exit';
+                $config['file_name']            = mt_rand(100,1000).chr(64+rand(1,25)).mt_rand();
+                $this->load->library('upload', $config, 'number_plate_upload'); // Create custom object for cover upload
+                $this->number_plate_upload->initialize($config);
+                $image_error = false;
+                if ( ! $this->number_plate_upload->do_upload('image_vehicle_number_plate_exit'))
+                {
+                         if(!$this->config->item('disable_uploadimage_exit')) { 
+//                            $this->session->set_flashdata('error','Number Plate Image: '.$this->number_plate_upload->display_errors());
+//                            $image_error = true;
+                         }
+                }  else
+                {
+                        $upload_data_image_vehicle_number_plate_exit = array('upload_data' => $this->number_plate_upload->data());
+                        $image_vehicle_number_plate_exit = $upload_data_image_vehicle_number_plate_exit['upload_data']['file_name'];
+                }
+            
+            
+               if($image_error == false){
+                   $vehicleExitInfo = array(
+                    'total_amount' => $amount,
+                    'exit_time' => date('Y-m-d H:i:s'),
+                    'customer_paid_by_cash_or_card' => $customer_paid_by_cash_or_card,   
+                    'gate_id_exit' => $gate_id,
+                    'exited_by' => $this->vendorId,
+                    'updated_by' => $this->vendorId,
+                    'updated_time' => date('Y-m-d H:i:s'),
+                    'image_vehicle_number_plate_exit' => $image_vehicle_number_plate_exit,
+                    'total_minutes' => $total_number_of_minutes   
+                    
+                );
+                   
+                   $result = $this->k_parking_model->update($vehicleExitInfo, $entryDetails->id);
+                   if($result){
+                       if(isset($entryDetails->barcode))
+                            redirect('employee/vehicle/manualexitdetails/'.$entryDetails->barcode);
+                   }
+                   
+               }
+               $entryDetails = $this->k_parking_model->getDetails($entryDetails->id);
+             
+            $data['entryDetails'] =  $entryDetails;
+                    if(isset($entryDetails->vehicle_type_id)){
+                        $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                        if(isset($vehicleTypeDetails->number_of_wheels)){
+                        $data['entryDetails']->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                        } 
+                            
+                        $vehicleTypePrices = $this->k_master_price_model->getPriceListByVehicleType($entryDetails->vehicle_type_id);
+            
+                        
+                        $data['vehicleTypePrices'] = $vehicleTypePrices;
+                       
+                    }
+                    
+                $data['onlysearchView'] = false;
+                $data['isNewEntry'] = false;
+                $data['isNotExited'] = false;
+                
+            
+                
+                $this->loadViews('employee/vehicle/manualexit/details', $this->global, $data, NULL);
+            
+                }
+}
+
+
+
+    function manualExitDetailsByBarcode($barcode){
+        
+        if (count(array_intersect($this->session->userdata('exitGateIdsArray'), array_keys($this->role_privileges))) == 0) {
+        // if ($this->isAdmin() == TRUE && ($this->session->userdata('role') == 3 && $this->session->userdata('gateDetails')->type_name != 'exit')) {
+            $this->loadThis();
+        } else {
+            $data = array();
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Vehicle Exit Details';
+            $data['title'] = "Barcode";
+                     $data['titleScannerEntry'] = "Scanner entry";
+           $data['titleManualEntry']  = "Manual entry";
+       
+                     $data['onlysearchView'] = false;
+                    $data['sub_title'] = "Exit Details";
+                    $data['barcode'] = $barcode;
+                    $entryDetails = $this->k_parking_model->getDetailsByBarcode($barcode);
+                   
+                    if(isset($entryDetails->vehicle_type_id)){
+                        $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                        $entryDetails->vehicle_type_id;
+//                         echo "<pre>";
+//                         echo $this->db->last_query();
+//                         exit;
+//                    var_dump($vehicleTypeDetails);
+//                    exit;
+                        if(isset($vehicleTypeDetails->number_of_wheels)){
+                        $entryDetails->number_of_wheels = $vehicleTypeDetails->number_of_wheels;
+                        }
+                        
+                        
+                        
+                /** start*/
+            
+            if($entryDetails == NULL){
+                redirect('/employee/vehicle/manualexit/details');
+            }
+            
+            if(isset($entryDetails->vehicle_type_id)){
+                
+                $vehicleTypeDetails = $this->k_master_vehicle_type_model->getDetails($entryDetails->vehicle_type_id);
+                $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+                $resultMaximumToMinutesByPriceId = $this->k_master_price_per_time_model->getMaximumToMinutesByPriceId($vehicleTypeDetails->price_id);
+                
+                $maximumToMinutesByPriceId = $resultMaximumToMinutesByPriceId->maxToMinutes;
+                
+                $priceDetails = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+        
+                if(isset($entryDetails->entry_time)){
+                    $total_number_of_seconds = strtotime(date('Y-m-d H:i:s')) - strtotime($entryDetails->entry_time);
+                    
+                }
+            }
+
+            $amount = 0;
+            
+            //if total number of minutes cross this max minutes write logic here to get final amount
+            
+            $total_number_of_minutes = ceil($total_number_of_seconds/60);
+            // $total_number_of_minutes = 8;
+            // echo $total_number_of_minutes."/".$maximumToMinutesByPriceId;
+            if($total_number_of_minutes > $maximumToMinutesByPriceId){
+                if($this->config->item('enable_more_than_minutes_per_hour_amount')) {
+                    $total_number_of_hours = ceil($total_number_of_seconds/3600);
+                    $amount = $priceDetails->more_than_minutes_per_hour_amount*$total_number_of_hours;
+                }else{
+                    $amount = (ceil($total_number_of_minutes/$maximumToMinutesByPriceId))*$resultMaximumToMinutesByPriceId->amount; 
+                }
+            }{ 
+                
+                /* seconds logic
+            foreach ($vehicleTypePrices as $key => $value) {
+                 if($total_number_of_seconds > ($value->from_minutes*60) && $total_number_of_seconds <= ($value->to_minutes*60)){
+                        $amount = $value->amount;
+                        break;
+                    }
+                }
+                 * 
+                 */
+                //echo $total_number_of_minutes.'////';
+                foreach ($vehicleTypePrices as $key => $value) {
+               //     echo $value->from_minutes."/".$value->to_minutes."<br>"; 
+                 if($total_number_of_minutes >= $value->from_minutes && $total_number_of_minutes <= $value->to_minutes){
+                     
+                        $amount = $value->amount;
+                        break;
+                    }
+                }    
+            }
+                        
+                /** end*/        
+                        
+                      
+                        
+              $vehicleTypePrices = $this->k_master_price_per_time_model->getPricePerTimesByPriceId($vehicleTypeDetails->price_id);
+              
+                    $data['vehicleTypePrices'] = $vehicleTypePrices;
+                    $data['masterPriceDetails'] = $this->k_master_price_model->getDetails($vehicleTypeDetails->price_id);
+                    
+                    
+                        
+                        $data['vehicleTypePrices'] = $vehicleTypePrices;
+                        
+                        //$data['entryId'] = $entryDetails->id;
+                        
+                    }
+                    
+                             if(isset($entryDetails->gate_id_entry)){
+                    $entryGateDetails = $this->k_master_vehicle_gate_model->getDetails($entryDetails->gate_id_entry);
+                    $data['entryGateDetails']= $entryGateDetails;
+                }
+                
+                 if(isset($entryDetails->gate_id_exit)){
+                    $entryGateDetails = $this->k_master_vehicle_gate_model->getDetails($entryDetails->gate_id_exit);
+                    $data['exitGateDetails']= $entryGateDetails;
+                }
+
+                     $isNotExited = $isNewEntry = true;
+            if(isset($entryDetails->entry_time) && strtotime($entryDetails->entry_time) > 0){
+                $isNewEntry = false;
+            }
+            
+            if(isset($entryDetails->exit_time) && strtotime($entryDetails->exit_time) > 0){
+                $isNotExited = false;
+            }
+            $data['isNewEntry'] = $isNewEntry;
+            $data['isNotExited'] = $isNotExited;
+        
+                    $view = "employee/vehicle/manualexit/details";
+                    if(count($entryDetails) != 1){
+                             $this->session->set_flashdata('error', 'Invalid Entry');
+                             $view = 'employee/vehicle/entry/invalid';
+                    }
+                      
+//                   $vehicleExitInfo = array(
+//                    'total_amount' => $amount,
+//                    'exit_time' => date('Y-m-d H:i:s'),
+//                    'customer_paid_by_cash_or_card' => $customer_paid_by_cash_or_card,   
+//                    'gate_id_exit' => $gate_id,
+//                    'exited_by' => $this->vendorId,
+//                    'updated_by' => $this->vendorId,
+//                    'updated_time' => date('Y-m-d H:i:s'),
+//                    'image_vehicle_number_plate_exit' => $image_vehicle_number_plate_exit,
+//                    'total_minutes' => $total_number_of_minutes   
+//                    
+//                );
+                   
+                    $data['entryDetails'] = $entryDetails;
+//                    $data['entryDetails']->exit_time = date('Y-m-d H:i:s');
+//                    $data['entryDetails']->amount = $amount;
+//                    $data['entryDetails']->total_minutes = $total_number_of_minutes;
+                    $data['vehicleTypeListArray'] = $this->k_master_vehicle_type_model->get();
+              
+                    
+                      $this->global['assets'] = array('cssTopArray' => array(
+                    base_url() . 'assets/plugins/datepicker/datepicker3',
+                    base_url() . 'assets/plugins/timepicker/bootstrap-timepicker',
+                    base_url() . 'assets/plugins/daterangepicker/daterangepicker-bs3',
+                ),
+                'cssBottomArray' => array(),
+                'jsTopArray' => array(base_url() . 'assets/js/employee/jquery.PrintArea',base_url() . 'assets/js/employee/quagga.min'),
+                'jsBottomArray' => array(
+                    base_url() . 'assets/plugins/datepicker/bootstrap-datepicker'
+                    
+                )
+            );
+                    
+                    $data['terminalListArray'] = $this->k_master_vehicle_gate_model->get();
+                    $this->loadViews($view, $this->global, $data, NULL);
+                    
+        }    
+    }
     
     function pageNotFound() {
         $this->global['pageTitle'] = 'Pms : 404 - Page Not Found';

@@ -1,119 +1,6 @@
-<style type="text/css">
-    .printTicket{
-        border: 1px solid black; 
-    }
-    .printTicketMain{
-        padding-bottom: 10%;
-    }
+<link href="<?php echo base_url(); ?>assets/css/entry.css" rel="stylesheet" type="text/css" />
+<script src="<?php echo base_url(); ?>assets/js/employee/entry.js"></script>
 
-    @media (max-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
-
-        .printTicket{
-            width: 82%;
-            margin-left: 15%;
-        }
-        .printTicket h4{
-            font-size: 10px !important;
-        }
-        .printTicket h3{
-            font-size: 12px !important;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            line-height: 3px;
-        }
-     
-
-    }
-    @media (min-width:320px)  { /* smartphones, iPhone, portrait 480x320 phones */ 
-        .printTicket{
-            width: 80%;
-            margin-left: 15%;
-        }
-        .printTicket h4{
-            font-size: 10px !important;
-
-        }
-        .printTicket h3{
-            font-size: 12px !important;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            line-height: 3px;
-        }
-        
-
-    }
-    @media (min-width:481px)  { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */ 
-        .printTicket{
-            width: 60%;
-        }
-        .printTicket h4{
-            font-size: 14px !important;
-        }
-        .printTicket h3{
-            font-size: 12px !important;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            line-height: 6px;
-        }
-    }
-    @media (min-width:641px)  { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */ 
-        .printTicket{
-            width: 60%;
-        }
-        .printTicket h4{
-            font-size: 14px !important;
-        }
-        .printTicket h3{
-            font-size: 12px !important;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            line-height: 12px;
-        }
-    }
-    @media (min-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */ 
-        .printTicket{
-            width: 60%;
-        }
-        .printTicket h4{
-            font-size: 16px !important;
-        }
-        .printTicket h3{
-            font-size: 14px !important;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            line-height: 12px;
-        }
-    }
-    @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
-        .printTicket{
-            width: 82%;
-        }
-        .printTicket h4{
-            font-size: 17px !important;
-        }
-        .printTicket h3{
-            font-size: 15px !important;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            line-height: 12px;
-        }
-    }
-    @media (min-width:1281px) { /* hi-res laptops and desktops */ 
-        .printTicket{
-            width: 70%;
-        }
-        .printTicket h4{
-            font-size: 18px !important;
-        }
-        .printTicket h3{
-            font-size: 16px !important;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            line-height: 12px;
-        }
-    }  
-</style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -191,12 +78,12 @@
                            
                             <h4>Ticket Number: <span><?php echo $entryId; ?></span></h4>
                               <h4>Entry Date: <span><?php echo date("d-m-Y", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
-                              <h4>Entry Time: <span><?php echo date("H:i", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
+                              <h4>Entry Time: <span><?php echo date("H:i:s", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
                                <?php if($isNotExited == false) { ?>
                                     
                           
                             <h4>Exit Date: <span><?php echo date("d-m-Y", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
-                            <h4>Exit Time: <span><?php echo date("H:i", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
+                            <h4>Exit Time: <span><?php echo date("H:i:s", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
                            
                                     <h4>Total Amount: <span><?php echo $entryDetails->total_amount; ?></span></h4>
                                     
@@ -243,10 +130,10 @@
             <div class="ticketLine"><p><b><span class="ticketLineLeft">Ticket Number</span>: <span><?php echo $entryDetails->id; ?></span></b></p></div>
            
             <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date</span>: <span><?php echo date("d-m-Y", strtotime($entryDetails->entry_time)); ?></span></p></div>
-            <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Time</span>: <span><?php echo date("H:i", strtotime($entryDetails->entry_time)); ?></span></p></div>
+            <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Time</span>: <span><?php echo date("H:i:s", strtotime($entryDetails->entry_time)); ?></span></p></div>
             <?php if ($isNotExited == false) { ?>
                 <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Date</span>: <span><?php echo date("d-m-Y", strtotime($entryDetails->exit_time)); ?></span></p></div>
-                <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Time</span>: <span><?php echo date("H:i", strtotime($entryDetails->exit_time)); ?></span></p></div>
+                <div class="ticketLine"><p><span style="float: left;width: 115px;">Exit Time</span>: <span><?php echo date("H:i:s", strtotime($entryDetails->exit_time)); ?></span></p></div>
                 <div class="ticketLine"><p><span style="float: left;width: 115px;">Total Amount</span>:  <span><?php echo $entryDetails->total_amount; ?></span></p></div>
             <?php } ?>
              <div class="ticketLine"><p><span style="float: left;width: 115px;">Vehicle Type</span>: <span><?php echo $entryDetails->number_of_wheels; ?>W</span></p></div>
@@ -274,7 +161,7 @@
             <!--                            <h4>Beyond this per hour : Rs. 20.00</h4>-->
             <div class="ticketLine"><p><b>No Horn </b></p></div>
             <div class="ticketLine"><p><b>Speed Limit : <span>10Km/Hr</span></b></div>
-<div class="ticketLine"><p><img id="display_image" class="img-responsive" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:240px"></p></div>
+<div class="ticketLine"><p><img id="display_image" class="img-responsive" src="<?php echo base_url() ?>/assets/images/upload/numberplate/240/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" style="width:240px !important"></p></div>
         </div>    
     </div>
 
@@ -294,7 +181,7 @@
                                     <label id="display_label">Preview Exit Number Plate</label>
                                 </div>
 
-                                <img id="display_image" class="img-responsive" src="<?php echo base_url() ?>/assets/images/upload/numberplate/exit/<?php echo $entryDetails->image_vehicle_number_plate_exit; ?>" alt="" >
+                                <img id="display_image" class="img-responsive" src="<?php echo base_url() ?>/assets/images/upload/numberplate/exit/640/<?php echo $entryDetails->image_vehicle_number_plate_exit; ?>" alt="" >
                                 <div id="display_ticket" class="img-responsive" ></div>
 
 
@@ -314,7 +201,7 @@
                                     <label id="display_label">Preview Entry Number Plate</label>
                                 </div>
 
-                                <img id="display_image" class="img-responsive" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" >
+                                <img id="display_image" class="img-responsive" src="<?php echo base_url() ?>/assets/images/upload/numberplate/640/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" >
                                 <div id="display_ticket" class="img-responsive" ></div>
 
 
@@ -334,7 +221,7 @@
                                     <label id="display_label">Preview Driving License Number</label>
                                 </div>
                                 
-                                <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/drivinglicense/<?php echo $entryDetails->image_driving_license_number; ?>" alt="" class="img-responsive" >
+                                <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/drivinglicense/640/<?php echo $entryDetails->image_driving_license_number; ?>" alt="" class="img-responsive" >
                                 <div id="display_ticket" class="img-responsive" ></div>
 
 
@@ -440,21 +327,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-6">                                
-                                    <div class="form-group">
-                                        <label for="image_vehicle_number_plate">Vehicle Number Plate Image<span class="color-red">*</span></label>
-                                        <input type="file" class="form-control required" id="image_vehicle_number_plate" name="image_vehicle_number_plate" value="">
-                                         
-                                    </div>
-                                </div>
-                                
-                                
-                               
-                        
-                            </div>
-                            
-                            <div class="row">
-                                 <div class="col-md-6 hidden-sm hidden-xs hidden-md">                                
+                               <div class="col-md-6 hidden-sm hidden-xs hidden-md">                                
                                     <div class="form-group">
                                         <label for="driving_license_number">Driving License Number</label>
                                         <input type="text" class="form-control" id="driving_license_number" name="driving_license_number" value="">
@@ -462,22 +335,21 @@
                                      
                                 </div>
                                 
-                                <div class="col-md-6">                                
-                                    <div class="form-group">
-                                        <label for="image_driving_license_number">Driving License Number Image</label>
-                                        <input type="file" class="form-control <?php if(!$this->config->item('disable_mandatory_field_entry')) { ?>required<?php } ?>" id="image_driving_license_number" name="image_driving_license_number" value="">
-                                        
-                                    </div>
-                                </div>
                             </div>
                             
                             <div class="row">
-                                 <div class="col-md-6">                                
+                              
+                                         <div class="col-md-6">                                
                                     <div class="form-group">
                                         <label for="driver_name">Driver Name</label>
                                         <input type="text" class="form-control" id="driver_name" name="driver_name" value="">
                                     </div>
                                 </div>
+                               
+                            </div>
+                            
+                            <div class="row">
+                        
                                 
 <!--                                <div class="col-md-6">                                
                                     <div class="form-group">
@@ -493,35 +365,109 @@
 
                         </div><!-- /.box-body -->
 
-                        <div class="box-footer">
-                            <input type="submit" class="btn btn-primary" value="Submit" />
-                            <input type="reset" class="btn btn-default" value="Reset" />
-                        </div>
+                      
                     <?php } ?>
                 </div>
             </div>
-                <div class="col-md-6" style="display:none;" id="display_image_main">
+                
+                <div class="col-md-6" id="display_image_main">
                     <div class="box box-primary">
                         <div class="box-body">
-                                         <label id="display_label"></label>
-                                         <img id="display_image" class="img-responsive" src="" alt="" />
-                                         <div id="display_ticket" class="img-responsive" ></div>
+                            <div class="form-group">
+                                        <label for="vehicle_company">Number Plate<span class="color-red">*</span></label>
+                                        <div class="clear"></div>
+                                        <input type="text" name="image_vehicle_number_plate" class="form-control required" style="display:none;">
+                            </div>
+                            
+                            <div class="container_video">
+                                
+                            <div class="app">
+                                       <a href="#" id="start-camera" class="visible">Start Capture</a>
+                              <video id="camera-stream" class="embed-responsive-item" style="height: 50% !important; "></video>
+                                        <img id="snap">
+                                        
+                                        
+                                          <p id="error-message"></p>
+
+                                        <div class="controls">
+                                          <a href="#" id="delete-photo" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a>
+                                          <a href="#" id="take-photo" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+                                          <a href="#" style="display:none;" id="download-photo" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>  
+                                        </div>
+
+                                        <!-- Hidden canvas element. Used for taking snapshot of video. -->
+                                        <canvas></canvas>
+                                        </div>
+                            </div>
                         </div>
                         <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
                     </div>
                 </div>
                 <div class="clear"></div>
-                <div class="col-md-6 pull-right" style="display:none;" id="display_image_license_main">
+                <div class="col-md-6 pull-right" id="display_image_license_main">
                     <div class="box box-primary">
                         <div class="box-body">
-                                         <label id="display_label_license"></label>
-                                         <img id="display_image_license" src="" alt="" class="img-responsive" />
-                                         <div id="display_ticket_license" class="img-responsive"></div>
+                          <div class="form-group">
+                                        <label for="vehicle_company">Driving License</label>
+
+                            </div>
+                            <div class="container_video">
+                                
+                            <div class="app">
+                                       <a href="#" id="start-camera2" class="visible">Start Capture</a>
+                              <video id="camera-stream2" class="embed-responsive-item"></video>
+                                        <img id="snap2">
+                                        <input type="hidden" name="image_driving_license_number" >
+                                        
+                                          <p id="error-message2"></p>
+
+                                        <div class="controls2">
+                                          <a href="#" id="delete-photo2" title="Delete Photo" class="disabled"><i class="material-icons">delete</i></a>
+                                          <a href="#" id="take-photo2" title="Take Photo"><i class="material-icons">camera_alt</i></a>
+                                          <a href="#" style="display:none;" id="download-photo2" download="selfie.png" title="Save Photo" class="disabled"><i class="material-icons">file_download</i></a>  
+                                        </div>
+
+                                        <!-- Hidden canvas element. Used for taking snapshot of video. -->
+                                        <canvas id="canvas2"></canvas>
+                                        </div>
+                            </div>
+                        </div>
+                      <div class="box-footer">
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                            <input type="reset" class="btn btn-default" value="Reset" />
                         </div>
                         <!-- <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> -->
                     </div>
                 </div>
+<!--                <div class="col-md-12 col-lg-6">
+                 general form elements 
+
+
+
+                <div class="box box-primary">
+                   
+                     form start 
+
+                                            
+
+                      
+                                    </div>
+            </div>-->
+                <!-- 
+                <div class="col-md-12">
                 
+                    <div class="box box-primary">
+                        <div class="box-body">
+                        <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                            <input type="reset" class="btn btn-default" value="Reset" />
+                        </div>
+                            </div>
+                            </div>
+                        </div>
+                
+                </div> -->
                 
          </form>       
             <?php } ?>
@@ -587,6 +533,8 @@ function printPage(){
     
     
 }
+
+
 
 
 </script>

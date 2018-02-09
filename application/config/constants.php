@@ -110,7 +110,7 @@ define('ROLE_PRIVILEGES_ARRAY',                            json_encode(array(   
                                                                                 8=>'Master - Roles', // Add Role
                                                                                 9=>'Daily Exit Report',
                                                                                 10=>'Daily Remaining Vehicles Report',
-                                                                                11=>'Monthly Report',
+                                                                                11=>'Yearly-Monthly Summary',
                                                                                 // 12=>'Ticket Type Report',
                                                                                 13=>'Time Based Report',
                                                                                 14=>'Summary Report',
@@ -144,6 +144,7 @@ define('ROLE_PRIVILEGES_ARRAY',                            json_encode(array(   
                                                                               //  41=>'Cash Management - Cash Collected list', // working
                                                                              //   42=>'All Exited list', // working
                                                                                 43=>'My Current Report', // working
-                                                                                44=>'My Submitted Report' // working
+                                                                                44=>'My Submitted Report', // working
+                                                                                45=>'Yearly-Monthly Detail'
                                                                         )));
 define('EXT',                              '');

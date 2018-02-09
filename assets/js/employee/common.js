@@ -54,12 +54,18 @@ $(document).ready(function(){
         
         
         var entryForm = $("#addEntry");
+        
         entryForm.validate({
+             ignore: [],
            rules:{
-               vehicle_type_id: {required : true}
+               vehicle_type_id: {required : true},
+               image_vehicle_number_plate : {required : true}
+//               image_driving_license_number : {required : true}
            },
            messages:{
-               vehicle_type_id: {required: "This field is required"}
+               vehicle_type_id: {required: "This field is required"},
+               image_vehicle_number_plate : {required : "Please capture number plate"}
+//                image_driving_license_number : {required : "Please capture number plate"}
            }
         });
         

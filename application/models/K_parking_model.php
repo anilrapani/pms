@@ -228,7 +228,7 @@ class K_parking_model extends Common_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
             $this->db->select("BaseTbl.$this->id");
         } else {
-            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->entry_time, BaseTbl.$this->vehicle_number, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
+            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->entry_time, BaseTbl.$this->vehicle_number, BaseTbl.$this->image_vehicle_number_plate, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
             // $this->db->select("");
         }
         $this->db->from("$this->table_name as BaseTbl");
@@ -308,7 +308,7 @@ class K_parking_model extends Common_Model {
                     TIMESTAMPDIFF(hour,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time),  '.' ,
                     MOD( TIMESTAMPDIFF(minute,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time), 60), ''
                 ) as parked_hours,
-                BaseTbl.$this->total_amount, BaseTbl.$this->vehicle_number, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
+                BaseTbl.$this->total_amount, BaseTbl.$this->vehicle_number, BaseTbl.$this->image_vehicle_number_plate, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
             // $this->db->select("");
         }
         $this->db->from("$this->table_name as BaseTbl");
@@ -323,7 +323,13 @@ class K_parking_model extends Common_Model {
             $this->db->where("BaseTbl.$this->vehicle_type_id", $inputData['vehicle_type_id']);
         }
         
+        if (!empty($inputData['month'])) {
+            $this->db->where("month(BaseTbl.$this->exit_time)", $inputData['month']);
+        }
         
+        if (!empty($inputData['year'])) {
+            $this->db->where("year(BaseTbl.$this->exit_time)", $inputData['year']);
+        }
         $this->db->where(
                  array(
                      "BaseTbl.$this->status" => 1,
@@ -347,7 +353,7 @@ class K_parking_model extends Common_Model {
     }
     
     
-    function getExitListSummaryByVehicleType($inputData) {
+    function getExitListSummary($inputData) {
         
         $this->db->select("vehicle_type.name as vehicle_type_name, count(BaseTbl.$this->id) as type_count, sum(BaseTbl.$this->total_amount) as amount");
         $this->db->from("$this->table_name as BaseTbl");
@@ -360,7 +366,13 @@ class K_parking_model extends Common_Model {
             $this->db->where("BaseTbl.$this->vehicle_type_id", $inputData['vehicle_type_id']);
         }
         
+        if (!empty($inputData['month'])) {
+            $this->db->where("month(BaseTbl.$this->exit_time)", $inputData['month']);
+        }
         
+        if (!empty($inputData['year'])) {
+            $this->db->where("year(BaseTbl.$this->exit_time)", $inputData['year']);
+        }
         $this->db->where(
                  array(
                      "BaseTbl.$this->status" => 1,
@@ -390,7 +402,7 @@ class K_parking_model extends Common_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
             $this->db->select("BaseTbl.$this->id");
         } else {
-            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->entry_time, BaseTbl.$this->vehicle_number, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
+            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->image_vehicle_number_plate, BaseTbl.$this->entry_time, BaseTbl.$this->vehicle_number, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
             // $this->db->select("");
         }
         $this->db->from("$this->table_name as BaseTbl");
@@ -646,7 +658,7 @@ class K_parking_model extends Common_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
             $this->db->select("BaseTbl.$this->id");
         } else {
-            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->entry_time, BaseTbl.$this->exit_time, 
+            $this->db->select("BaseTbl.$this->id as ticket_no, BaseTbl.$this->image_vehicle_number_plate, BaseTbl.$this->entry_time, BaseTbl.$this->exit_time, 
                 CONCAT(
                     TIMESTAMPDIFF(hour,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time),  '.' ,
                     MOD( TIMESTAMPDIFF(minute,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time), 60), ''
@@ -737,7 +749,7 @@ class K_parking_model extends Common_Model {
         if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
             $this->db->select("BaseTbl.$this->id");
         } else {
-            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->entry_time, BaseTbl.$this->exit_time, 
+            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->image_vehicle_number_plate, BaseTbl.$this->entry_time, BaseTbl.$this->exit_time, 
                 CONCAT(
                     TIMESTAMPDIFF(hour,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time),  '.' ,
                     MOD( TIMESTAMPDIFF(minute,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time), 60), ''
@@ -815,8 +827,7 @@ class K_parking_model extends Common_Model {
         
     }    
         
-        
-    
+  
     
 
 }

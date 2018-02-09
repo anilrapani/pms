@@ -177,5 +177,11 @@ $route['admin/employee/role/list/(:num)'] = "admin/employee/roleList/$1";
 $route['admin/employee/add/role'] = "admin/employee/addRoleView";
 $route['admin/employee/edit/role/(:any)'] = "admin/employee/editRoleView/$1";
 
+$route['employee/vehicle/manualexit/details'] = "employee/vehicle/manualExitDetailsView";
 $route['employee/vehicle/add/manualexit'] = "employee/vehicle/addManualExitView";
 $route['employee/vehicle/add/manualexit/(:num)'] = "employee/vehicle/addManualExitView/$1";
+$route['employee/vehicle/manualexitdetails/(:any)'] = "employee/vehicle/manualexitdetailsbybarcode/$1";
+// $route['employee/vehicle/manualexitDetailsByBarcode/(:any)'] = "employee/vehicle/manualexitdetailsbybarcode/$1";
+
+$route['admin/reports/yearly_monthly_detail/list'] = "admin/reports/yearly_monthly_detail";
+$route['admin/reports/yearly_monthly_detail/list/(:num)'] = "admin/reports/yearly_monthly_detail/$1";

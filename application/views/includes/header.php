@@ -287,10 +287,19 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/monthly/list" >
                                                 <i class="fa fa-circle-o"></i>
-                                                <span>Monthly Report</span>
+                                                <span>Yearly/Monthly Summary</span>
                                             </a>
                                         </li>
     <?php } ?> 
+     <?php if (array_key_exists(45, $role_privileges)) { ?>
+                                          <li class="treeview">
+                                            <a href="<?php echo base_url(); ?>admin/reports/yearly_monthly_detail/list" >
+                                                <i class="fa fa-circle-o"></i>
+                                                <span>Yearly/Monthly Detail</span>
+                                            </a>
+                                        </li>
+    <?php } ?>                                          
+                                        
     <?php if (array_key_exists(6, $role_privileges)) { ?>
                                         <li class="treeview">
                                             <a href="<?php echo base_url(); ?>admin/reports/shift/list" >
@@ -340,7 +349,9 @@ if (isset($assets['jsTopArray']) && is_array($assets['jsTopArray'])) {
                                 </a>
                             </li>
 <?php } ?>
-                                        
+                        
+                            
+                                
                                 </ul>    
                             </li>
 
@@ -382,7 +393,7 @@ if (count(array_intersect($check_array, array_keys($role_privileges))) > 0) {
     if (count(array_intersect($exitGateIdsArray, array_keys($role_privileges))) > 0 && array_key_exists(28, $role_privileges)) {
         ?>
                                 <li class="treeview">
-                                    <a href="<?php echo base_url(); ?>employee/vehicle/add/manualexit" >
+                                    <a href="<?php echo base_url(); ?>employee/vehicle/manualexit/details" >
                                         <i class="fa fa-ticket"></i>
                                         <span>Manual Exit</span>
                                     </a>

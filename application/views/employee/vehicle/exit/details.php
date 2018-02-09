@@ -337,10 +337,7 @@
                                 </div>
                                 <?php } ?>
                                 <div style="text-align: left;">
-
-
-
-                                    <h4>Ticket Number: <span><?php echo $entryDetails->id; ?></span></h4>
+                                <h4>Ticket Number: <span><?php echo $entryDetails->id; ?></span></h4>
                                     <h4>Entry Date and Time: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->entry_time)); // date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->entry_time, $timeZoneName = 'IST'))); ?></span></h4>
                                     <?php if($isNotExited == false) { ?>
                                     <h4>Exit Date and Time: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->exit_time)); //  date("d- m- Y H : i : s", strtotime(convertTime($entryDetails->exit_time, $timeZoneName = 'IST'))); ?></span></h4>
@@ -430,7 +427,7 @@
             <!--                            <h4>Beyond this per hour : Rs. 20.00</h4>-->
 <!--            <div class="ticketLine"><p><b>No Horn </b></p></div>
             <div class="ticketLine"><p><b>Speed Limit : <span>10Km/Hr</span></b></div>-->
-            <div class="ticketLine"><p><img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" class="img-responsive"></p></div>
+            <div class="ticketLine"><p><img id="display_image" style="width: 240px !important;" src="<?php echo base_url() ?>/assets/images/upload/numberplate/240/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" class="img-responsive"></p></div>
         </div>    
     </div>
 
@@ -442,7 +439,7 @@
                     <div class="box box-primary">
                         <div class="box-body">
                                         <label id="display_label">Preview Exit Number Plate</label>
-                                         <img id="display_number_plate_image_exit" src="<?php echo base_url() ?>/assets/images/upload/numberplate/exit/<?php echo $entryDetails->image_vehicle_number_plate_exit; ?>" alt="" style="width:500px" />
+                                         <img id="display_number_plate_image_exit" src="<?php echo base_url() ?>/assets/images/upload/numberplate/exit/640/<?php echo $entryDetails->image_vehicle_number_plate_exit; ?>" alt="" class="img-responsive" />
                                          
                         </div>
                          <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> 
@@ -457,7 +454,7 @@
                                     <label id="display_label">Preview Entry Number Plate</label>
                                 </div>
 
-                                <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" class="img-responsive" >
+                                <img id="display_image" src="<?php echo base_url() ?>/assets/images/upload/numberplate/640/<?php echo $entryDetails->image_vehicle_number_plate; ?>" alt="" class="img-responsive" >
                                 <div id="display_ticket" class="img-responsive" ></div>
 
 
@@ -473,7 +470,7 @@
                                             <div class="clearfix" >
                                     <label id="display_label">Preview Driving License</label>
                                 </div>
-                                         <img src="<?php echo base_url() ?>/assets/images/upload/drivinglicense/<?php echo $entryDetails->image_driving_license_number; ?>" alt="" style="width:400px" />
+                                         <img src="<?php echo base_url() ?>/assets/images/upload/drivinglicense/640/<?php echo $entryDetails->image_driving_license_number; ?>" alt=""   class="img-responsive"  />
                                          
                         </div>
                          <img id="preview_image_driving_license_number" src="#" alt="" style="width:auto" /> 

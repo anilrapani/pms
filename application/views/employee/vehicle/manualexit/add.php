@@ -241,7 +241,7 @@
             </p>
             
         </div>
-        <div style="ticketBody" style="margin-top:100px;">
+        <div class="ticketBody" style="margin-top:100px;">
             <div class="ticketLine"><p><b><span class="ticketLineLeft">Ticket Number</span>: <span><?php echo $entryDetails->id; ?></span></b></p></div>
             <div class="ticketLine"><p><span style="float: left;width: 115px;">Entry Date and Time</span>: <span><?php echo date("d-m-Y H:i", strtotime($entryDetails->entry_time)); ?></span></p></div>
             <?php if ($isNotExited == false) { ?>

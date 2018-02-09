@@ -1,0 +1,47 @@
+
+<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
+
+<h4>A PHP Error was encountered</h4>
+
+<p>Severity: Warning</p>
+<p>Message:  imagepng() expects parameter 1 to be resource, null given</p>
+<p>Filename: helpers/pms_helper.php</p>
+<p>Line Number: 238</p>
+
+
+	<p>Backtrace:</p>
+	
+		
+	
+		
+	
+		
+	
+		
+			<p style="margin-left:10px">
+			File: G:\xampp\htdocs\pms\application\helpers\pms_helper.php<br />
+			Line: 238<br />
+			Function: imagepng			</p>
+
+		
+	
+		
+			<p style="margin-left:10px">
+			File: G:\xampp\htdocs\pms\application\controllers\employee\Vehicle.php<br />
+			Line: 440<br />
+			Function: thumbnail_from_image_data			</p>
+
+		
+	
+		
+	
+		
+			<p style="margin-left:10px">
+			File: G:\xampp\htdocs\pms\index.php<br />
+			Line: 322<br />
+			Function: require_once			</p>
+
+		
+	
+
+</div>

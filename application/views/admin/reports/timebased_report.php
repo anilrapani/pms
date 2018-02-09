@@ -129,7 +129,14 @@
                     <tr>
                       <td><?php echo $record->ticket_no; ?></td>
                       <td><?php echo $record->entry_time; ?></td>
-                      <td><?php echo $record->vehicle_number; ?></td>
+                        <td><?php if(!empty(trim($record->vehicle_number))){
+                                    echo $record->vehicle_number; 
+                                }else if(!empty(trim($record->image_vehicle_number_plate)) && file_exists(FCPATH.'assets/images/upload/numberplate/75/'.$record->image_vehicle_number_plate)){ ?> 
+                                  <a href="#" class="pop">
+                                        <img class="imageresource"  width="75" class="img-responsive" src="<?php echo base_url() ?>assets/images/upload/numberplate/75/<?php echo $record->image_vehicle_number_plate; ?>" alt="" image_name="<?php echo $record->image_vehicle_number_plate; ?>">
+                                    </a>
+                          <?php } ?>
+                      </td>
                       <td><?php echo $record->vehicle_type_name; ?></td>
                       <td><?php echo $record->exit_time; ?></td>
                       <td><?php echo $record->parked_hours; ?></td>
@@ -207,6 +214,22 @@
                                     </div>    
                                 </div>
         </div>
+                  <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+      </div>
+      <div class="modal-body">
+        <img src="" id="imagepreview" class="img-responsive" >
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
     </section>
 </div>
 <script type="text/javascript">
@@ -219,6 +242,11 @@ $('.datepicker').datepicker({
     // startDate: '-3d'
 });
 
+ $(".pop").on("click", function() {
+   var full_image = '<?php echo base_url() ?>assets/images/upload/numberplate/640/'+$(this).children( '.imageresource' ).attr('image_name');
+   $('#imagepreview').attr('src', full_image); // here asign the image to the modal when the user click the enlarge link
+   $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+});
 
   $( "#download" ).click( function(){
       

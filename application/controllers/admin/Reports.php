@@ -4,6 +4,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Tcpdf;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 /*
  * Copyright (C) 2017 Kastech
  * @project : pms
@@ -29,6 +31,11 @@ class Reports extends BaseController {
      * This function is used to load the company list
      */
     function entryList() {
+//        echo realpath(dirname(__FILE__));
+//        echo BASEPATH;
+//        echo FCPATH;
+//        echo APPPATH;  
+//        exit;
         if(!array_key_exists(7,$this->role_privileges)){
             $this->loadThis();
         } else {
@@ -49,12 +56,27 @@ class Reports extends BaseController {
                
                 $resultEntryList = $this->k_parking_model->getEntrylist($data);
                 $spreadsheet = new Spreadsheet();
+                
                 $sheet = $spreadsheet->getActiveSheet();
+                
+                
+                                
+                $cell_width = 20;
+                if($pdf == true){
+                    $cell_width=$cell_width+10;
+                }
+                $sheet->getColumnDimension('A')->setWidth(10);
+                $sheet->getColumnDimension('B')->setWidth($cell_width+5);
+                
+                $sheet->getColumnDimension('C')->setWidth(30);
+                $sheet->getColumnDimension('D')->setWidth($cell_width);
+                $sheet->getColumnDimension('E')->setWidth($cell_width);
+                $sheet->getColumnDimension('F')->setWidth($cell_width);
                 $vehicle_type_name = "All Vehicles";
-                            if(isset($vehicle_type_id) && !empty($vehicle_type_id)){
-                                $vehicle_type_details = $this->k_master_vehicle_type_model->getDetails($vehicle_type_id);
-                                $vehicle_type_name = $vehicle_type_details->name; 
-                            }    
+                    if(isset($vehicle_type_id) && !empty($vehicle_type_id)){
+                            $vehicle_type_details = $this->k_master_vehicle_type_model->getDetails($vehicle_type_id);
+                            $vehicle_type_name = $vehicle_type_details->name; 
+                    }    
                    $sheet->setCellValue('B1', 'Vehicle Type :'.$vehicle_type_name );
                    $sheet->setCellValue('C1', 'Date :'.$entryDate);
                    $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
@@ -67,9 +89,45 @@ class Reports extends BaseController {
                    $sheet->setCellValue('F3', 'Gate No');
                      $count = 4;  
                foreach ($resultEntryList as $value) {
+                   
                     $sheet->setCellValue('A' . $count, $value->ticket_no);
                    $sheet->setCellValue('B' . $count, $value->entry_time);
-                   $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   if(!empty(trim($value->vehicle_number))){
+                        $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   }else if(empty($value->vehicle_number)){
+                       
+                       $fpath = FCPATH;
+                       $fpath =  str_replace('\\', '/', $fpath);                        
+                       if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/240/'.$value->image_vehicle_number_plate)){
+                         $drawing = new Drawing();
+                        $drawing->setName('Logo');
+                        $drawing->setDescription('Logo');
+                        $final_path = $fpath."assets/images/upload/numberplate/640/$value->image_vehicle_number_plate";
+                        
+                       
+                        try {
+                            $drawing->setPath($final_path);
+                            $drawing->setWidth(200);
+                            $sheet->getRowDimension($count)->setRowHeight(140);
+                            $drawing->setOffsetY(300);
+                            $drawing->getShadow()->setDirection(45);
+                            $drawing->setCoordinates('C' . $count);
+                            $drawing->getShadow()->setVisible(true);
+                            $drawing->setWorksheet($sheet);
+                        } catch (Exception $exc) {
+                            $sheet->setCellValue('C' . $count, '');
+                        }
+                        
+                        
+                        
+                        
+                       }else{
+                           $sheet->setCellValue('C' . $count, '');
+                       }
+                        
+                   }
+
+                   
                    $sheet->setCellValue('D' . $count, $value->vehicle_type_name);
                    $sheet->setCellValue('E' . $count, $value->vehicle_company);
                    $sheet->setCellValue('F' . $count, $value->gate_entry_name);
@@ -87,14 +145,9 @@ class Reports extends BaseController {
                    
                }
                
-               $sheet->setCellValue('E' . $count, "Total No. of Vehicles  Entered");
-               $sheet->setCellValue('F' . $count, $totalVehiclesCount);
-               
-                   
-//             for ($index = 0; $index < 100; $index++) {
-//                        $sheet->setCellValue('A' . $index, 'Hi Anil' . $index);
-//                    }
-                  $downloaded_name = "daily_exit_report";
+                $sheet->setCellValue('E' . $count, "Total No. of Vehicles  Entered");
+                $sheet->setCellValue('F' . $count, $totalVehiclesCount);
+                $downloaded_name = "daily_entry_report";
                   if($pdf == true){
                         header("Content-type:application/pdf");
                         header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
@@ -112,6 +165,7 @@ class Reports extends BaseController {
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
                        if($pdf == true){
+                           $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A3_EXTRA_PAPER);
                            $writer = new Tcpdf($spreadsheet);
                         
                     }else{ 
@@ -199,12 +253,26 @@ class Reports extends BaseController {
             $data['download'] = $download;
             $data['vehicle_type_id'] = $vehicle_type_id;
               
-                 $exitListSummaryByVehicleType = $this->k_parking_model->getExitListSummaryByVehicleType($data);   
+                 $exitListSummaryByVehicleType = $this->k_parking_model->getExitListSummary($data);   
             if($download == true){
                
                 $resultExitList = $this->k_parking_model->getExitlist($data);
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
+                
+                $cell_width = 20;
+                if($pdf == true){
+                    $cell_width=$cell_width+5;
+                }
+                $sheet->getColumnDimension('B')->setWidth($cell_width);
+                
+                $sheet->getColumnDimension('C')->setWidth(30);
+                $sheet->getColumnDimension('D')->setWidth($cell_width);
+                $sheet->getColumnDimension('E')->setWidth($cell_width);
+                $sheet->getColumnDimension('F')->setWidth(15);
+                $sheet->getColumnDimension('G')->setWidth(20);
+                $sheet->getColumnDimension('H')->setWidth($cell_width+10);
+                $sheet->getColumnDimension('I')->setWidth($cell_width);
                 $vehicle_type_name = "All Vehicles";
                             if(isset($vehicle_type_id) && !empty($vehicle_type_id)){
                                 $vehicle_type_details = $this->k_master_vehicle_type_model->getDetails($vehicle_type_id);
@@ -227,7 +295,39 @@ class Reports extends BaseController {
                foreach ($resultExitList as $value) {
                    $sheet->setCellValue('A' . $count, $value->ticket_no);
                    $sheet->setCellValue('B' . $count, $value->entry_time);
-                   $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                          if(!empty(trim($value->vehicle_number))){
+                        $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   }else if(empty($value->vehicle_number)){
+                         $fpath = FCPATH;
+                        $fpath =  str_replace('\\', '/', $fpath);
+                       if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/240/'.$value->image_vehicle_number_plate)){
+                        $drawing = new Drawing();
+                        $drawing->setName('Logo');
+                        $drawing->setDescription('Logo');
+                      
+                        $final_path = $fpath."assets/images/upload/numberplate/240/$value->image_vehicle_number_plate";
+                        
+                            
+                        try {
+                            $drawing->setPath($final_path);
+                            $drawing->setWidth(200);
+                            $sheet->getRowDimension($count)->setRowHeight(140);
+                            $drawing->setOffsetY(300);
+                            $drawing->getShadow()->setDirection(45);
+                            $drawing->setCoordinates('C' . $count);
+                            $drawing->getShadow()->setVisible(true);
+                            $drawing->setWorksheet($sheet);
+                        } catch (Exception $exc) {
+                            $sheet->setCellValue('C' . $count, '');
+                        }
+
+                        
+                       }else{
+                           $sheet->setCellValue('C' . $count, '');
+                       }
+                        
+                   }
+
                    $sheet->setCellValue('D' . $count, $value->vehicle_type_name);
                    $sheet->setCellValue('E' . $count, $value->exit_time);
                    $sheet->setCellValue('F' . $count, $value->parked_hours);
@@ -282,6 +382,7 @@ class Reports extends BaseController {
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
                     if($pdf == true){
+                        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A2_PAPER);
                         $writer = new Tcpdf($spreadsheet);
                     }else{
                         $writer = new Xls($spreadsheet);
@@ -373,6 +474,24 @@ class Reports extends BaseController {
                 $resultEntryList = $this->k_parking_model->getRemaininglist($data);
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
+                
+                 $cell_width = 20;
+                if(!$pdf == true){
+                    $sheet->getColumnDimension('B')->setWidth($cell_width);
+                    $sheet->getColumnDimension('C')->setWidth(30);
+                    $sheet->getColumnDimension('D')->setWidth($cell_width);
+                    $sheet->getColumnDimension('E')->setWidth($cell_width);
+                    $sheet->getColumnDimension('F')->setWidth($cell_width);
+                }else{
+                    $cell_width=$cell_width+10;
+                    $sheet->getColumnDimension('B')->setWidth($cell_width);
+                    $sheet->getColumnDimension('C')->setWidth($cell_width);
+                    $sheet->getColumnDimension('D')->setWidth($cell_width);
+                    $sheet->getColumnDimension('E')->setWidth($cell_width);
+                    $sheet->getColumnDimension('F')->setWidth($cell_width);
+                }
+                
+                
                 $vehicle_type_name = "All Vehicles";
                             if(isset($vehicle_type_id) && !empty($vehicle_type_id)){
                                 $vehicle_type_details = $this->k_master_vehicle_type_model->getDetails($vehicle_type_id);
@@ -382,7 +501,7 @@ class Reports extends BaseController {
                    $sheet->setCellValue('C1', 'Date :'.$entryDate);
                    $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
                    
-                    $sheet->setCellValue('A3', 'Ticket No.');
+                   $sheet->setCellValue('A3', 'Ticket No.');
                    $sheet->setCellValue('B3', 'Entry Date & Time');
                    $sheet->setCellValue('C3', 'Vehicle No.');
                    $sheet->setCellValue('D3', 'Vehicle Type');
@@ -392,7 +511,35 @@ class Reports extends BaseController {
                foreach ($resultEntryList as $value) {
                     $sheet->setCellValue('A' . $count, $value->ticket_no);
                    $sheet->setCellValue('B' . $count, $value->entry_time);
-                   $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   if(!empty(trim($value->vehicle_number))){
+                        $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   }else if(empty($value->vehicle_number)){
+                       $fpath = FCPATH;
+                        $fpath =  str_replace('\\', '/', $fpath);
+                       if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/240/'.$value->image_vehicle_number_plate)){
+                        
+                        $drawing = new Drawing();
+                        $drawing->setName('Logo');
+                        $drawing->setDescription('Logo');
+                        
+                        $final_path = $fpath."assets/images/upload/numberplate/240/$value->image_vehicle_number_plate";
+                        $drawing->setPath($final_path);
+                        $drawing->setCoordinates('C' . $count);
+                        $drawing->setWidth(200);
+                        $sheet->getRowDimension($count)->setRowHeight(140);
+                        $drawing->setOffsetY(300);
+                        $drawing->getShadow()->setDirection(45);
+                            
+                        $drawing->getShadow()->setVisible(true);
+                        $drawing->getShadow()->setDirection(45);
+                       
+                        $drawing->setWorksheet($sheet);
+                        
+                       }else{
+                           $sheet->setCellValue('C' . $count, '');
+                       }
+                        
+                   }
                    $sheet->setCellValue('D' . $count, $value->vehicle_type_name);
                    $sheet->setCellValue('E' . $count, $value->vehicle_company);
                    $sheet->setCellValue('F' . $count, $value->gate_entry_name);
@@ -436,6 +583,7 @@ class Reports extends BaseController {
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
                      if($pdf == true){
+                         $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A3);
                         $writer = new Tcpdf($spreadsheet);
                      }else{
                         $writer = new Xls($spreadsheet);
@@ -523,17 +671,20 @@ class Reports extends BaseController {
                $monthlySummaryByVehicleType = $this->k_parking_model->getMonthlySummaryByVehicleTypeList($data);   
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
+                
+                $cell_width = 25;
+                $sheet->getColumnDimension('A')->setWidth($cell_width);
+                $sheet->getColumnDimension('B')->setWidth($cell_width);
+                $sheet->getColumnDimension('C')->setWidth($cell_width);
+                $sheet->getColumnDimension('D')->setWidth($cell_width);
                 $sheet->setCellValue('B1', 'Year :'.$year);
                 $sheet->setCellValue('C1', 'Month :'.$month);
                 $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
-                
-                
                 $sheet->setCellValue('A3', 'Vehicle Type');
                 $sheet->setCellValue('B3', 'Exit Date');
                 $sheet->setCellValue('C3', 'Total Vehicles Exited');
                 $sheet->setCellValue('D3', 'Total Amount');
                 $count = 4;  
-                
                 $final_total_vehicles_exited = $final_total_amount = 0;
                 
                foreach ($monthlySummaryByVehicleType as $value) {
@@ -611,8 +762,8 @@ class Reports extends BaseController {
 
             $data['records'] = $this->k_parking_model->getMonthlySummaryByVehicleTypeList($data);
 
-            $this->global['pageTitle'] = PROJECT_NAME . ' : Monthly Report';
-            $data['title'] = 'Monthly Report';
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Yearly/Monthly Summary Report';
+            $data['title'] = 'Yearly/Monthly Summary Report';
             $data['sub_title'] = 'List';
             $this->global['assets'] = array('cssTopArray' => array(
                     base_url() . 'assets/plugins/datepicker/datepicker3',
@@ -629,7 +780,7 @@ class Reports extends BaseController {
                 )
             );
             
-            $this->loadViews("admin/reports/monthly_report", $this->global, $data, NULL);
+            $this->loadViews("admin/reports/yearly_monthly_summary_report", $this->global, $data, NULL);
         }
     }
     
@@ -668,7 +819,15 @@ class Reports extends BaseController {
                 $sheet->setCellValue('C1', 'Exit Date :'.$data['exitDate']);
                 $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
                 
-                
+                $cell_width = 20;
+                if($pdf == true){
+                    $cell_width=$cell_width+5;
+                }
+                $sheet->getColumnDimension('A')->setWidth($cell_width);
+                $sheet->getColumnDimension('B')->setWidth($cell_width);
+                $sheet->getColumnDimension('C')->setWidth($cell_width);
+                $sheet->getColumnDimension('D')->setWidth($cell_width);
+            
                 $sheet->setCellValue('A3', 'Vehicle Type');
                 $sheet->setCellValue('B3', 'Gate Name');
                 $sheet->setCellValue('C3', 'Total Vehicles Exited');
@@ -819,6 +978,16 @@ class Reports extends BaseController {
                     $gate_name = $gate_details->name; 
                 }    
                 
+                 $cell_width = 20;
+                
+                
+                $sheet->getColumnDimension('B')->setWidth($cell_width);
+                $sheet->getColumnDimension('C')->setWidth($cell_width);
+                $sheet->getColumnDimension('D')->setWidth($cell_width);
+                $sheet->getColumnDimension('E')->setWidth($cell_width+5);
+                $sheet->getColumnDimension('F')->setWidth($cell_width+5);
+                $sheet->getColumnDimension('G')->setWidth($cell_width+5);
+                
                 $sheet->setCellValue('B1', 'Vehicle Type :'.$vehicle_type_name );
                 $sheet->setCellValue('C1', 'Gate :'.$gate_name );
                 $sheet->setCellValue('D1', 'From Date :'.$from_date );
@@ -867,6 +1036,7 @@ class Reports extends BaseController {
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
                     if($pdf == true){
+                        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A3);                
                         $writer = new Tcpdf($spreadsheet);
                         $writer->save('php://output');
                     }else{
@@ -979,6 +1149,23 @@ class Reports extends BaseController {
                     $gate_details = $this->k_master_vehicle_gate_model->getDetails($gate_id);
                     $gate_name = $gate_details->name; 
                 }    
+                if(!$pdf){  
+                    $sheet->getColumnDimension('B')->setAutoSize(1);
+                    $sheet->getColumnDimension('C')->setAutoSize(1);
+                    $sheet->getColumnDimension('D')->setAutoSize(1);
+                    $sheet->getColumnDimension('E')->setAutoSize(1);
+                    $sheet->getColumnDimension('F')->setAutoSize(1);
+                    $sheet->getColumnDimension('G')->setAutoSize(1);
+                }else{
+                    $cell_width = 20;
+                    $sheet->getColumnDimension('A')->setWidth(15);
+                    $sheet->getColumnDimension('B')->setWidth($cell_width+10);
+                    $sheet->getColumnDimension('C')->setWidth($cell_width);
+                    $sheet->getColumnDimension('D')->setWidth($cell_width);
+                    $sheet->getColumnDimension('E')->setWidth($cell_width);
+                    $sheet->getColumnDimension('F')->setWidth($cell_width);
+                    $sheet->getColumnDimension('G')->setWidth($cell_width);
+                }
                 
                 $sheet->setCellValue('B1', 'Vehicle Type :'.$vehicle_type_name );
                 $sheet->setCellValue('C1', 'Gate :'.$gate_name );
@@ -1026,6 +1213,7 @@ class Reports extends BaseController {
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
                     if($pdf == true){
+                        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A3);          
                         $writer = new Tcpdf($spreadsheet);
                     }else{
                         $writer = new Xls($spreadsheet);
@@ -1121,6 +1309,10 @@ class Reports extends BaseController {
                                 $vehicle_type_details = $this->k_master_vehicle_type_model->getDetails($vehicle_type_id);
                                 $vehicle_type_name = $vehicle_type_details->name; 
                             }    
+                            
+                            
+                            
+                            
                     $sheet->setCellValue('D1', 'From Date :'.$from_date );
                     $sheet->setCellValue('E1', 'From Time :'.$from_time );
                     $sheet->setCellValue('F1', 'To Date :'.$to_date );
@@ -1128,7 +1320,28 @@ class Reports extends BaseController {
                     $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
                    
                    
-                   
+                    if(!$pdf){  
+                        $sheet->getColumnDimension('A')->setAutoSize(1);
+                        $sheet->getColumnDimension('B')->setAutoSize(1);
+                        $sheet->getColumnDimension('C')->setWidth(30);
+                        $sheet->getColumnDimension('D')->setAutoSize(1);
+                        $sheet->getColumnDimension('E')->setAutoSize(1);
+                        $sheet->getColumnDimension('F')->setAutoSize(1);
+                        $sheet->getColumnDimension('G')->setAutoSize(1);
+                        $sheet->getColumnDimension('H')->setAutoSize(1);
+                        $sheet->getColumnDimension('I')->setAutoSize(1);
+                    }else{
+                        $cell_width = 20;
+                        $sheet->getColumnDimension('A')->setWidth(10);
+                        $sheet->getColumnDimension('B')->setWidth($cell_width+10);
+                        $sheet->getColumnDimension('C')->setWidth($cell_width+10);
+                        $sheet->getColumnDimension('D')->setWidth($cell_width+5);
+                        $sheet->getColumnDimension('E')->setWidth($cell_width+10);
+                        $sheet->getColumnDimension('F')->setWidth($cell_width);
+                        $sheet->getColumnDimension('G')->setWidth($cell_width);
+                        $sheet->getColumnDimension('H')->setWidth($cell_width+10);
+                        $sheet->getColumnDimension('I')->setWidth($cell_width);
+                    }
                    
                    $sheet->setCellValue('A3', 'Ticket No.');
                    $sheet->setCellValue('B3', 'Entry Date & Time');
@@ -1143,7 +1356,35 @@ class Reports extends BaseController {
                foreach ($resultExitList as $value) {
                    $sheet->setCellValue('A' . $count, $value->ticket_no);
                    $sheet->setCellValue('B' . $count, $value->entry_time);
-                   $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   if(!empty(trim($value->vehicle_number))){
+                        $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   }else if(empty($value->vehicle_number)){
+                       $fpath = FCPATH;
+                        $fpath =  str_replace('\\', '/', $fpath);
+                       if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/240/'.$value->image_vehicle_number_plate)){
+                        
+                        $drawing = new Drawing();
+                        $drawing->setName('Logo');
+                        $drawing->setDescription('Logo');
+                        
+                        $final_path = $fpath."assets/images/upload/numberplate/240/$value->image_vehicle_number_plate";
+                        $drawing->setPath($final_path);
+                        $drawing->setCoordinates('C' . $count);
+                        $drawing->setWidth(200);
+                        $sheet->getRowDimension($count)->setRowHeight(140);
+                        $drawing->setOffsetY(300);
+                        $drawing->getShadow()->setDirection(45);
+                            
+                        $drawing->getShadow()->setVisible(true);
+                        $drawing->getShadow()->setDirection(45);
+                       
+                        $drawing->setWorksheet($sheet);
+                        
+                       }else{
+                           $sheet->setCellValue('C' . $count, '');
+                       }
+                        
+                   }
                    $sheet->setCellValue('D' . $count, $value->vehicle_type_name);
                    $sheet->setCellValue('E' . $count, $value->exit_time);
                    $sheet->setCellValue('F' . $count, $value->parked_hours);
@@ -1199,6 +1440,7 @@ class Reports extends BaseController {
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
                     if($pdf == true){
+                        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A2_PAPER);          
                         $writer = new Tcpdf($spreadsheet);
                     }else{
                         $writer = new Xls($spreadsheet);
@@ -1211,19 +1453,6 @@ class Reports extends BaseController {
             }
          
               $data['exitListSummaryByVehicleType'] = $exitListSummaryByVehicleType;
-            
-//            if (isset($postEntryDate) && empty($postEntryDate)) {
-//                $entryDate = '';
-//                $this->session->set_userdata('entryDate', $entryDate);
-//            } else if ($postEntryDate) {
-//                // use the term from POST and set it to session
-//                $entryDate = $postEntryDate;
-//                $this->session->set_userdata('entryDate', $entryDate);
-//            } else if ($this->session->userdata('entryDate')) {
-//                // if term is not in POST use existing term from session
-//                $entryDate = $this->session->userdata('entryDate');
-//            }
-
             
 
             $data['totalCount'] = true;
@@ -1298,14 +1527,37 @@ class Reports extends BaseController {
                     $report_type_array = json_decode(REPORT_TYPE_ARRAY,true);
                     if(isset($report_type) && !empty($report_type))
                         $report_type_name = $report_type_array[$report_type];
+                   
                     
-                    $sheet->setCellValue('A1', 'Vehicle Company :'.$vehicle_company );
-                    $sheet->setCellValue('B1', 'Report Type :'.$report_type_name );
-                    $sheet->setCellValue('C1', 'Date :'.$date );
-                    $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
-                   
-                   
-                   
+                    
+                     if(!$pdf){  
+                        $sheet->getColumnDimension('B')->setAutoSize(1);
+                        $sheet->getColumnDimension('C')->setWidth(30);
+                        $sheet->getColumnDimension('D')->setAutoSize(1);
+                        $sheet->getColumnDimension('E')->setAutoSize(1);
+                        $sheet->getColumnDimension('F')->setAutoSize(1);
+                        $sheet->getColumnDimension('G')->setAutoSize(1);
+                        $sheet->getColumnDimension('H')->setAutoSize(1);
+                        $sheet->getColumnDimension('I')->setAutoSize(1);
+                    }else{
+                        $cell_width = 20;
+                        $sheet->getColumnDimension('A')->setWidth(10);
+                        $sheet->getColumnDimension('B')->setWidth($cell_width+10);
+                        $sheet->getColumnDimension('C')->setWidth(30);
+                        $sheet->getColumnDimension('D')->setWidth($cell_width+5);
+                        $sheet->getColumnDimension('E')->setWidth($cell_width+10);
+                        $sheet->getColumnDimension('F')->setWidth($cell_width);
+                        $sheet->getColumnDimension('G')->setWidth($cell_width);
+                        $sheet->getColumnDimension('H')->setWidth($cell_width+15);
+                        $sheet->getColumnDimension('I')->setWidth($cell_width);
+                    }
+                    
+                    
+                    
+                   $sheet->setCellValue('B1', 'Vehicle Company :'.$vehicle_company );
+                   $sheet->setCellValue('C1', 'Report Type :'.$report_type_name );
+                   $sheet->setCellValue('D1', 'Date :'.$date );
+                   $sheet->setCellValue('E1', 'Report Date :'.date('Y-m-d H:i:s'));
                    
                    $sheet->setCellValue('A3', 'Ticket No.');
                    $sheet->setCellValue('B3', 'Entry Date & Time');
@@ -1320,7 +1572,35 @@ class Reports extends BaseController {
                foreach ($resultExitList as $value) {
                    $sheet->setCellValue('A' . $count, $value->ticket_no);
                    $sheet->setCellValue('B' . $count, $value->entry_time);
-                   $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   if(!empty(trim($value->vehicle_number))){
+                        $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   }else if(empty($value->vehicle_number)){
+                       $fpath = FCPATH;
+                        $fpath =  str_replace('\\', '/', $fpath);
+                       if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/640/'.$value->image_vehicle_number_plate)){
+                        
+                        $drawing = new Drawing();
+                        $drawing->setName('Logo');
+                        $drawing->setDescription('Logo');
+                        
+                        $final_path = $fpath."assets/images/upload/numberplate/640/$value->image_vehicle_number_plate";
+                        $drawing->setPath($final_path);
+                        $drawing->setCoordinates('C' . $count);
+                        $drawing->setWidth(200);
+                        $sheet->getRowDimension($count)->setRowHeight(140);
+                        $drawing->setOffsetY(300);
+                        $drawing->getShadow()->setDirection(45);
+                            
+                        $drawing->getShadow()->setVisible(true);
+                        $drawing->getShadow()->setDirection(45);
+                       
+                        $drawing->setWorksheet($sheet);
+                        
+                       }else{
+                           $sheet->setCellValue('C' . $count, '');
+                       }
+                        
+                   }
                    $sheet->setCellValue('D' . $count, $value->vehicle_type_name);
                    $sheet->setCellValue('E' . $count, $value->exit_time);
                    $sheet->setCellValue('F' . $count, $value->parked_hours);
@@ -1376,6 +1656,7 @@ class Reports extends BaseController {
                     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
                     header('Pragma: public'); // HTTP/1.0
                     if($pdf == true){
+                        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A2_PAPER);          
                         $writer = new Tcpdf($spreadsheet);
                     }else{
                         $writer = new Xls($spreadsheet);
@@ -1442,6 +1723,205 @@ class Reports extends BaseController {
         }
     }
     
+    function yearly_monthly_detail() {
+
+        if(!array_key_exists(45,$this->role_privileges)){
+            $this->loadThis();
+        } else {
+            $data['year'] = '';
+            $year = $this->input->get("year");
+            $month = $this->input->get("month");
+            $download = $this->input->get("download");
+            //$vehicle_type_id = $this->input->get("vehicle_type_id");
+            $pdf = $this->input->get("pdf");
+             $data['totalCount'] = false;
+             $data['year'] = $year;
+            $data['month'] = $month;
+            $data['download'] = $download;
+            // $data['vehicle_type_id'] = $vehicle_type_id;
+              
+            $exitListSummaryByVehicleType = $this->k_parking_model->getExitListSummary($data);   
+            if($download == true){
+               
+                $resultExitList = $this->k_parking_model->getExitlist($data);
+                $spreadsheet = new Spreadsheet();
+                $sheet = $spreadsheet->getActiveSheet();
+                $cell_width = 20;
+                if($pdf == true){
+                    $cell_width=$cell_width+5;
+                }
+                $sheet->getColumnDimension('B')->setWidth($cell_width);
+                
+                $sheet->getColumnDimension('C')->setWidth(30);
+                $sheet->getColumnDimension('D')->setWidth($cell_width);
+                $sheet->getColumnDimension('E')->setWidth($cell_width);
+                $sheet->getColumnDimension('F')->setWidth(15);
+                $sheet->getColumnDimension('G')->setWidth(20);
+                $sheet->getColumnDimension('H')->setWidth($cell_width+10);
+                $sheet->getColumnDimension('I')->setWidth($cell_width+10);
+                $vehicle_type_name = "All Vehicles";
+                            if(isset($vehicle_type_id) && !empty($vehicle_type_id)){
+                                $vehicle_type_details = $this->k_master_vehicle_type_model->getDetails($vehicle_type_id);
+                                $vehicle_type_name = $vehicle_type_details->name; 
+                            }    
+                   $sheet->setCellValue('B1', 'Vehicle Type :'.$vehicle_type_name );
+                   $sheet->setCellValue('C1', 'Year :'.$year);
+                   $month_name = '';
+                   $month_name_array = json_decode(MONTHS_FOR_REPORT_ARRAY,true);
+                    if(isset($month) && !empty($month))
+                        $month_name = $month_name_array[$month];
+                    
+                   $sheet->setCellValue('C1', 'Month :'.$month_name);
+                   $sheet->setCellValue('D1', 'Report Date :'.date('Y-m-d H:i:s'));
+                   $sheet->setCellValue('A3', 'Ticket No.');
+                   $sheet->setCellValue('B3', 'Entry Date & Time');
+                   $sheet->setCellValue('C3', 'Vehicle No.');
+                   $sheet->setCellValue('D3', 'Vehicle Type');
+                   $sheet->setCellValue('E3', 'Exit Date & Time');
+                   $sheet->setCellValue('F3', 'Parked Hours');
+                   $sheet->setCellValue('G3', 'Parked Amount');
+                   $sheet->setCellValue('H3', 'Company Name');
+                   $sheet->setCellValue('I3', 'Gate No');
+                     $count = 4;  
+               foreach ($resultExitList as $value) {
+                   $sheet->setCellValue('A' . $count, $value->ticket_no);
+                   $sheet->setCellValue('B' . $count, $value->entry_time);
+                   if(!empty(trim($value->vehicle_number))){
+                        $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   }else if(empty($value->vehicle_number)){
+                       $fpath = FCPATH;
+                        $fpath =  str_replace('\\', '/', $fpath);
+                       if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/640/'.$value->image_vehicle_number_plate)){
+                        
+                        $drawing = new Drawing();
+                        $drawing->setName('Logo');
+                        $drawing->setDescription('Logo');
+                        
+                        $final_path = $fpath."assets/images/upload/numberplate/640/$value->image_vehicle_number_plate";
+                        $drawing->setPath($final_path);
+                        $drawing->setCoordinates('C' . $count);
+                        $drawing->setWidth(200);
+                        $sheet->getRowDimension($count)->setRowHeight(140);
+                        $drawing->setOffsetY(300);
+                        $drawing->getShadow()->setDirection(45);
+                            
+                        $drawing->getShadow()->setVisible(true);
+                        $drawing->getShadow()->setDirection(45);
+                       
+                        $drawing->setWorksheet($sheet);
+                        
+                       }else{
+                           $sheet->setCellValue('C' . $count, '');
+                       }
+                        
+                   }
+
+                   $sheet->setCellValue('D' . $count, $value->vehicle_type_name);
+                   $sheet->setCellValue('E' . $count, $value->exit_time);
+                   $sheet->setCellValue('F' . $count, $value->parked_hours);
+                   $sheet->setCellValue('G' . $count, $value->total_amount);
+                   $sheet->setCellValue('H' . $count, $value->vehicle_company);
+                   $sheet->setCellValue('I' . $count, $value->gate_entry_name);
+                   $count++;
+               }
+             
+               $count = $count+2;
+               $sheet->setCellValue('F' . $count, "Vehicle Type");
+               $sheet->setCellValue('G' . $count, "No. of Vehicles");
+               $sheet->setCellValue('H' . $count, "Amount");
+               
+               
+               $count++;
+               $totalVehiclesCount = 0;
+               $totalAmount = 0;
+               foreach ($exitListSummaryByVehicleType as $value) {
+                   $sheet->setCellValue('F' . $count, $value->vehicle_type_name);
+                   $sheet->setCellValue('G' . $count, $value->type_count);
+                   $sheet->setCellValue('H' . $count, $value->amount);
+                   $totalVehiclesCount = $totalVehiclesCount+$value->type_count;
+                   $totalAmount = $totalAmount+$value->amount;
+                   $count++;
+               }
+               
+               $sheet->setCellValue('E' . $count, "Total");
+               
+               $sheet->setCellValue('G' . $count, $totalVehiclesCount);
+               $sheet->setCellValue('H' . $count, $totalAmount);
+               
+                   $downloaded_name = "yearly_monthly_report";
+                    if($pdf == true){
+                        header("Content-type:application/pdf");
+                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+                    }else{ 
+                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+                    }
+                    header('Cache-Control: max-age=0');
+            // If you're serving to IE 9, then the following may be needed
+                    header('Cache-Control: max-age=1');
+
+            // If you're serving to IE over SSL, then the following may be needed
+                    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+                    header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+                    header('Pragma: public'); // HTTP/1.0
+                    if($pdf == true){
+                        
+                      
+                        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A2_PAPER);
+                        //$sheet->getPageSetup()->setFitToPage(100);
+                        //   $sheet->getPageSetup()->setOrientation(PageSetup::ORIENTATION_LANDSCAPE);
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }
+                    $writer->save('php://output');
+                    exit;
+                
+                
+            }
+         
+              $data['exitListSummaryByVehicleType'] = $exitListSummaryByVehicleType;
+            
+              
+            $data['totalCount'] = true;
+
+            $this->load->model('k_parking_model');
+            $result = $this->k_parking_model->getExitList($data);
+           
+            $count = $result['count'];
+            $data['totalCount'] = false;
+            $segment = 5;
+
+            $returns = $this->paginationCompress("admin/reports/exit/list", $count, 100, $segment);
+
+            $data['page'] = $returns['page'];
+            $data['offset'] = $returns['offset'];
+
+            $data['records'] = $this->k_parking_model->getExitList($data);
+            $this->global['pageTitle'] = PROJECT_NAME . ' : Yearly/ Monthly Detail Report';
+            $data['title'] = 'Yearly/ Monthly Detail Report';
+            $data['sub_title'] = 'List';
+            $this->global['assets'] = array('cssTopArray' => array(
+                    base_url() . 'assets/plugins/datepicker/datepicker3',
+                    base_url() . 'assets/plugins/timepicker/bootstrap-timepicker',
+                    base_url() . 'assets/plugins/daterangepicker/daterangepicker-bs3',
+                ),
+                'cssBottomArray' => array(),
+                'jsTopArray' => array(),
+                'jsBottomArray' => array(
+                    base_url() . 'assets/plugins/datepicker/bootstrap-datepicker',
+                    base_url() . 'assets/plugins/daterangepicker/moment',
+                    base_url() . 'assets/plugins/daterangepicker/daterangepicker',
+                    base_url() . 'assets/plugins/timepicker/bootstrap-timepicker'
+                )
+            );
+            
+            $data['vehicleTypeListArray'] = $this->k_master_vehicle_type_model->get();
+
+            $this->loadViews("admin/reports/yearly_monthly_detail_report", $this->global, $data, NULL);
+        }
+    }
 
     function pageNotFound() {
         $this->global['pageTitle'] = 'Pms : 404 - Page Not Found';

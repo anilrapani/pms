@@ -197,6 +197,49 @@ if ( ! function_exists('minutes_to_hours_n_minutes'))
 }
 
 
+if ( ! function_exists('thumbnail_from_image_data'))
+{
+    function thumbnail_from_image_data($WIDTH,$HEIGHT,$image_data,$image_name,$path_to_upload,$width_orig,$height_orig)
+    {
+        $image_dimension = $WIDTH;
+        
+    
+        $ratio_orig = $width_orig/$height_orig;
+        if($WIDTH == 'original'){
+            $WIDTH = $width_orig;
+            $HEIGHT = $WIDTH+1;
+        }
+            if ($WIDTH/$HEIGHT > $ratio_orig) {
+                $WIDTH = $HEIGHT*$ratio_orig;
+            } else {
+                $HEIGHT = $WIDTH/$ratio_orig;
+            }
+        
+
+        $image_data = str_replace('data:image/png;base64,', '', $image_data);
+        $image_data = str_replace(' ', '+', $image_data);
+        
+
+        $theme_image_little = imagecreatefromstring(base64_decode($image_data));
+
+        $image_little = imagecreatetruecolor($WIDTH, $HEIGHT);
+
+        // $org_w and org_h depends of your image, in your case, i guess 800 and 600
+        imagecopyresampled($image_little, $theme_image_little, 0, 0, 0, 0, $WIDTH, $HEIGHT, $width_orig, $height_orig);
+
+        // Thanks to Michael Robinson
+        // start buffering
+        ob_start();
+        imagepng($image_little);
+        $contents =  ob_get_contents();
+        ob_end_clean();
+        
+        file_put_contents(APPPATH .$path_to_upload.$image_dimension.'/'.$image_name,$contents);
+
+    }
+}
+
+
 
 
 
