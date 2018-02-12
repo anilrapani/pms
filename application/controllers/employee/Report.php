@@ -219,6 +219,10 @@ class Report extends BaseController {
                     );
         $this->loadViews("admin/report/summary", $this->global, NULL, NULL);
     }
+    
+    
+       
+    
     function pageNotFound() {
         $this->global['pageTitle'] = 'Pms : 404 - Page Not Found';
 

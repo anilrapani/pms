@@ -313,7 +313,7 @@ class K_parking_model extends Common_Model {
         }
         $this->db->from("$this->table_name as BaseTbl");
         $this->db->join('k_master_vehicle_type as vehicle_type', "vehicle_type.id = BaseTbl.$this->vehicle_type_id",'left');
-        $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id_entry",'left');
+        $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id_exit",'left');
         
         
         if (!empty($inputData['exitDate'])) {
@@ -360,7 +360,7 @@ class K_parking_model extends Common_Model {
         $this->db->join('k_master_vehicle_type as vehicle_type', "vehicle_type.id = BaseTbl.$this->vehicle_type_id",'left');
         
         if (!empty($inputData['exitDate'])) {
-            $this->db->where("DATE(BaseTbl.$this->entry_time)", $inputData['exitDate']);
+            $this->db->where("DATE(BaseTbl.$this->exit_time)", $inputData['exitDate']);
         }
              if (!empty($inputData['vehicle_type_id'])) {
             $this->db->where("BaseTbl.$this->vehicle_type_id", $inputData['vehicle_type_id']);
@@ -527,7 +527,10 @@ class K_parking_model extends Common_Model {
         
         
         if (!empty($inputData['start_time']) && !empty($inputData['exitDate'])) {
-            $this->db->where("BaseTbl.$this->entry_time >", $inputData['exitDate'].' '.$inputData['start_time']);
+            $this->db->where("BaseTbl.$this->exit_time >", $inputData['exitDate'].' '.$inputData['start_time']);
+        }
+        if($inputData['two_days']){
+            $inputData['exitDate'] = date('Y-m-d');
         }
         if (!empty($inputData['end_time']) && !empty($inputData['exitDate'])) {
             $this->db->where("BaseTbl.$this->exit_time <", $inputData['exitDate'].' '.$inputData['end_time']);

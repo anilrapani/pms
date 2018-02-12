@@ -240,7 +240,13 @@ if ( ! function_exists('thumbnail_from_image_data'))
 }
 
 
-
+if ( ! function_exists('fc_path_forward'))
+{
+    function fc_path_forward(){
+        $fpath = FCPATH;
+        $fpath =  str_replace('\\', '/', $fpath);       
+    }
+}
 
 
 

@@ -26,11 +26,13 @@ class Reports extends BaseController {
         $this->isLoggedIn();
     }
        
-     
+  
     /**
      * This function is used to load the company list
      */
     function entryList() {
+        
+        
 //        echo realpath(dirname(__FILE__));
 //        echo BASEPATH;
 //        echo FCPATH;
@@ -95,14 +97,13 @@ class Reports extends BaseController {
                    if(!empty(trim($value->vehicle_number))){
                         $sheet->setCellValue('C' . $count, $value->vehicle_number);
                    }else if(empty($value->vehicle_number)){
-                       
                        $fpath = FCPATH;
                        $fpath =  str_replace('\\', '/', $fpath);                        
                        if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/240/'.$value->image_vehicle_number_plate)){
                          $drawing = new Drawing();
                         $drawing->setName('Logo');
                         $drawing->setDescription('Logo');
-                        $final_path = $fpath."assets/images/upload/numberplate/640/$value->image_vehicle_number_plate";
+                        $final_path = $fpath."assets/images/upload/numberplate/240/$value->image_vehicle_number_plate";
                         
                        
                         try {
@@ -884,6 +885,7 @@ class Reports extends BaseController {
 
             $this->load->model('k_parking_model');
             $result = $this->k_parking_model->getShiftSummaryByVehicleTypeList($data);
+            
 //            echo $this->db->last_query();
 //            exit;
             $count = $result['count'];

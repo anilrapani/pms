@@ -543,3 +543,13 @@ $config['enable_gate_restriction_for_employee_at_employee_login'] = FALSE;
 $config['enable_admin_no_gate_restriction'] = TRUE;
 
 
+$config['emailConf1'] = array(
+    'SMTP_HOST' => 'ssl://smtp.gmail.com',
+    'SMTP_PROTOCOL' => 'smtp',
+    'SMTP_PORT' => '465',
+    'SMTP_USER' => 'test.webap@gmail.com',
+    'SMTP_PASSWORD' => '1234512345t',
+    'SMTP_MAIL_TYPE' => 'html',
+    'SMTP_FROM_EMAIL' => 'test.webap@gmail.com',
+    'SMTP_FROM_EMAIL_NAME' => 'KASTECH-DEV',
+);

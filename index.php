@@ -64,7 +64,9 @@ date_default_timezone_set('Asia/Kolkata');
  * Different environments will require different levels of error reporting.
  * By default development will show errors but testing and live will hide them.
  */
-ini_set('memory_limit', '500000M');
+ini_set('memory_limit', '500M');
+ini_set('max_execution_time', 300);
+
 switch (ENVIRONMENT)
 {
 	case 'development':
@@ -74,7 +76,7 @@ switch (ENVIRONMENT)
 //            
 //            // ini_set("dis")
 //            error_reporting(E_ALL|E_STRICT);
-		  ini_set('display_errors', 1);
+    ini_set('display_errors', 1);
 	break;
 
 	case 'testing':
