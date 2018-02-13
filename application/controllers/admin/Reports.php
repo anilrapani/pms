@@ -22,7 +22,7 @@ class Reports extends BaseController {
      */
     public function __construct() {
         parent::__construct();
-        $this->load->model(array('k_parking_model','k_master_vehicle_type_model','k_master_user_shift_model','k_master_vehicle_gate_model'));
+        $this->load->model(array('k_parking_model','k_master_vehicle_type_model','k_master_user_shift_model','k_master_vehicle_gate_model','k_report_model'));
         $this->isLoggedIn();
     }
        
@@ -1922,6 +1922,262 @@ class Reports extends BaseController {
             $data['vehicleTypeListArray'] = $this->k_master_vehicle_type_model->get();
 
             $this->loadViews("admin/reports/yearly_monthly_detail_report", $this->global, $data, NULL);
+        }
+    }
+    
+    
+    function shiftReportToAdmin() {
+         
+                $reportId = $this->input->post('reportId');
+                $reportDetails = $this->k_report_model->getDetails($reportId);
+                
+                $gate_id = $data['gate_id'] = $reportDetails->gate_id;
+                $reportDetails = $this->k_report_model->getDetails($reportId);
+                
+                         $gate_details = $this->k_master_vehicle_gate_model->getDetails($reportDetails->gate_id);
+                    $gate_name = $gate_details->name; 
+                        
+                        
+                $user_id = $data['user_id'] = $reportDetails->user_id;
+                $first_parking_id_time_after_login = $data['first_parking_id_time_after_login'] = $reportDetails->first_parking_id_time_after_login;
+                $last_parking_id_time_after_login = $data['last_parking_id_time_after_login'] = $reportDetails->last_parking_id_time_after_login;
+                $parking_id_from = $data['parking_id_from'] = $reportDetails->parking_id_from;
+                $parking_id_to = $data['parking_id_to'] = $reportDetails->parking_id_to;
+                
+                
+            
+                 
+        $day_before = strtotime("yesterday", time());
+        $yesterday = date('Y-m-d', $day_before);
+        $downloaded_name = "shift_report_id_$reportId";
+            $download = true;
+            $pdf = true;
+            $data['totalCount'] = false;
+            $data['exitDate'] = $yesterday;
+            $data['download'] = $download;
+              
+            $exitListSummaryByVehicleType = $this->k_parking_model->getExitListSummaryShift($data);   
+//            echo $this->db->last_query();
+//            exit;
+//            echo $this->db->last_query();
+//                exit;
+//            var_dump($exitListSummaryByVehicleType);
+//            exit;
+            if($download == true){
+               
+                $resultExitList = $this->k_parking_model->getExitlistShift($data);
+                
+                $spreadsheet = new Spreadsheet();
+                $sheet = $spreadsheet->getActiveSheet();
+                
+                $cell_width = 20;
+                if($pdf == true){
+                    $cell_width=$cell_width+5;
+                }
+                $sheet->getColumnDimension('B')->setWidth($cell_width);
+                
+                $sheet->getColumnDimension('C')->setWidth(30);
+                $sheet->getColumnDimension('D')->setWidth($cell_width);
+                $sheet->getColumnDimension('E')->setWidth($cell_width);
+                $sheet->getColumnDimension('F')->setWidth(15);
+                $sheet->getColumnDimension('G')->setWidth(20);
+                $sheet->getColumnDimension('H')->setWidth($cell_width+10);
+                $sheet->getColumnDimension('I')->setWidth($cell_width);
+                $vehicle_type_name = "All Vehicles";
+                            if(isset($vehicle_type_id) && !empty($vehicle_type_id)){
+                                $vehicle_type_details = $this->k_master_vehicle_type_model->getDetails($vehicle_type_id);
+                                $vehicle_type_name = $vehicle_type_details->name; 
+                            }    
+                   $sheet->setCellValue('B1', 'Vehicle Type :'.$vehicle_type_name );
+                   $sheet->setCellValue('C1', 'Shift :'.$first_parking_id_time_after_login.'-'.$last_parking_id_time_after_login);
+                   $sheet->setCellValue('D1', 'Gate Name:'.$gate_name);
+                   $sheet->setCellValue('E1', 'Report Date :'.date('Y-m-d H:i:s'));
+                   
+                   $sheet->setCellValue('A3', 'Ticket No.');
+                   $sheet->setCellValue('B3', 'Entry Date & Time');
+                   $sheet->setCellValue('C3', 'Vehicle No.');
+                   $sheet->setCellValue('D3', 'Vehicle Type');
+                   $sheet->setCellValue('E3', 'Exit Time');
+                   $sheet->setCellValue('F3', 'Parked Hours');
+                   $sheet->setCellValue('G3', 'Parked Amount');
+                   $sheet->setCellValue('H3', 'Company Name');
+                   $sheet->setCellValue('I3', 'Gate No');
+                     $count = 4;  
+                     
+                     
+               foreach ($resultExitList as $value) {
+                   $sheet->setCellValue('A' . $count, $value->ticket_no);
+                   $sheet->setCellValue('B' . $count, $value->entry_time);
+                          if(!empty(trim($value->vehicle_number))){
+                        $sheet->setCellValue('C' . $count, $value->vehicle_number);
+                   }else if(empty($value->vehicle_number)){
+                         $fpath = FCPATH;
+                        $fpath =  str_replace('\\', '/', $fpath);
+                       if(!empty(trim($value->image_vehicle_number_plate)) && file_exists($fpath.'assets/images/upload/numberplate/240/'.$value->image_vehicle_number_plate)){
+                        $drawing = new Drawing();
+                        $drawing->setName('Logo');
+                        $drawing->setDescription('Logo');
+                      
+                        $final_path = $fpath."assets/images/upload/numberplate/240/$value->image_vehicle_number_plate";
+                        
+                            
+                        try {
+                            $drawing->setPath($final_path);
+                            $drawing->setWidth(200);
+                            $sheet->getRowDimension($count)->setRowHeight(140);
+                            $drawing->setOffsetY(300);
+                            $drawing->getShadow()->setDirection(45);
+                            $drawing->setCoordinates('C' . $count);
+                            $drawing->getShadow()->setVisible(true);
+                            $drawing->setWorksheet($sheet);
+                        } catch (Exception $exc) {
+                            $sheet->setCellValue('C' . $count, '');
+                        }
+
+                        
+                       }else{
+                           $sheet->setCellValue('C' . $count, '');
+                       }
+                        
+                   }
+
+                   $sheet->setCellValue('D' . $count, $value->vehicle_type_name);
+                   $sheet->setCellValue('E' . $count, $value->exit_time);
+                   $sheet->setCellValue('F' . $count, $value->parked_hours);
+                   $sheet->setCellValue('G' . $count, $value->total_amount);
+                   $sheet->setCellValue('H' . $count, $value->vehicle_company);
+                   $sheet->setCellValue('I' . $count, $value->gate_entry_name);
+                   $count++;
+               }
+             
+               $count = $count+2;
+               $sheet->setCellValue('F' . $count, "Vehicle Type");
+               $sheet->setCellValue('G' . $count, "No. of Vehicles");
+               $sheet->setCellValue('H' . $count, "Amount");
+               
+               
+               $count++;
+               $totalVehiclesCount = 0;
+               $totalAmount = 0;
+               foreach ($exitListSummaryByVehicleType as $value) {
+                   $sheet->setCellValue('F' . $count, $value->vehicle_type_name);
+                   $sheet->setCellValue('G' . $count, $value->type_count);
+                   $sheet->setCellValue('H' . $count, $value->amount);
+                   $totalVehiclesCount = $totalVehiclesCount+$value->type_count;
+                   $totalAmount = $totalAmount+$value->amount;
+                   $count++;
+               }
+               
+               $sheet->setCellValue('E' . $count, "Total");
+               
+               $sheet->setCellValue('G' . $count, $totalVehiclesCount);
+               $sheet->setCellValue('H' . $count, $totalAmount);
+               
+                   
+//             for ($index = 0; $index < 100; $index++) {
+//                        $sheet->setCellValue('A' . $index, 'Hi Anil' . $index);
+//                    }
+                    
+//                    if($pdf == true){
+//                        header("Content-type:application/pdf");
+//                        header("Content-Disposition:attachment;filename=".$downloaded_name.".pdf");
+//                    }else{ 
+//                        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+//                        header("Content-Disposition: attachment;filename=".$downloaded_name.".xls");
+//                    }
+//                    header('Cache-Control: max-age=0');
+//            // If you're serving to IE 9, then the following may be needed
+//                    header('Cache-Control: max-age=1');
+//
+//            // If you're serving to IE over SSL, then the following may be needed
+//                    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+//                    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+//                    header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+//                    header('Pragma: public'); // HTTP/1.0
+                    if($pdf == true){
+                        $sheet->getPageSetup()->setPaperSize(PageSetup::PAPERSIZE_A2_PAPER);
+                        $writer = new Tcpdf($spreadsheet);
+                    }else{
+                        $writer = new Xls($spreadsheet);
+                    }
+                    $attachment = fc_path_forward()."attachments/shift_report_to_admin/".$downloaded_name.".pdf";
+                    
+                    $writer->save($attachment);
+                        $to='anil.rapani@gmail.com'; 
+                        $subject="Shift Report To Admin $reportId - $gate_name - $first_parking_id_time_after_login - $last_parking_id_time_after_login";
+                        $message="Shift Report To Admin $reportId - $gate_name - $first_parking_id_time_after_login - $last_parking_id_time_after_login";
+                        
+                             
+                     
+                        if($this->send_email($to,$subject,$message,$attachment)){
+                                   $updatedInfo = array(
+                                   'email_sent_to_admin' => 1,
+                                   'updated_by' => $this->vendorId,
+                                   'updated_time' => date('Y-m-d H:i:s')
+                               );
+                   
+                               $this->k_report_model->update($updatedInfo, $reportId);
+                
+                            
+                        } else{
+                            
+                            // return false;
+                            // return false;
+                        }
+                
+//                    }else{
+//                        echo 't2';
+//                        exit;
+//                    }
+                
+                
+            }
+              
+            
+         
+           
+    }
+    
+    function shiftListEmail(){
+        // $to=array('anil.rapani@gmail.com','test.webap@gmail.com'); 
+                       $to='anil.rapani@gmail.com'; 
+        // $to = 'test.webap@gmail.com';
+        foreach ($shifts as $key => $shift_details) {
+                $start_time = $data['start_time'] = $shift_details->start_time;
+                $end_time = $data['end_time'] = $shift_details->end_time;
+                $exit_date = $data['exitDate'] = date('Y-m-d',strtotime("-1 days"));
+                $data['shift_id'] = $shift_details->id;
+                $attachment = fc_path_forward()."attachments/cron/shift/shift_report_".$shift_details->name."$exit_date.pdf";
+
+                $subject='Shift Report';
+                $message="Shift Report $shift_details->name.$exit_date.$start_time.$end_time";
+                $this->send_email($to,$subject,$message,$attachment); 
+           }
+       }
+       
+       
+       function send_email($to,$subject,$message,$attachment) {
+        
+        $this->load->library('email');
+        $config = $this->config->item('emailConf1');
+        $this->email->initialize($config);
+
+        $this->email->set_mailtype("html");
+        $this->email->set_newline("\r\n");
+        $this->email->from('test.webap@gmail.com');
+        $this->email->to($to);
+        $this->email->subject($subject);
+        $this->email->message($message);
+        $this->email->attach($attachment);
+        //Send email
+        if ($this->email->send()) {
+          //  var_dump($this->email->send());
+            exit;
+            return true;
+        } else {
+            echo 'not sent'; exit;
+            
+            return false;
         }
     }
 

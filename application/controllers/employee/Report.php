@@ -100,6 +100,22 @@ class Report extends BaseController {
      */
     function submittedList() {
             
+
+        // Current List start
+        $this->load->model(array('k_parking_model','k_report_model'));
+        $userReportCount = $this->k_report_model->getNumberOfRecordsByUserId($this->vendorId);
+        $isTotalReportCountZero = FALSE;
+        if($userReportCount->total_count == 0)
+        $isTotalReportCountZero = TRUE;
+        
+        
+        $inputData['isTotalReportCountZero'] = $isTotalReportCountZero;
+        $inputData['vendorId'] = $this->vendorId;
+        
+        $data['currentReportArray'] = $this->k_parking_model->getReport($inputData);
+        // Start List end
+
+
         
         $this->global['pageTitle'] = PROJECT_NAME . ' : Report';
         $data['title'] = 'Submitted Report';
@@ -124,13 +140,15 @@ class Report extends BaseController {
             $count = $result['count'];
             $data['totalCount'] = false;
             $segment = 5;
+            
             $returns = $this->paginationCompress("employee/report/submitted/list/", $count, PER_PAGE_RECORDS, $segment);
-
+            
             $data['page'] = $returns['page'];
             $data['offset'] = $returns['offset'];
 
-            $data['currentReportArray'] = $this->k_report_model->getList($data);
-
+            $data['generatedReportArray'] = $this->k_report_model->getList($data);
+//var_dump($data['generatedReportArray']);
+//exit;
             $this->global['pageTitle'] = PROJECT_NAME . ' : Employee Report';
             $data['title'] = 'Submitted Report';
             $data['sub_title'] = 'List';

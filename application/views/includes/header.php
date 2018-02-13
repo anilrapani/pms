@@ -413,7 +413,7 @@ if (count(array_intersect($check_array, array_keys($role_privileges))) > 0) {
                             <li class="treeview">
                                 <a href="<?php echo base_url(); ?>employee/report/submitted/list" >
                                     <i class="fa fa-circle-o"></i>
-                                    <span>My Submitted Report</span>
+                                    <span>My Report</span>
                                 </a>
                             </li>
      <?php } ?>

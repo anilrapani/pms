@@ -1351,6 +1351,7 @@ file_put_contents(APPPATH . '../assets/images/upload/drivinglicense/'.$image_dri
                     'manual_exit' => 1,
                     'total_minutes' =>   $total_number_of_minutes,
                     'total_amount' => $amount,
+                    'exited_by' => $this->vendorId,
                     'updated_by' => $this->vendorId,
                     'updated_time' => date('Y-m-d H:i:s')
                     

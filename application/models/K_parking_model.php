@@ -831,6 +831,94 @@ class K_parking_model extends Common_Model {
     }    
         
   
+    function getExitListSummaryShift($inputData) {
+        
+        $this->db->select("vehicle_type.name as vehicle_type_name, count(BaseTbl.$this->id) as type_count, sum(BaseTbl.$this->total_amount) as amount");
+        $this->db->from("$this->table_name as BaseTbl");
+        $this->db->join('k_master_vehicle_type as vehicle_type', "vehicle_type.id = BaseTbl.$this->vehicle_type_id",'left');
+        
+        if (!empty($inputData['first_parking_id_time_after_login'])) {
+            $this->db->where("BaseTbl.$this->exit_time >=", $inputData['first_parking_id_time_after_login']);
+        }
+        if (!empty($inputData['last_parking_id_time_after_login'])) {
+            $this->db->where("BaseTbl.$this->exit_time <=", $inputData['last_parking_id_time_after_login']);
+        }
+        
+          if (!empty($inputData['gate_id'])) {
+            $this->db->where("BaseTbl.$this->gate_id_exit", $inputData['gate_id']);
+        }
+        
+          if (!empty($inputData['user_id'])) {
+            $this->db->where("BaseTbl.$this->exited_by", $inputData['user_id']);
+        }
+                     
+        $this->db->where(
+                 array(
+                     "BaseTbl.$this->status" => 1,
+                     "BaseTbl.$this->deleted" => 2,
+                     "BaseTbl.$this->exit_time !=" =>'0000-00-00 00:00:00',
+                 )
+        );
+        $this->db->group_by("BaseTbl.$this->vehicle_type_id");
+        $query = $this->db->get();
+        $result = $query->result();
+          
+        
+            return $result;
+    }
+    
+    function getExitlistShift($inputData) {
+        if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
+            $this->db->select("BaseTbl.$this->id");
+        } else {
+            $this->db->select("BaseTbl.$this->id as ticket_no,BaseTbl.$this->entry_time, BaseTbl.$this->exit_time, 
+                CONCAT(
+                    TIMESTAMPDIFF(hour,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time),  '.' ,
+                    MOD( TIMESTAMPDIFF(minute,BaseTbl.$this->entry_time,BaseTbl.$this->exit_time), 60), ''
+                ) as parked_hours,
+                BaseTbl.$this->total_amount, BaseTbl.$this->vehicle_number, BaseTbl.$this->image_vehicle_number_plate, vehicle_type.name as vehicle_type_name, BaseTbl.$this->vehicle_company,gate.name as gate_entry_name, BaseTbl.$this->barcode");
+            // $this->db->select("");
+        }
+        $this->db->from("$this->table_name as BaseTbl");
+        $this->db->join('k_master_vehicle_type as vehicle_type', "vehicle_type.id = BaseTbl.$this->vehicle_type_id",'left');
+        $this->db->join('k_master_vehicle_gate as gate', "gate.id = BaseTbl.$this->gate_id_exit",'left');
+        
+        
+         if (!empty($inputData['first_parking_id_time_after_login'])) {
+            $this->db->where("BaseTbl.$this->exit_time >=", $inputData['first_parking_id_time_after_login']);
+        }
+        if (!empty($inputData['last_parking_id_time_after_login'])) {
+            $this->db->where("BaseTbl.$this->exit_time <=", $inputData['last_parking_id_time_after_login']);
+        }
+        
+          if (!empty($inputData['gate_id'])) {
+            $this->db->where("BaseTbl.$this->gate_id_exit", $inputData['gate_id']);
+        }
+        
+          if (!empty($inputData['user_id'])) {
+            $this->db->where("BaseTbl.$this->exited_by", $inputData['user_id']);
+        }
+        $this->db->where(
+                 array(
+                     "BaseTbl.$this->status" => 1,
+                     "BaseTbl.$this->deleted" => 2,
+                     "BaseTbl.$this->exit_time !=" =>'0000-00-00 00:00:00',
+                 )
+        );
+       
+        if ($inputData['totalCount'] == false && $inputData['download'] == false) {
+            $this->db->limit($inputData['page'], $inputData['offset']);
+        }
+        $query = $this->db->get();
+        $result = $query->result();
+
+        if (isset($inputData['totalCount']) && $inputData['totalCount'] == true && $inputData['download'] == false) {
+            $result['count'] = count($result);
+            return $result;
+        } else {
+            return $result;
+        }
+    }
     
 
 }

@@ -139,7 +139,7 @@ define('ROLE_PRIVILEGES_ARRAY',                            json_encode(array(   
                                                                                 36=>'Administrative Tasks - Vehicle Types and Prices',
                                                                                 37=>'Administrative Tasks - Gates and Employee',
                                                                              //   38=>'Cash Management - Report Chart', // working
-                                                                             //   39=>'Cash Management - Cash Report Summary', // working
+                                                                                39=>'Cash Management - Cash Report Summary', // working
                                                                              //   40=>'Approve Employee Report', // working
                                                                               //  41=>'Cash Management - Cash Collected list', // working
                                                                              //   42=>'All Exited list', // working
